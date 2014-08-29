@@ -1,0 +1,245 @@
+
+
+<++++NEW DOCUMENT++++>
+DOCUMENT URI:file:/home/leo/SourceTree/DEIIS/qaData/q001.txt
+
+uima.tcas.DocumentAnnotation Q Booth shot Lincoln?  A 1 Booth shot Lincoln.  A 0 Lincoln shot Booth.  A 1 Lincoln was shot by Booth.  A 0 Booth was shot by Lincoln.  A 1 Booth assassinated Lincoln.  A 0 Lincoln assassinated Booth.  A 1 Lincoln was assassinated by Booth.  A 0 Booth was assassinated by Lincoln.  
+org.apache.uima.examples.SourceDocumentInformation 
+edu.cmu.deiis.types.Question Booth shot Lincoln? 
+edu.cmu.deiis.types.NGram Booth shot Lincoln
+edu.cmu.deiis.types.NGram Booth shot
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.NGram shot Lincoln
+edu.cmu.deiis.types.Token shot
+edu.cmu.deiis.types.NGram shot
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.Answer Booth shot Lincoln. 
+edu.cmu.deiis.types.AnswerScore Booth shot Lincoln. 
+edu.cmu.deiis.types.NGram Booth shot Lincoln
+edu.cmu.deiis.types.NGram Booth shot
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.NGram shot Lincoln
+edu.cmu.deiis.types.Token shot
+edu.cmu.deiis.types.NGram shot
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.Answer Lincoln shot Booth. 
+edu.cmu.deiis.types.AnswerScore Lincoln shot Booth. 
+edu.cmu.deiis.types.NGram Lincoln shot Booth
+edu.cmu.deiis.types.NGram Lincoln shot
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.NGram shot Booth
+edu.cmu.deiis.types.Token shot
+edu.cmu.deiis.types.NGram shot
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.Answer Lincoln was shot by Booth. 
+edu.cmu.deiis.types.AnswerScore Lincoln was shot by Booth. 
+edu.cmu.deiis.types.NGram Lincoln was shot
+edu.cmu.deiis.types.NGram Lincoln was
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.NGram was shot by
+edu.cmu.deiis.types.NGram was shot
+edu.cmu.deiis.types.Token was
+edu.cmu.deiis.types.NGram was
+edu.cmu.deiis.types.NGram shot by Booth
+edu.cmu.deiis.types.NGram shot by
+edu.cmu.deiis.types.Token shot
+edu.cmu.deiis.types.NGram shot
+edu.cmu.deiis.types.NGram by Booth
+edu.cmu.deiis.types.Token by
+edu.cmu.deiis.types.NGram by
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.Answer Booth was shot by Lincoln. 
+edu.cmu.deiis.types.AnswerScore Booth was shot by Lincoln. 
+edu.cmu.deiis.types.NGram Booth was shot
+edu.cmu.deiis.types.NGram Booth was
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.NGram was shot by
+edu.cmu.deiis.types.NGram was shot
+edu.cmu.deiis.types.Token was
+edu.cmu.deiis.types.NGram was
+edu.cmu.deiis.types.NGram shot by Lincoln
+edu.cmu.deiis.types.NGram shot by
+edu.cmu.deiis.types.Token shot
+edu.cmu.deiis.types.NGram shot
+edu.cmu.deiis.types.NGram by Lincoln
+edu.cmu.deiis.types.Token by
+edu.cmu.deiis.types.NGram by
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.Answer Booth assassinated Lincoln. 
+edu.cmu.deiis.types.AnswerScore Booth assassinated Lincoln. 
+edu.cmu.deiis.types.NGram Booth assassinated Lincoln
+edu.cmu.deiis.types.NGram Booth assassinated
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.NGram assassinated Lincoln
+edu.cmu.deiis.types.Token assassinated
+edu.cmu.deiis.types.NGram assassinated
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.Answer Lincoln assassinated Booth. 
+edu.cmu.deiis.types.AnswerScore Lincoln assassinated Booth. 
+edu.cmu.deiis.types.NGram Lincoln assassinated Booth
+edu.cmu.deiis.types.NGram Lincoln assassinated
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.NGram assassinated Booth
+edu.cmu.deiis.types.Token assassinated
+edu.cmu.deiis.types.NGram assassinated
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.Answer Lincoln was assassinated by Booth. 
+edu.cmu.deiis.types.AnswerScore Lincoln was assassinated by Booth. 
+edu.cmu.deiis.types.NGram Lincoln was assassinated
+edu.cmu.deiis.types.NGram Lincoln was
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+edu.cmu.deiis.types.NGram was assassinated by
+edu.cmu.deiis.types.NGram was assassinated
+edu.cmu.deiis.types.Token was
+edu.cmu.deiis.types.NGram was
+edu.cmu.deiis.types.NGram assassinated by Booth
+edu.cmu.deiis.types.NGram assassinated by
+edu.cmu.deiis.types.Token assassinated
+edu.cmu.deiis.types.NGram assassinated
+edu.cmu.deiis.types.NGram by Booth
+edu.cmu.deiis.types.Token by
+edu.cmu.deiis.types.NGram by
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.Answer Booth was assassinated by Lincoln. 
+edu.cmu.deiis.types.AnswerScore Booth was assassinated by Lincoln. 
+edu.cmu.deiis.types.NGram Booth was assassinated
+edu.cmu.deiis.types.NGram Booth was
+edu.cmu.deiis.types.Token Booth
+edu.cmu.deiis.types.NGram Booth
+edu.cmu.deiis.types.NGram was assassinated by
+edu.cmu.deiis.types.NGram was assassinated
+edu.cmu.deiis.types.Token was
+edu.cmu.deiis.types.NGram was
+edu.cmu.deiis.types.NGram assassinated by Lincoln
+edu.cmu.deiis.types.NGram assassinated by
+edu.cmu.deiis.types.Token assassinated
+edu.cmu.deiis.types.NGram assassinated
+edu.cmu.deiis.types.NGram by Lincoln
+edu.cmu.deiis.types.Token by
+edu.cmu.deiis.types.NGram by
+edu.cmu.deiis.types.Token Lincoln
+edu.cmu.deiis.types.NGram Lincoln
+
+
+<++++NEW DOCUMENT++++>
+DOCUMENT URI:file:/home/leo/SourceTree/DEIIS/qaData/q002.txt
+
+uima.tcas.DocumentAnnotation Q John loves Mary?  A 1 John loves Mary with all his heart.  A 1 Mary is dearly loved by John.  A 0 Mary doesn't love John.  A 0 John doesn't love Mary.  A 1 John loves Mary.  
+org.apache.uima.examples.SourceDocumentInformation 
+edu.cmu.deiis.types.Question John loves Mary? 
+edu.cmu.deiis.types.NGram John loves Mary
+edu.cmu.deiis.types.NGram John loves
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.NGram loves Mary
+edu.cmu.deiis.types.Token loves
+edu.cmu.deiis.types.NGram loves
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
+edu.cmu.deiis.types.Answer John loves Mary with all his heart. 
+edu.cmu.deiis.types.AnswerScore John loves Mary with all his heart. 
+edu.cmu.deiis.types.NGram John loves Mary
+edu.cmu.deiis.types.NGram John loves
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.NGram loves Mary with
+edu.cmu.deiis.types.NGram loves Mary
+edu.cmu.deiis.types.Token loves
+edu.cmu.deiis.types.NGram loves
+edu.cmu.deiis.types.NGram Mary with all
+edu.cmu.deiis.types.NGram Mary with
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
+edu.cmu.deiis.types.NGram with all his
+edu.cmu.deiis.types.NGram with all
+edu.cmu.deiis.types.Token with
+edu.cmu.deiis.types.NGram with
+edu.cmu.deiis.types.NGram all his heart
+edu.cmu.deiis.types.NGram all his
+edu.cmu.deiis.types.Token all
+edu.cmu.deiis.types.NGram all
+edu.cmu.deiis.types.NGram his heart
+edu.cmu.deiis.types.Token his
+edu.cmu.deiis.types.NGram his
+edu.cmu.deiis.types.Token heart
+edu.cmu.deiis.types.NGram heart
+edu.cmu.deiis.types.Answer Mary is dearly loved by John. 
+edu.cmu.deiis.types.AnswerScore Mary is dearly loved by John. 
+edu.cmu.deiis.types.NGram Mary is dearly
+edu.cmu.deiis.types.NGram Mary is
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
+edu.cmu.deiis.types.NGram is dearly loved
+edu.cmu.deiis.types.NGram is dearly
+edu.cmu.deiis.types.Token is
+edu.cmu.deiis.types.NGram is
+edu.cmu.deiis.types.NGram dearly loved by
+edu.cmu.deiis.types.NGram dearly loved
+edu.cmu.deiis.types.Token dearly
+edu.cmu.deiis.types.NGram dearly
+edu.cmu.deiis.types.NGram loved by John
+edu.cmu.deiis.types.NGram loved by
+edu.cmu.deiis.types.Token loved
+edu.cmu.deiis.types.NGram loved
+edu.cmu.deiis.types.NGram by John
+edu.cmu.deiis.types.Token by
+edu.cmu.deiis.types.NGram by
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.Answer Mary doesn't love John. 
+edu.cmu.deiis.types.AnswerScore Mary doesn't love John. 
+edu.cmu.deiis.types.NGram Mary doesn't love
+edu.cmu.deiis.types.NGram Mary doesn
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
+edu.cmu.deiis.types.NGram doesn't love John
+edu.cmu.deiis.types.NGram doesn't love
+edu.cmu.deiis.types.Token doesn
+edu.cmu.deiis.types.NGram doesn
+edu.cmu.deiis.types.NGram love John
+edu.cmu.deiis.types.Token love
+edu.cmu.deiis.types.NGram love
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.Answer John doesn't love Mary. 
+edu.cmu.deiis.types.AnswerScore John doesn't love Mary. 
+edu.cmu.deiis.types.NGram John doesn't love
+edu.cmu.deiis.types.NGram John doesn
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.NGram doesn't love Mary
+edu.cmu.deiis.types.NGram doesn't love
+edu.cmu.deiis.types.Token doesn
+edu.cmu.deiis.types.NGram doesn
+edu.cmu.deiis.types.NGram love Mary
+edu.cmu.deiis.types.Token love
+edu.cmu.deiis.types.NGram love
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
+edu.cmu.deiis.types.Answer John loves Mary. 
+edu.cmu.deiis.types.AnswerScore John loves Mary. 
+edu.cmu.deiis.types.NGram John loves Mary
+edu.cmu.deiis.types.NGram John loves
+edu.cmu.deiis.types.Token John
+edu.cmu.deiis.types.NGram John
+edu.cmu.deiis.types.NGram loves Mary
+edu.cmu.deiis.types.Token loves
+edu.cmu.deiis.types.NGram loves
+edu.cmu.deiis.types.Token Mary
+edu.cmu.deiis.types.NGram Mary
