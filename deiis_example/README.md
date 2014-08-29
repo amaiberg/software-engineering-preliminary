@@ -22,4 +22,4 @@ There are three CPEs (pipelines) available: GoldCPE, NgramOverlapCPE, and TokenO
 
 The pipelines read questions from the folder **qaData**. The output is saved to  **outputData**  
 
-Note that for the annotation viewer you need to specify an input folder and a type system file. One folder contains xmi file. It is **qaData/xmi**. The type system file is **src/main/resources/type_system/src/main/resources/type_system/Chapter01_types.xml**
+Note that for the annotation viewer you need to specify an input folder and a type system file. One folder contains xmi file. It is **qaData/xmi**. The type system file is **src/main/resources/type_system/Chapter01_types.xml**
