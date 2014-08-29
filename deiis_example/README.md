@@ -4,7 +4,7 @@ This is a DEIIS example (Lecture 2)
 Instructions.
 
 1) Install Java SDK and Maven.   
-2) Install UIMA Eclipse plugin. Instructions can be found [on this page](http://uima.apache.org/downloads/releaseDocs/2.2.0-incubating/docs/html/overview_and_setup/overview_and_setup.html#ugr.ovv.eclipse_setup.install_uima_eclipse_plugins). **Super important** don't read the UIMA tutorial any further and don't setup the UIMA_HOME variable! You don't need it, because UIMA components should be downloaded automatically by Maven.   
+2) Install UIMA Eclipse plugin. Instructions can be found [on this page](http://uima.apache.org/downloads/releaseDocs/2.2.0-incubating/docs/html/overview_and_setup/overview_and_setup.html#ugr.ovv.eclipse_setup.install_uima_eclipse_plugins). **A very important note:** don't read the UIMA tutorial any further and don't setup the UIMA_HOME variable! You don't need it, because UIMA components should be downloaded automatically by Maven.   
 3) Git clone the current repository (to some location on your file system). From the command line you can do: 
 ```
 git clone git@github.com:amaiberg/software-engineering-preliminary.git
