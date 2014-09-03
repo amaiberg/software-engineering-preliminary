@@ -1,4 +1,4 @@
-This is a DEIIS example (Lecture 2) and instructions for running it.
+This is a DEIIS example (Lectures 2 and 3, slides F13_DEIIS_02_IntelligentInfoSystem) and instructions for running it.
 ===================================================
 
 
