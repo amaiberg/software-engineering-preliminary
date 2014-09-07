@@ -1,4 +1,5 @@
 \section{Adding a dependency from Maven repository}
+\label{AddedDepFromMaven}
 
 Maven repository stores all the artifacts that repository users have deployed,
 and we can take the advantage of Maven repository to add project dependencies on
@@ -32,24 +33,20 @@ the format of the scm is:
 scm:<SCM_PROVIDER><DELIMITER><PROVIDER_SPECIFIC_PART>
 \end{verbatim}
 
-In particular to Git, most Git SCM providers could support two different URL
-syntaxes:
-
-\begin{verbatim}
-scm:git:git://SERVER_NAME/PATH_TO_REPOSITORY
-\end{verbatim}
-
-or specifically, 
-
-\begin{verbatim}
-scm:git:git://github.com/GITHUB_ID/REPOSITORY_ID.git
-\end{verbatim}
-
-and
+For our purposes, it is best to use the following format:
 
 \begin{verbatim}
 scm:git:git@github.com:GITHUB_ID/REPOSITORY_ID.git
 \end{verbatim}
+
+For this assignment specifically, you will need:
+\begin{verbatim}
+scm:git:git@github.com:GITHUB_ID/hw0-ANDREW_ID.git
+\end{verbatim}
+
+Note that here we use \emph{SSH} and not \emph{HTTPS} authorization!
+To make it working, you need to create an SSH key as mention in Section \ref{SectionSSHGit}.
+Please, refer to the documentation on the \href{http://help.github.com/articles/generating-ssh-keys}{Git site}.
 
 You need to type in the SCM URL corresponding to your remote repository in
 \textbf{Connection} and \textbf{Developer} under \textbf{SCM} field. Details of
