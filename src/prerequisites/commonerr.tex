@@ -71,7 +71,9 @@ One hacky solution is as follows:
 \begin{enumerate}
 \item First follow the instructions from the hw0 guide.
 \item Remove -SNAPSHOT from the version in pom.xml, commit and push to git, but do not run maven release.
-\item Add -SNAPSHOT back to the version. Then run maven release:prepare release:perform(You may see a "tag already existed" error. Just delete the previous tag from git first.)
+\item Add -SNAPSHOT back to the version. Then run maven release:prepare release:perform.
+You may see a "tag already existed" error. Just delete the previous tag from git first.
+For tag-deletion instructions see e.g. \url{http://nathanhoad.net/how-to-delete-a-remote-git-tag}.
 \end{enumerate}
 
 \subsection{3. Maven executable not found}
@@ -86,9 +88,11 @@ First, go to Maven/Preferences/Windows/Installations and check if you replaced t
 an external Maven installation (Please, refer to Figure \ref{submit-02-add-maven}).
 
 Second, when you create a maven build to execute goals ``release:prepare release:perform'',
-there is an option to specify a Maven runtime. In our version of Eclipse, it was 
-a dropdown menu/list at the bottom of the window,
+there is an option to specify a Maven runtime. In our version of Eclipse, 
+it was a dropdown menu/list at the bottom of the window,
 which appears when you create a new run configuration (of the type Maven build).
+So, if you have such an option, make sure you specify
+an external Maven rather than an embedded one.
 
 There were cases, when these recommendations did not help. As a last resort, one can invoke
 Maven directly. This can be done either from the command line (which is straightforward),
@@ -114,11 +118,11 @@ Error: unable to tag scm.  fatal: tag already exits.
 which is used by Maven to label specific releases.
 The name of the tag is built based on the artifact version
 that is specified in the Pom file.
-Due to previous previous operations, the tag has already been created,
-and it cannot be recreated again.
+Due to previous unsuccessful operations, the tag has already been created.
+Thus, it cannot be recreated again (with the same name).
 
 Two solutions are possible. A good solution is to delete the previously
-created tag.
+created tag,
 see e.g. \url{http://nathanhoad.net/how-to-delete-a-remote-git-tag}.
 Unfortunately, the Maven release plugin cannot do it (though should) on its own.
 A hacky and dirty solution is to change the version of the artifact 
@@ -156,7 +160,9 @@ If you see the following error:
 \begin{verbatim}
  error:  You don't have a SNAPSHOT project in the reactor projects list.
 \end{verbatim}
-Check your pom.xml, $<$version$>$ tag. Make sure you have -SNAPSHOT suffix link this: 
+Check your pom.xml, $<$version$>$ tag. Make sure you have -SNAPSHOT suffix link like this: 
 \begin{verbatim}
 <version>0.0.1-SNAPSHOT</version>
 \end{verbatim}
+
+
