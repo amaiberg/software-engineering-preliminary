@@ -1,0 +1,2 @@
+all:
+	xlatex main.tex 

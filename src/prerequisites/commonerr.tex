@@ -165,4 +165,22 @@ Check your pom.xml, $<$version$>$ tag. Make sure you have -SNAPSHOT suffix link 
 <version>0.0.1-SNAPSHOT</version>
 \end{verbatim}
 
+\subsection{8. Cannot push upstream}
+
+In some version of Eclipse (and OS), the option "PUSH TO UPSTREAM" is not available.
+One may be able to use \textbf{Remote$->$Push} instead.
+
+\subsection{9. Error parsing Pom file}
+The XML can be malformed, even though visually it looks fine.
+One common error was encountered on Mac.
+Turns out, certain non-printable characters on Mac just never appear on screen:
+neither in Eclipse editor nor in Vi.
+These pesky characters can be detected using at least three approaches:
+\begin{itemize}
+\item Check how the file looks at GitHub ideally using your friend's computer (ideally
+it should have different locale settings);
+\item Clone your repository on one of the Linux machines (you may have access to ScS servers)
+and open the file in Vi.
+\item Use the command \texttt{hexdump -C pom.xml}.
+\end{itemize}
 
