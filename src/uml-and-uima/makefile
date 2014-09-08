@@ -1,2 +1,2 @@
 all:
-	xlatex main.tex 
+	xelatex main.tex 
