@@ -43,9 +43,22 @@ have mentioned some possible solutions to do this. You can try and implement
 multiple approaches. All the annotations should be kept in the CAS until a final
 ``merging'' component takes all the annotations and make a final judgment.
 
-You can use the type's \emph{casProcessorId} feature to identify, among all the
-approaches, which annotator is attributed this annotation, and \emph{confidence}
-feature as a weight to vote for a final decision. This approach was also applied
-in IBM's Watson system.
+You can mark gene mentions using the type \emph{edu.cmu.deiis.types.Annotation}.
+The \emph{casProcessorId} feature 
+can be used to indicate a type of the annotator that have tagged a gene name, 
+and the \emph{confidence} feature 
+can be used to indicate 
+an estimated annotation quality (the higher is the confidence value the better
+is the annotation).
+Note that many statistical NERs produce such confidence values.
+For rule-based annotators, you can use some ad hoc fixed value, e.g., one.
+You can use these confidence values to aggregate results from several annotators.
+For example, you can employ a voting procedure 
+in which confidence values are used as voting weights.
+If a single annotation is produced by multiple annotators it will have a larger weight
+(a sum of individual weights from all contributing annotators)
+and a better chance to be selected by the aggregating algorithm (which, e.g.,
+can use a threshold to reject low-quality annotations).
+This approach was used in IBM Watson system.
 
 \end{enumerate}
