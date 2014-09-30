@@ -2,54 +2,77 @@
 \section{Adding analysis engines for your pipeline}
 
 You are required to use the type system we included in the archetype to
-accomplish this homework. However, if your implementation needs additional data
-models (or UIMA types) to store intermediate data, you can also extend the type
-system on your own. 
-You need to implement an aggregated analysis engine (hw2-ID-aae.xml) with several analysis engines
-that annotate the inputs and evaluate the performance of the aggregate analysis engine by
-comparing the system outputs with the gold-standard outputs.
+accomplish this homework. However, if your implementation needs additional 
+types (e.g., to store intermediate data), 
+you are welcome to extend the type system (don't forget to regenerate Java classes in this case
+you need to use \texttt{JCasGen}).
 
-We will evaluate your implementation by feeding in unseen inputs and execute your 
-\emph{aggregated analysis engine (hw2-ID-aae.xml)}.
+The ultimate goal is (1) implement an aggregated analysis engine (hw2-ID-aae.xml) with several analysis engines
+that annotate the inputs;
+(2) evaluate the performance of the aggregate analysis engine by
+comparing an output of your system against the gold standard.
+Remember that scoring in this assignment puts more weight on performance!
 
-You can test your aggregated analysis engine by running the UIMA Document Analyzer 
-\url{http://uima.apache.org/d/uimaj-2.4.0/tools.html#ugr.tools.doc_analyzer}. 
-We provided an Eclipse run configuration in hw2's archetype run\_configuration\/UIMA Document Analyzer.launch. 
+We will evaluate your implementation using held-out data.
+\begin{itemize}
+\item The input file should be \texttt{src/main/resources/data/hw2.in} ;
+\item The output file should  \texttt{src/main/resources/data/hw2-ID.out},
+where \texttt{ID} is \textbf{your Andrew ID};
+\item The aggregate analysis engine should be defined by 
+the descriptor \texttt{hw2-ID-aae.xml}.
+Please, place it in the folder   \texttt{src/main/resources/}.
+\end{itemize}
+
+You can test your aggregated analysis engine by running 
+\href{http://uima.apache.org/d/uimaj-2.4.0/tools.html#ugr.tools.doc_analyzer}{the UIMA Document Analyzer}.
+One option is to use the training data from Homework 1, but you are also encouraged
+to obtain other test sets.
+
+We provide an Eclipse configuration to run the document analyzer,
+which is \newline\texttt{run\_configuration/UIMA Document Analyzer.launch}. 
+To use this configuration in Eclipse, navigate to the project sub-folder \texttt{run\_configuration},
+and right click on \texttt{UIMA Document Analyzer.launch}.
+Then, select \texttt{Run As}.
+
 
 ~\\
 Here are some suggestions to consider.
 
 \begin{enumerate}
 
+\item Remember to add comments and Javadocs to your annotators, we will also
+evaluate the quality of your code.
+
 \item If you want to employ a resource (e.g., a model you trained offline) in
 your annotator, you could consider UIMA's \emph{resource manager} (refer to the
 official tutorial for details about this).
-Be sure to put your resource in \texttt{src/main/resources} so that your
-submission will also bundle those resources along with your codes.
+Be sure to put your resource in \texttt{src/main/resources} so 
+that your this resource will be properly bundled up with your code
+during the submission/release process.
 
-\item \textbf{If you want to incorporate other NLP or machine learning tools,
-please try to avoid non-Java packages. If you want to dependent your artifact on
-other Java packages other than those provided by the archetype but can be found
-in the course repository, you can add a Maven dependency for this artifact, if
-you have the jar package on your machine, but it doesn't exist in the course
-repository, please let us know, we will try to deploy them in a 3rd party
-repository.}
+\item If you want to incorporate other NLP or machine learning tools,
+\textbf{do not use non-Java} packages, as we will not be able to use them
+on an evaluating server. 
+However, we might be able to post jar packages 
+to our 3rd party repository (and make them available to you via maven).
 
-\item Remember to add comments and Javadocs to your annotators, we will also
-evaluate the quality of your codes.
+\item The most creative part is to implement specific annotators. We
+outline some possible solutions (in Homework 1). 
+Note that an aggregate analysis engine may contain only a single
+primitive analysis engine (and a single annotator). 
+Yet, it is \textbf{best to implement multiple solutions}.
 
-\item The most creative ideas will happen in the intermediate annotators. We
-have mentioned some possible solutions to do this. You can try and implement
-multiple approaches. All the annotations should be kept in the CAS until a final
-``merging'' component takes all the annotations and make a final judgment.
-
-You can mark gene mentions using the type \emph{edu.cmu.deiis.types.Annotation}.
+\item All the annotations should be kept in the CAS until a final
+``merging'' component reads all the annotations and selects only
+the best ones (or all of them as one option).
+You should mark gene mentions using the type \emph{edu.cmu.deiis.types.Annotation}.
 The \emph{casProcessorId} feature 
 can be used to indicate a type of the annotator that have tagged a gene name, 
 and the \emph{confidence} feature 
 can be used to indicate 
 an estimated annotation quality (the higher is the confidence value the better
 is the annotation).
+
 Note that many statistical NERs produce such confidence values.
 For rule-based annotators, you can use some ad hoc fixed value, e.g., one.
 You can use these confidence values to aggregate results from several annotators.
