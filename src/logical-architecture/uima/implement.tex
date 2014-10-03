@@ -7,10 +7,12 @@ types (e.g., to store intermediate data),
 you are welcome to extend the type system (don't forget to regenerate Java classes in this case
 you need to use \texttt{JCasGen}).
 
-The ultimate goal is (1) implement an aggregated analysis engine (hw2-ID-aae.xml) with several analysis engines
+The ultimate goal is (1) implement a multi-annotator collection process engine (CpeDescriptor.xml) 
 that annotate the inputs;
 (2) evaluate the performance of the aggregate analysis engine by
 comparing an output of your system against the gold standard.
+Multiple annotators should be bundled up into an aggregate analysis engine,
+which functions as a part of a collection processing engine.
 Remember that scoring in this assignment puts more weight on performance!
 
 We will evaluate your implementation using held-out data.
@@ -18,12 +20,12 @@ We will evaluate your implementation using held-out data.
 \item The input file should be \texttt{src/main/resources/data/hw2.in} ;
 \item The output file should  \texttt{src/main/resources/data/hw2-ID.out},
 where \texttt{ID} is \textbf{your Andrew ID};
-\item The aggregate analysis engine should be defined by 
-the descriptor \texttt{hw2-ID-aae.xml}.
+\item The multi-annotator engine should be defined by 
+the CPE descriptor \texttt{CpeDescriptor.xml}.
 Please, place it in the folder   \texttt{src/main/resources/}.
 \end{itemize}
 
-You can test your aggregated analysis engine by running 
+You can test your multi-annotator CPE/AAE by running 
 \href{http://uima.apache.org/d/uimaj-2.4.0/tools.html#ugr.tools.doc_analyzer}{the UIMA Document Analyzer}.
 One option is to use the training data from Homework 1, but you are also encouraged
 to obtain other test sets.
