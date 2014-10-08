@@ -16,7 +16,7 @@ sudo apt-get install realpath
 ID hw2.in hw2-ID.out CpeDescriptor.xml
 ```
 
-Choose some testing directory. Go there. Create the file **hw2.in** as a copy of **sample.in**:
+Choose some directory, where you would like to test. Go there. Create the file **hw2.in** as a copy of **sample.in**:
 
 ```
 cp <path to sample.in>/sample.in hw2.in
