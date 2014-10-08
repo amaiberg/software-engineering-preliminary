@@ -83,6 +83,7 @@ echo "Error file: $REPORT_FILE"
 # a special Java file RunJarCPE.java that can  run a CPE  using
 # descriptors from a jar. A standard UIMA example SimpleRunCPE can't do it.
 SCRIPT_DIR=`dirname $0`
+SCRIPT_DIR=`realpath $SCRIPT_DIR`
 
 create_run_dir() {
   echo "POM-file: $pom group id: $gid artifact id: $artid version '$ver' base dir: '$BASE_DIR'"
