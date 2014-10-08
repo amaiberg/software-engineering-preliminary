@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>edu.cmu.lti.11791</groupId>
+  <artifactId>grading</artifactId>
+  <version>1.0</version>
+  <repositories>
+    <repository>
+ 	    <id>thirdparty-local</id>
+  		<url>http://mu.lti.cs.cmu.edu:8081/nexus/content/repositories/thirdparty</url>
+    </repository>
+    <repository>
+ 	    <id>course-dep-local</id>
+  		<url>http://mu.lti.cs.cmu.edu:8081/nexus/content/repositories/course-dependencies</url>
+    </repository>
+  </repositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      INSERT_DEPENDENCY_HERE
+    </dependency>
+  </dependencies>
+</project>
