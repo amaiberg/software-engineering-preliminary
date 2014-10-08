@@ -11,14 +11,7 @@ mvn clean compile install
 sudo apt-get install realpath
 ```
 
-3) Create a one-line registry file **your_info.txt** that specifies your ID, input, output file and the name of your CpeDescriptor.xml. An example (**ID**, as usual, is your Andew/CS id):
-
-```
-ID hw1.in hw1-ID.out CpeDescriptor.xml
-```
-
-Or for hw2:
-
+3) Create a one-line registry file **your_info.txt** that specifies your ID, input, output file and the name of your CpeDescriptor.xml. An example (**ID**, as usual, is your Andew/CS id) for Homework **2**:
 ```
 ID hw2.in hw2-ID.out CpeDescriptor.xml
 ```
