@@ -119,17 +119,17 @@ create_run_dir() {
 }
 
 # Let's rock'n'roll
-n=`wc -l $LIST_FILE|cut -d \  -f  1`
+n=`wc -l $LIST_FILE|cut -d ' ' -f  1`
 nstud=0
 for ((i=1;i<=$n;++i))
   do
     line=`head -$i $LIST_FILE|tail -1`
     if [ "$line" !=  "" ] 
     then
-      id=`echo $line|cut -d \  -f 1`
-      stud_in_file=`echo $line|cut -d \  -f 2`
-      stud_out_file=`echo $line|cut -d \  -f 3`
-      cpe=`echo $line|cut -d \  -f 4`
+      id=`echo $line|cut -d ' ' -f 1`
+      stud_in_file=`echo $line|cut -d ' ' -f 2`
+      stud_out_file=`echo $line|cut -d ' ' -f 3`
+      cpe=`echo $line|cut -d ' ' -f 4`
       echo "Student: $id, input file: $stud_in_file,  output file: $stud_out_file  CPE file: $cpe"
 
       success=1
