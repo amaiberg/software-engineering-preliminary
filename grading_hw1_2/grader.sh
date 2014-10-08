@@ -139,7 +139,7 @@ for ((i=1;i<=$n;++i))
 
       if [ "$pom" = "" ]
       then
-        str="$artid ERROR can't find POM"
+        str="$id ERROR can't find POM"
         echo $str 
         echo $str  >> $REPORT_FILE
         success=0
