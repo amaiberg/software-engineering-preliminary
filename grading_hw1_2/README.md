@@ -29,7 +29,7 @@ cp <path to sample.out>/sample.out hw2.gold_stand
 
 Finally, from **Bash** you can run the grading script as follows:
 ```
-./grader.sh hw2.in hw2.gold_stand hw2-ID.out hw2 your_info.txt ~/.m2/repository/edu/cmu/lti/11791/f14/hw2/ 2>&1|tee out.log
+./grader.sh hw2.in hw2.gold_stand hw2 your_info.txt ~/.m2/repository/edu/cmu/lti/11791/f14/hw2/ 2>&1|tee out.log
 ```
 
 If all is fine, in the end, the script should print something like:
