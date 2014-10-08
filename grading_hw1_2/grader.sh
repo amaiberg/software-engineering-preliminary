@@ -89,34 +89,34 @@ echo "Error file: $REPORT_FILE"
 # a special Java file RunJarCPE.java that can  run a CPE  using
 # descriptors from a jar. A standard UIMA example SimpleRunCPE can't do it.
 SCRIPT_DIR=`dirname $0`
-SCRIPT_DIR=`realpath_repl $SCRIPT_DIR`
+SCRIPT_DIR=`realpath_repl "$SCRIPT_DIR"`
 echo "SCRIPT_DIR=$SCRIPT_DIR"
 
 create_run_dir() {
   echo "POM-file: $pom group id: $gid artifact id: $artid version '$ver' base dir: '$BASE_DIR'"
-  if [ ! -d $BASE_DIR ] ; then
-    mkdir -p $BASE_DIR/src/main/java
-    mkdir -p $BASE_DIR/src/main/resources
+  if [ ! -d "$BASE_DIR" ] ; then
+    mkdir -p "$BASE_DIR/src/main/java"
+    mkdir -p "$BASE_DIR/src/main/resources"
   fi
-  cp $SCRIPT_DIR/RunJarCPE.java $BASE_DIR/src/main/java
+  cp "$SCRIPT_DIR/RunJarCPE.java" "$BASE_DIR/src/main/java"
   if [ "$?" !=  "0" ] ; then
     echo "Failure copying the java file!"
     exit 1
   fi
-  cat $SCRIPT_DIR/pom-template.xml|sed "s|INSERT_DEPENDENCY_HERE|<groupId>$gid</groupId>\n<artifactId>$artid</artifactId>\n<version>$ver</version>|" > $BASE_DIR/pom.xml
+  cat "$SCRIPT_DIR/pom-template.xml"|sed "s|INSERT_DEPENDENCY_HERE|<groupId>$gid</groupId>\n<artifactId>$artid</artifactId>\n<version>$ver</version>|" > "$BASE_DIR/pom.xml"
   if [ "$?" !=  "0" ] ; then
     echo "Failure creating pom.xml  file!"
     exit 1
   fi
-  inf=`realpath_repl $IN_FILE`
-  cd $BASE_DIR
+  inf=`realpath_repl "$IN_FILE"`
+  cd "$BASE_DIR"
   if [ "$?" !=  "0" ] ; then
-    echo "Failure cd to $BASE_DIR"
+    echo "Failure cd to '$BASE_DIR'"
     exit 1
   fi
   if [ ! -h "$stud_in_file" ]
   then
-    ln -s $inf $stud_in_file
+    ln -s "$inf" "$stud_in_file"
   fi
   if [ "$?" !=  "0" ] ; then
     echo "Failure creating a link to input file!"
@@ -126,12 +126,11 @@ create_run_dir() {
 }
 
 # Let's rock'n'roll
-n=`wc -l $LIST_FILE|awk '{print $1}'`
+n=`wc -l "$LIST_FILE"|awk '{print $1}'`
 n=$(($n+1))
-nstud=0
 for ((i=1;i<$n;++i))
   do
-    line=`head -$i $LIST_FILE|tail -1`
+    line=`head -$i "$LIST_FILE"|tail -1`
     if [ "$line" !=  "" ] 
     then
       id=`echo $line|awk '{print $1}'`
@@ -149,23 +148,23 @@ for ((i=1;i<$n;++i))
       then
         str="$id ERROR can't find POM"
         echo $str 
-        echo $str  >> $REPORT_FILE
+        echo $str  >> "$REPORT_FILE"
         success=0
       else
-        gid=`grep  '<groupId>' $pom|head -1|sed $SED_OPT 's/^\s*<groupId>//'|sed $SED_OPT 's/<.groupId>\s*$//'`
-        ver=`grep  '<version>' $pom|head -1|sed $SED_OPT 's/^\s*<version>//'|sed $SED_OPT 's/<.version>\s*$//'`
-        artid=`grep  '<artifactId>' $pom|head -1|sed $SED_OPT 's/^\s*<artifactId>//'|sed $SED_OPT 's/<.artifactId>\s*$//'`
+        gid=`grep  '<groupId>' "$pom"|head -1|sed $SED_OPT 's/^\s*<groupId>//'|sed $SED_OPT 's/<.groupId>\s*$//'`
+        ver=`grep  '<version>' "$pom"|head -1|sed $SED_OPT 's/^\s*<version>//'|sed $SED_OPT 's/<.version>\s*$//'`
+        artid=`grep  '<artifactId>' "$pom"|head -1|sed $SED_OPT 's/^\s*<artifactId>//'|sed $SED_OPT 's/<.artifactId>\s*$//'`
         BASE_DIR=run/$artid
 
         if [ "$gid" = "" -o "$ver" = "" -o "$artid" = "" ] 
         then
-          str="$artid ERROR Can't obtain groupId, version, or artifactId from $pom"
+          str="$artid ERROR Can't obtain groupId, version, or artifactId from '$pom'"
           echo $str 
-          echo $str  >> $REPORT_FILE
+          echo $str  >> "$REPORT_FILE"
           success=0
         else 
           create_run_dir $ver $artid
-          cd $BASE_DIR
+          cd "$BASE_DIR"
           if [ ! -f "$stud_out_file" ] 
           then
             echo "Output file is  missing, let's execute $artid" 
@@ -173,9 +172,9 @@ for ((i=1;i<$n;++i))
             mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args="$cpe"
             if [ "$?" != "0" ]
             then
-              str="$artid ERROR running $pom"
+              str="$artid ERROR running '$pom'"
               echo $str 
-              echo $str  >> $REPORT_FILE
+              echo $str  >> "$REPORT_FILE"
               success=0
             fi
           fi
@@ -184,28 +183,24 @@ for ((i=1;i<$n;++i))
           then
             str="$artid ERROR missing output file $stud_out_file"
             echo $str 
-            echo $str  >> $REPORT_FILE
+            echo $str  >> "$REPORT_FILE"
             success=0
           else
-            $SCRIPT_DIR/precision_recall.py --truth $GS_FILE --test $stud_out_file 2>&1|tee out
+            "$SCRIPT_DIR"/precision_recall.py --truth "$GS_FILE" --test "$stud_out_file" 2>&1|tee out
             score=`grep 'F1 Score:' out`
-            echo "$artid $ver SUCCESS $score" >> $REPORT_FILE
+            echo "$artid $ver SUCCESS $score" >> "$REPORT_FILE"
           fi
           if [ "$success" = "0" ] ; then
-            rm -f $stud_out_file
+            rm -f "$stud_out_file"
           fi
           cd -
         fi
       fi 
 
-      if [ "$STOP_AFTER_FAILURE" = "1" -a $success != "1" ] ; then
+      if [ "$STOP_AFTER_FAILURE" = "1" -a "$success" != "1" ] ; then
         echo "Stopping after a failure!"
         exit 1
       fi
-
-      ns=$(($ns+1))
-      
-      
     fi
   done
 
