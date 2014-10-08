@@ -27,7 +27,7 @@ Similarly, create the file **hw2.gold_stand** that actually contains the content
 cp <path to sample.out>/sample.out hw2.gold_stand
 ```
 
-Finally, you can run the grading script:
+Finally, from **Bash** you can run the grading script as follows:
 ```
 ./grader.sh hw2.in hw2.gold_stand hw2-ID.out ~/.m2/repository/edu/cmu/lti/11791/f14/hw2/ 2>&1|tee out.log
 ```
