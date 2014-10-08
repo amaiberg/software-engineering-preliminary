@@ -1,16 +1,22 @@
 #!/bin/bash
 
+SED_OPT=" -r "
+if [[ "$OSTYPE" == "darwin"* ]]
+then
+  echo "Mac!!!"
+  # On Mac sed have different options
+  SED_OPT=" -F "
+else
+  echo "Not Mac"
+fi
+
 # Change this to 1 if you want to stop after each failure to manually expect failure reasons
 STOP_AFTER_FAILURE=1
 
-# NOTE: requires realpath
-
-which realpath >/dev/null
-
-if [ "$?" != "0" ] ; then
-  echo "This script requires realpath, please, install: e.g., apt-get install reaplpath"
-  exit 1
-fi
+# A hacky realpath replacement pilfered from http://stackoverflow.com/a/3572105/2120401
+realpath_repl() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
 
 usage() {
   echo $1
@@ -30,7 +36,7 @@ if [ ! -f "$IN_FILE" ] ; then
 fi
 
 # Gold standard file
-GS_FILE=`realpath $2`
+GS_FILE=`realpath_repl $2`
 
 if [ "$IN_FILE" == "" ] ; then
   usage "Missing GS_FILE"
@@ -75,7 +81,7 @@ fi
 # Beware this script cleans up everything before start
 
 echo -n > report.txt
-REPORT_FILE=`realpath report.txt`
+REPORT_FILE=`realpath_repl report.txt`
 echo "Error file: $REPORT_FILE"
 
 # We expect the script precision_recall.py to be located in this directory.
@@ -83,7 +89,8 @@ echo "Error file: $REPORT_FILE"
 # a special Java file RunJarCPE.java that can  run a CPE  using
 # descriptors from a jar. A standard UIMA example SimpleRunCPE can't do it.
 SCRIPT_DIR=`dirname $0`
-SCRIPT_DIR=`realpath $SCRIPT_DIR`
+SCRIPT_DIR=`realpath_repl $SCRIPT_DIR`
+echo "SCRIPT_DIR=$SCRIPT_DIR"
 
 create_run_dir() {
   echo "POM-file: $pom group id: $gid artifact id: $artid version '$ver' base dir: '$BASE_DIR'"
@@ -101,7 +108,7 @@ create_run_dir() {
     echo "Failure creating pom.xml  file!"
     exit 1
   fi
-  inf=`realpath $IN_FILE`
+  inf=`realpath_repl $IN_FILE`
   cd $BASE_DIR
   if [ "$?" !=  "0" ] ; then
     echo "Failure cd to $BASE_DIR"
@@ -120,8 +127,9 @@ create_run_dir() {
 
 # Let's rock'n'roll
 n=`wc -l $LIST_FILE|cut -d ' ' -f  1`
+n=$(($n+1))
 nstud=0
-for ((i=1;i<=$n;++i))
+for ((i=1;i<$n;++i))
   do
     line=`head -$i $LIST_FILE|tail -1`
     if [ "$line" !=  "" ] 
