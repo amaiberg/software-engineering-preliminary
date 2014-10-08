@@ -5,7 +5,7 @@ if [[ "$OSTYPE" == "darwin"* ]]
 then
   echo "Mac!!!"
   # On Mac sed have different options
-  SED_OPT=" -F "
+  SED_OPT=" -E "
 else
   echo "Not Mac"
 fi
