@@ -152,9 +152,9 @@ for ((i=1;i<$n;++i))
         echo $str  >> $REPORT_FILE
         success=0
       else
-        gid=`grep  '<groupId>' $pom|head -1|sed -r 's/^\s*<groupId>//'|sed -r 's/<.groupId>\s*$//'`
-        ver=`grep  '<version>' $pom|head -1|sed -r 's/^\s*<version>//'|sed -r 's/<.version>\s*$//'`
-        artid=`grep  '<artifactId>' $pom|head -1|sed -r 's/^\s*<artifactId>//'|sed -r 's/<.artifactId>\s*$//'`
+        gid=`grep  '<groupId>' $pom|head -1|sed $SED_OPT 's/^\s*<groupId>//'|sed $SED_OPT 's/<.groupId>\s*$//'`
+        ver=`grep  '<version>' $pom|head -1|sed $SED_OPT 's/^\s*<version>//'|sed $SED_OPT 's/<.version>\s*$//'`
+        artid=`grep  '<artifactId>' $pom|head -1|sed $SED_OPT 's/^\s*<artifactId>//'|sed $SED_OPT 's/<.artifactId>\s*$//'`
         BASE_DIR=run/$artid
 
         if [ "$gid" = "" -o "$ver" = "" -o "$artid" = "" ] 
