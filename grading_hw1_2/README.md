@@ -11,16 +11,16 @@ mvn clean compile install
 sudo apt-get install realpath
 ```
 
-3) Create a one-line registry file **your_info.txt** that specifies your ID, input, output file and the name of your CpeDescriptor.xml. An example:
+3) Create a one-line registry file **your_info.txt** that specifies your ID, input, output file and the name of your CpeDescriptor.xml. An example (**ID**, as usual, is your Andew/CS id):
 
 ```
-your-andrew-ID hw1.in hw1-your-andrew-ID.out CpeDescriptor.xml
+ID hw1.in hw1-ID.out CpeDescriptor.xml
 ```
 
 Or for hw2:
 
 ```
-your-andrew-ID hw2.in hw2-your-andrew-ID.out CpeDescriptor.xml
+ID hw2.in hw2-ID.out CpeDescriptor.xml
 ```
 
 Choose some testing directory. Go there. Create the file **hw2.in** as a copy of **sample.in**:
