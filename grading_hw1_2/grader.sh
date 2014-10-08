@@ -187,12 +187,13 @@ for ((i=1;i<=$n;++i))
             rm -f $stud_out_file
           fi
           cd -
-          if [ "$STOP_AFTER_FAILURE" = "1" -a $success != "1" ] ; then
-            echo "Stopping after a failure!"
-            exit 1
-          fi
         fi
       fi 
+
+      if [ "$STOP_AFTER_FAILURE" = "1" -a $success != "1" ] ; then
+        echo "Stopping after a failure!"
+        exit 1
+      fi
 
       ns=$(($ns+1))
       
