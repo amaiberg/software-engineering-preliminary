@@ -8,4 +8,4 @@ Then go to the directory **dict-user**, then type:
 ```
 mvn exec:java -Dexec.mainClass=test
 ```
-The content of the dictionary file should be printed (twice). For details, study the file dict-user/src/main/java/test.java
+The content of the dictionary file should be printed (twice). For details, study the file **dict-user/src/main/java/test.java**
