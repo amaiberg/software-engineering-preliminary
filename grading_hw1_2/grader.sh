@@ -103,7 +103,7 @@ create_run_dir() {
     echo "Failure copying the java file!"
     exit 1
   fi
-  cat "$SCRIPT_DIR/pom-template.xml"|sed "s|INSERT_DEPENDENCY_HERE|<groupId>$gid</groupId>\n<artifactId>$artid</artifactId>\n<version>$ver</version>|" > "$BASE_DIR/pom.xml"
+  cat "$SCRIPT_DIR/pom-template.xml"|sed "s|INSERT_DEPENDENCY_HERE|<groupId>$gid</groupId><artifactId>$artid</artifactId><version>$ver</version>|" > "$BASE_DIR/pom.xml"
   if [ "$?" !=  "0" ] ; then
     echo "Failure creating pom.xml  file!"
     exit 1
@@ -151,9 +151,9 @@ for ((i=1;i<$n;++i))
         echo $str  >> "$REPORT_FILE"
         success=0
       else
-        gid=`grep  '<groupId>' "$pom"|head -1|sed $SED_OPT 's/^\s*<groupId>//'|sed $SED_OPT 's/<.groupId>\s*$//'`
-        ver=`grep  '<version>' "$pom"|head -1|sed $SED_OPT 's/^\s*<version>//'|sed $SED_OPT 's/<.version>\s*$//'`
-        artid=`grep  '<artifactId>' "$pom"|head -1|sed $SED_OPT 's/^\s*<artifactId>//'|sed $SED_OPT 's/<.artifactId>\s*$//'`
+        gid=`grep  '<groupId>' "$pom"|head -1|sed $SED_OPT 's/^.*<groupId>//'|sed $SED_OPT 's/<.groupId>.*$//'`
+        ver=`grep  '<version>' "$pom"|head -1|sed $SED_OPT 's/^.*<version>//'|sed $SED_OPT 's/<.version>.*$//'`
+        artid=`grep  '<artifactId>' "$pom"|head -1|sed $SED_OPT 's/^.*<artifactId>//'|sed $SED_OPT 's/<.artifactId>.*$//'`
         BASE_DIR=run/$artid
 
         if [ "$gid" = "" -o "$ver" = "" -o "$artid" = "" ] 
