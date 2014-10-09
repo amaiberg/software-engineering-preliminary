@@ -1,6 +1,7 @@
 import java.io.*;
 public class test {
   public static void main(String args[]) throws Exception {
+    // When and when not use the leading slash (see http://stackoverflow.com/a/1900173/2120401)
     // Without the forward slash
     InputStream is = 
 	    test.class.getClassLoader().getResourceAsStream("dict.txt");
