@@ -1,4 +1,4 @@
-An example of using a (resource) dictionary from inside of a deployed maven jar
+An example of using a resource (a dictionary) from a deployed maven jar
 ===================================================================================
 Usage. First, install the dictionary. Go to the folder **dict-resource**, type:
 ```
