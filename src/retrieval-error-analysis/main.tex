@@ -5,14 +5,18 @@
 %
 % author: Eric Nyberg
 %
-\documentclass[oneside]{memoir}
+\documentclass[oneside,11pt]{book}
 
-\renewcommand{\chaptername}{Task}
+%\renewcommand{\chaptername}{Task}
 
 \usepackage{times}
+\usepackage{setspace}
+\onehalfspacing
 
 \usepackage{titlesec}
-\titleformat{\section}{\normalfont\Large\bfseries}{Task \thesection}{1em}{}
+\titleformat{\chapter}{\normalfont\Large\bfseries}{Task \thechapter}{1em}{}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
 
 \usepackage{url}
 \usepackage{hyperref}
@@ -61,26 +65,6 @@ Engineering and Error Analysis with UIMA
 \item \textbf{Out: October 10.} 
 
 \item \textbf{Due: October 20 (midnight).} 
-
-%\small
-%\begin{verbatim}
-%hw1-ID
-%|- pom.xml
-%`- src
-%     `- main
-%        |- java
-%      |   `- **/*.java            /* your Java code go into this folder 
-%      |                           * as you did before */
-%        `- resources
-%         |- CpeDescriptor.xml    /* the entry point for your cpe */
-%         |- **/*.xml             /* all your descriptors go into the 
-%         |                        * resources folder */
-%         `- docs
-%            |- hw1-ID-uml.pdf    /* your UML design writeup */
-%            `- hw1-ID-report.pdf /* your report for the pipeline */
-%
-%\end{verbatim}
-%\normalsize
 
 \end{itemize}
 
@@ -138,12 +122,190 @@ of you did for previous frameworks).
 \end{enumerate}
 \hspace{-0.1\textwidth}
 
-\section*{Getting started: Creating Maven project from the archetype}
+\chapter*{Getting started: Creating Maven project from the archetype}
 For this task, we have prepared another archetype to help you quickly build your project. 
 The tutorial for Homework 1 might help you create a Maven project from an archetype.
 For this Homework, you need to add the following Catalog URL 
 \textbf{\color{red}Edits to reflect new URL}
 
-http://oaqa.github.io/DEIIS-hw4-archetype/repository/archetype-catalog.xml
+\url{http://oaqa.github.io/DEIIS-hw4-archetype/repository/archetype-catalog.xml}
+
+
+The archetype for Homework is:
+
+\begin{center}\textbf{hw3-archetype}\end{center}
+
+Also remember that the Group Id and Artifact Id for Homework 3 are
+
+\begin{center}\textbf{ edu.cmu.lti.11791.f13.hw3 }\end{center}
+
+and 
+
+\begin{center}\textbf{hw3-ID }\end{center}
+with ID being your Andrew Id.
+Similarly, you need to edit the pom.xml file to type in the SCM information of
+your GitHub repository. You can see that different from other assignment, 
+we include a minimal set of descriptors, types, and Java source files.
+
+This set of files defines a complete pipeline. Thus, we may not need
+to create additional Java files, descriptors, and or types.
+However, you are most welcome to add additional resources if this is necessary for the assignment.
+
+Another important difference is that there is no collection process engine (CPE) descriptor provided.
+There is only an aggregate analysis engine (AE) descriptor that imports descriptors of several annotators.
+This AE is executed programmatically via a Java file (see section~\ref{SectionAe} for more details):
+
+\begin{center}\textbf{src/main/java/edu/cmu/lti/f14/hw3/hw3-ID/VectorSpaceRetrieval.java} \end{center}
+
+%\newpage
+\chapter{Building Vector space Retrieval Model using UIMA}
+
+The purpose of this assignment is to design a simple vector space retrieval system using the UIMA
+framework. 
+The vector space model is a widely used search engine model that represents query and
+document as vector of terms and uses the similarity between these vectors as a model of relevance for
+document ranking. 
+We will use the cosine similarity measure for this task. 
+
+You will be given set of short documents. Your system should compute the Mean Reciprocal Rank
+(MRR) metric for tracking retrieval performance. MRR is useful metric when your system is supposed
+to rank the correct document at first position. The mean reciprocal rank is an average of the reciprocal
+ranks of results for a sample of queries $Q$:
+
+\begin{equation}\label{EqMRR}
+\mbox{MRR} = \sum\limits_{i=1}^{|Q|} \frac{1} {\mbox{rank}_i},
+\end{equation}
+where $\mbox{rank}_i$ is the rank of the first retrieved relevant document.
+Imagine that your retrieval engine retrieves 10 documents:
+the three most highly-ranked documents are assessed as not relevant,
+but the forth one is considered to be relevant. Then, the reciprocal
+rank for this query is equal to $1/4$.
+
+An initial pipeline code and a small text collection is provided to you. 
+The code pipeline should work without any compilation errors but it does not produce any relevant results or evaluation measurements.
+To run the pipeline from the command line (terminal window), you can type the following:
+
+\begin{center}\small\textbf{mvn exec:java 
+       -Dexec.mainClass=edu.cmu.lti.f14.hw1.test3.VectorSpaceRetrieval}\end{center}
+
+We have already given comments inside the code (with //TO DO) so that you will know what is
+required. 
+You can either fill in those gaps in the existing code, or reorganize the code yourself.
+The layout of the provided template code is as follows:
+
+\hspace{-3em}
+\begin{minipage}{0.9\textwidth}
+\footnotesize
+\begin{verbatim}
+hw3-ID
+|- pom.xml
+`- src
+     `- main
+      |- java/**/*.java        /* Java code */
+     |    `src/main/java/edu/cmu/lti/
+     |       `f14/hw3/hw3-ID/
+     |                   `VectorSpaceRetrieval.java /* In particular:
+     |                                                main Java class */
+     |                           
+     `- resources
+       |- data/documents.txt  /* toy data */ 
+       |- descriptors/*.xml   /* all pipeline and typesystem descriptors */
+       |     `retrievalsystem
+       |        `VectorSpaceRetrieval.xml  /* In particular: 
+       |                                      the main AAE descriptor */
+       `- docs
+            `- hw3-ID-report.pdf /* your report */
+
+\end{verbatim}
+\normalsize
+\end{minipage}
+
+
+
+\section{Input}
+The text collection for this homework is given in documents.txt file in 
+the \textbf{src/main/resource/data} directory of the project. 
+For simplicity we have restricted document length to only one sentence. 
+We emphasize that each document contains exact one sentence:
+There is no need to support multiple sentences in document for this
+homework.
+
+Format of the file is described below:
+
+\begin{verbatim}
+qid=1 rel=99 John loves Mary 
+qid=1 rel=0 John and Mary are friends
+qid=1 rel=1 Mary is loved by John
+qid=1 rel=0 Mary likes John
+qid=2 rel=99 ...
+qid=2 rel=1 ...
+qid=2 rel=0 ...
+\end{verbatim}
+
+Each line has a query id (prefixed by \texttt{qid=}), 
+a binary relevance assessment (prefixed by \texttt{rel=}), 
+and a document text (which is only one sentence!). 
+For documents assessed as relevant, we have \texttt{rel=1},
+while \texttt{rel=0} means that a document is not considered to be relevant.
+
+If a line contains a special marker \texttt{rel=99},
+the line represents a query rather than a document.
+For example, "qid=1 rel=99 John loves Marry" means
+that there is a query "John loves Marry", which has the id one.
+
+\section{Analysis Engine}
+\label{SectionAe}
+We provide you with a simplified aggregate analysis engine AAE that runs without 
+a collection processing engine descriptor (CPE).
+This AAE is executed programmatically via the following Java file:
+
+\begin{center}\textbf{src/main/java/edu/cmu/lti/f14/hw3/hw3-ID/VectorSpaceRetrieval.java} \end{center}
+
+The location of this AAE descriptor is:
+
+\begin{center}\textbf{src/main/resources/descriptors/retrievalsystem/VectorSpaceRetrieval.xml} \end{center}
+
+The AAE contains three primitive analysis engines:
+\begin{enumerate}
+\item DocumentReader
+\item DocumentVectorAnnotator
+\item RetrievalEvaluator
+\end{enumerate}
+
+The DocumentReader parses lines from the input document file and save the parsed information (query id, relevance assessment, and document text) in a CAS.
+
+The DocumentVectorAnnotator is a stub for the annotator that creates term vectors
+(recall that a term document vector contains the number of occurrences, i.e., the frequency,
+of each word appearing in a document). 
+You need to finish an implementation (read the comments/code, and check for //TO DO markers).
+
+The RetrievalEvaluator is a stub for the evaluation component. You need to finish implementation
+(again, read the comments/code and check for //TO DO markers).
+This evaluation component needs to do the following:
+\begin{enumerate}
+\item Compute the cosine similarity between the query sentence and each of the subsequent
+document sentence; 
+\item Using provided relevance assessments, compute a reciprocal rank for each query.
+Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
+\item Create a report and save it to the file \textbf{report.txt}. 
+For each query, your code needs to select a \textbf{relevant} document with the
+\textbf{highest} cosine-similarity score and print the following:
+\begin{verbatim}
+cosine=.. rank=... qid=... rel=1 <document sentence>
+\end{verbatim}
+In the end of the report, you \textbf{must} print the compute MRR. e.g:
+\begin{verbatim}
+MRR: 0.334
+\end{verbatim}
+Your sample report file may look as follows:
+\begin{verbatim}
+cosine=0.5 rank=1 qid=3 rel=1 The best mirror is an old friend
+cosine=0.1 rank=2 qid=4 rel=1 Climate change and energy
+MRR: 0.3
+\end{verbatim}
+We will provide a \textbf{script} to verify the correctness of your output.
+\end{enumerate}
+
+\section{Type System}
 
 \end{document}
