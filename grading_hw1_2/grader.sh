@@ -1,4 +1,6 @@
 #!/bin/bash
+# Setting memory limits
+export MAVEN_OPTS="-Xmx10000m -Xms4096m"
 
 SED_OPT=" -r "
 if [[ "$OSTYPE" == "darwin"* ]]
