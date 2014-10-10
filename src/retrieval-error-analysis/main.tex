@@ -158,7 +158,7 @@ This AE is executed programmatically via a Java file (see section~\ref{SectionAe
 \begin{center}\textbf{src/main/java/edu/cmu/lti/f14/hw3/hw3-ID/VectorSpaceRetrieval.java} \end{center}
 
 %\newpage
-\chapter{Building Vector space Retrieval Model using UIMA}
+\chapter{Building Vector space Retrieval Model using UIMA (50pts)}
 
 The purpose of this assignment is to design a simple vector space retrieval system using the UIMA
 framework. 
@@ -279,7 +279,8 @@ The DocumentVectorAnnotator is a stub for the annotator that creates term vector
 of each word appearing in a document). 
 You need to finish an implementation (read the comments/code, and check for //TO DO markers).
 
-The RetrievalEvaluator is a stub for the evaluation component. You need to finish implementation
+
+The RetrievalEvaluator is a stub for an evaluation component. You need to finish implementation
 (again, read the comments/code and check for //TO DO markers).
 This evaluation component needs to do the following:
 \begin{enumerate}
@@ -297,7 +298,8 @@ In the end of the report, you \textbf{must} print the compute MRR. e.g:
 \begin{verbatim}
 MRR: 0.334
 \end{verbatim}
-Your sample report file may look as follows:
+Your sample report file may look as follows (these scores are for illustrative purposes only 
+and may not be true):
 \begin{verbatim}
 cosine=0.5 rank=1 qid=3 rel=1 The best mirror is an old friend
 cosine=0.1 rank=2 qid=4 rel=1 Climate change and energy
@@ -306,6 +308,89 @@ MRR: 0.3
 We will provide a \textbf{script} to verify the correctness of your output.
 \end{enumerate}
 
-\section{Type System}
+\subsection{How to aggregate data coming from different CASes} 
+To evaluate performance you may need to aggregate information
+supplied with different CASes.
+Because the pipeline process one CAS at a time,
+this can be problematic unless you persist intermediate results.
+
+UIMA manual discourages us from persisting data \textbf{in the static class members},
+because each CAS might be processed by a separate Java virtual machine.
+However, you can you use a type system.
+
+Persisting to a file, would work for our assignment, because the pipeline executes runs
+the components on the same machine.
+In a world of distributed processing, however, you may want to store such information in a database,
+network drive, or any other machine-independent storage.
+
+
+\section{Type System}\label{SectionType}
+The type system currently has two types: "Document" and "Token". 
+Feel free to extend this type system if necessary.
+At present, the
+type Document contains the following information: Relevance Value, Query ID, Text String, Token
+List. The Relevance Value, query ID, Text String are extracted from the text collection. 
+
+The Token List
+represent 'bag-of-words' feature vectors and have to be constructed for the retrieval system. (Reminder:
+generate the TypeSystem implementation using the UIMA JCasGen application)
+
+\textbf{Hint:} tokenList feature of Document needs to be populated by your annotators. 
+Token type contains term and its corresponding frequency. 
+You may want to write appropriated code to fill term
+and corresponding frequency during analysis. 
+
+\chapter{Error Analysis (50pts)}
+Analyze and improve your retrieval system's performance by doing error analysis. Write briefly about
+why certain cases failed i.e. why the system could not give the highest rank to the correct document
+using the cosine similarity measure, what alternative strategy you adopted to resolve this problem, and
+why you think your alternative strategy will work.
+
+Once you test that everything works smoothly as expected, you need to summarize how you designed 
+and implemented the type system for the task in your report. There is no template for the homework
+reports, but we expect you to consider the system design from several architectural aspects (UML, type
+system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
+tools, machine learning methods, etc.), documenting what you feel is the best report to communicate
+the essence of your design. E.g., novel design patterns are worth drawing a UML diagram for, but if
+you’re using a well-known design pattern (e.g. Template Method) it’s fine to document this with a brief
+textual description
+
+
+In summary, your tasks are:
+\begin{enumerate}
+\item Automatically generate the type system implementation using the UIMA JCasGen application;
+\item Correctly extract bag of words feature vector from the input text collection;
+\item Compute the cosine similarity between two sentences in the text collection;
+\item Compute the Mean Reciprocal Rank (metric) for all sentences in the text collection;
+\item Design a better retrieval system that improves the MRR performance measure;
+\item Improve the efficiency of the program by doing error analysis of retrieval system.
+\end{enumerate}
+
+We expect you to highlight the features of your design and your system. 
+Finally, don’t forget to put
+your name and Andrew ID at the top of the document, 
+name the file as \textbf{hw3-ID-report.pdf} and put it
+under \textbf{src/main/resources/docs}. 
+Describe your error analysis in detail, and include the relevant
+comparisons. The report is an important part of your submission, so be sure to allocate sufficient time
+to do a thorough job; feel free to consult the TAs if you have questions regarding the report.
+
+\chapter*{Bonus (20pts)}
+
+Try other similarity measures instead of cosine similarity for ranking (i.e. dice coefficient, Jaccard
+coefficient) and include a comparison in your report.
+
+
+\textbf{Hints:} There is no preferred setup for this assignment, so you may write a new annotator to accomplish this
+task, thereby demonstrating your understanding of the UIMA framework and Java programming.
+
+\begin{enumerate}
+\item You are allowed to modify the provided type system;
+\item You are allowed to modify the provided classes and annotators. You are also allowed to create new
+methods, a new class, or even a new package.;
+\item If you can think of efficient design patterns for comparing multiple document ranking strategies in a
+single execution of the pipeline, feel free to implement!
+\end{enumerate}
+
 
 \end{document}
