@@ -1,0 +1,149 @@
+% 
+% This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+% Unported License. To view a copy of this license, visit
+% http://creativecommons.org/licenses/by-sa/3.0/.
+%
+% author: Eric Nyberg
+%
+\documentclass[oneside]{memoir}
+
+\renewcommand{\chaptername}{Task}
+
+\usepackage{times}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{Task \thesection}{1em}{}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+
+\usepackage{pstricks}
+\usepackage{epsfig}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5} 
+\definecolor{lightblue}{rgb}{0.95,0.95,1}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\usepackage{multirow}
+
+\definecolor{shadecolor}{gray}{0.9}
+
+\newenvironment{qa}
+{\begin{shaded}\begin{itemize}}
+{\end{itemize}\end{shaded}}
+
+\title{{\bfseries 11-791 Design and Engineering of Intelligent Information
+System \& \\11-693 Software Methods for Biotechnology \\Homework 3}\\
+\vspace{1em}
+Engineering and Error Analysis with UIMA
+\\
+{\small This version was built on \today.}
+}
+\itshape\rmfamily 
+
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}
+\vspace{-5em}
+\textbf{Important dates}
+\begin{itemize}
+
+\item \textbf{Out: October 10.} 
+
+\item \textbf{Due: October 20 (midnight).} 
+
+%\small
+%\begin{verbatim}
+%hw1-ID
+%|- pom.xml
+%`- src
+%     `- main
+%        |- java
+%      |   `- **/*.java            /* your Java code go into this folder 
+%      |                           * as you did before */
+%        `- resources
+%         |- CpeDescriptor.xml    /* the entry point for your cpe */
+%         |- **/*.xml             /* all your descriptors go into the 
+%         |                        * resources folder */
+%         `- docs
+%            |- hw1-ID-uml.pdf    /* your UML design writeup */
+%            `- hw1-ID-report.pdf /* your report for the pipeline */
+%
+%\end{verbatim}
+%\normalsize
+
+\end{itemize}
+
+\end{minipage}
+
+\begin{enumerate}
+
+\item \textbf{Submission:} 
+Use the same process as for previous assignments (set up GitHub repo, create a Maven 
+project, write your code, submit to Maven repo), except that the name has changed to:
+hw3-ID
+
+\item \textbf{Write a design report:}
+We expect you to document how you designed the execution and
+deployment architecture for the sample information system. 
+We will extract your documents from your
+submitted jar files. 
+Remember to include your ID as part of the report file name, and put your name and
+ID inside your document. Please submit in PDF format only.
+The report should be put in the folder \textbf{src/main/resources/docs}.
+
+%One very special descriptor is the \verb|CpeDescriptor.xml|, which is the entry
+%point for the entire pipeline. You are required to name your CPE descriptor
+%exactly the same way, and place it in the right place for us to evaluate your
+%code.
+
+\item \textbf{Javadocs:} 
+Please remember to give an appropriate description (Javadoc comments) for each 
+piece of code you create and/or modify.
+
+\end{enumerate}
+
+\textbf{Useful information}
+\begin{enumerate}
+\item We encourage you to start Homework 3 as early as possible.
+
+\item 
+We expect that most of the general communication between the instructor team and students will take place on 
+\href{https://piazza.com/class/hyvsubeilei6dd}{Piazza}.
+For private questions, e.g., regarding grades, you may contact instructors by e-mail.
+Your friendly TAs are:
+\begin{itemize}
+\item Avner Maiberg (\href{mailto:amaiberg@andrew.cmu.edu}{\nolinkurl{amaiberg@andrew.cmu.edu}}) 
+\item Parag Argawal (\href{mailto:paraga@andrew.cmu.edu}{\nolinkurl{paraga@andrew.cmu.edu}}) 
+\item Leonid (Leo) Boytsov (\href{mailto:srchvrs@cmu.edu}{\nolinkurl{srchvrs@cmu.edu}})
+\item Xuezi (Manfred) Zhang (\href{mailto:xueziz@andrew.cmu.edu}{\nolinkurl{xueziz@andrew.cmu.edu}}) 
+\end{itemize}
+
+\item Source files and pdf file of this assignment are publicly available on 
+the  \href{http://github.com/amaiberg/software-engineering-preliminary}{GitHub page}.
+Please feel free to fork the project and modify if necessary.
+Should you notice any error, feel free to fix it and create/send a pull request (as some
+of you did for previous frameworks).  
+
+\end{enumerate}
+\hspace{-0.1\textwidth}
+
+\section*{Getting started: Creating Maven project from the archetype}
+For this task, we have prepared another archetype to help you quickly build your project. 
+The tutorial for Homework 1 might help you create a Maven project from an archetype.
+For this Homework, you need to add the following Catalog URL 
+\textbf{\color{red}Edits to reflect new URL}
+
+http://oaqa.github.io/DEIIS-hw4-archetype/repository/archetype-catalog.xml
+
+\end{document}
