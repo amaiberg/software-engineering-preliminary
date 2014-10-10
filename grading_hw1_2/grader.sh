@@ -1,6 +1,6 @@
 #!/bin/bash
 # Setting memory limits
-export MAVEN_OPTS="-Xmx10000m -Xms2048m"
+#export MAVEN_OPTS="-Xmx10000m -Xms2048m"
 
 SED_OPT=" -r "
 if [[ "$OSTYPE" == "darwin"* ]]
@@ -69,6 +69,8 @@ fi
 if [ ! -f "$LIST_FILE" ] ; then
   usage "LIST_FILE is not a file"
 fi
+
+echo "" >> $LIST_FILE
 
 MAVEN_DIR=$5
 
