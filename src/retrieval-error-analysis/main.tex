@@ -26,6 +26,7 @@
 \usepackage{pstricks}
 \usepackage{epsfig}
 
+
 \usepackage{listings}
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -52,6 +53,7 @@ Engineering and Error Analysis with UIMA
 
 \date{}
 
+
 \begin{document}
 
 \maketitle
@@ -62,7 +64,7 @@ Engineering and Error Analysis with UIMA
 \textbf{Important dates}
 \begin{itemize}
 
-\item \textbf{Out: October 10.} 
+\item \textbf{Out: October 11.} 
 
 \item \textbf{Due: October 20 (midnight).} 
 
@@ -150,7 +152,7 @@ The archetype for Homework 3 is:
 Also remember that the Group Id and Artifact Id for Homework 3 are
 
 \begin{center}
-\texttt{edu.cmu.lti.11791.f14.hw3}
+\url{edu.cmu.lti.11791.f14.hw3}
 \end{center}
 
 and 
@@ -207,7 +209,7 @@ To run the pipeline from the command line (terminal window), you can type the fo
 (note that the dash is converted to the underscore and ID is your SCS/Andrew ID):
 
 \begin{center}\small\textbf{mvn exec:java 
-       -Dexec.mainClass=edu.cmu.lti.f14.hw3.hw3\_ID.VectorSpaceRetrieval}\end{center}
+       -Dexec.mainClass=\url{edu.cmu.lti.f14.hw3.hw3_ID.VectorSpaceRetrieval}}\end{center}
 
 We have already given comments inside the code (with //TO DO) to indicate what is required. 
 You can either fill in those gaps in the existing code, or reorganize as you see fit.
@@ -311,20 +313,20 @@ document sentence;
 Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
 \item Create a report and save it to the file \textbf{report.txt} (just report.txt, please). 
 For each query, your code needs to select a \textbf{relevant} document with the
-\textbf{highest} cosine-similarity score and print the following (use one space to separate fields):
+\textbf{highest} cosine-similarity score and print the following:
 \begin{verbatim}
-cosine=... rank=... qid=... rel=1 <document sentence>
+cosine=...<tab>rank=...<tab>qid=...<tab>rel=1<tab><sentence>
 \end{verbatim}
 In the end of the report, you \textbf{must} print the compute MRR. e.g:
 \begin{verbatim}
-MRR: 0.334
+MRR=0.334
 \end{verbatim}
 Your sample report file may look as follows (these scores are for illustrative purposes only 
-and may not be true):
+and may not be true, remember that fields are separated by \textbf{tabs}):
 \begin{verbatim}
 cosine=0.5 rank=1 qid=3 rel=1 The best mirror is an old friend
 cosine=0.1 rank=2 qid=4 rel=1 Climate change and energy
-MRR: 0.3
+MRR=0.3
 \end{verbatim}
 We will provide a \textbf{script} to verify the correctness of your output.
 \end{enumerate}
