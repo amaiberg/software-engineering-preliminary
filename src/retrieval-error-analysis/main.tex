@@ -5,13 +5,13 @@
 %
 % author: Eric Nyberg
 %
-\documentclass[oneside,11pt]{book}
+\documentclass[oneside,11pt]{memoir}
 
 %\renewcommand{\chaptername}{Task}
 
 \usepackage{times}
 \usepackage{setspace}
-\onehalfspacing
+%\onehalfspacing
 
 \usepackage{titlesec}
 \titleformat{\chapter}{\normalfont\Large\bfseries}{Task \thechapter}{1em}{}
@@ -84,7 +84,7 @@ We will extract your documents from your
 submitted jar files. 
 Remember to include your ID as part of the report file name, and put your name and
 ID inside your document. Please submit in PDF format only.
-The report should be put in the folder \textbf{src/main/resources/docs}.
+The report should be put in the folder \textbf{src/main/resources/doc}.
 
 %One very special descriptor is the \verb|CpeDescriptor.xml|, which is the entry
 %point for the entire pipeline. You are required to name your CPE descriptor
@@ -94,6 +94,20 @@ The report should be put in the folder \textbf{src/main/resources/docs}.
 \item \textbf{Javadocs:} 
 Please remember to give an appropriate description (Javadoc comments) for each 
 piece of code you create and/or modify.
+
+\item \textbf{Grading:}
+This document has two main sections (50pts) each and a bonus section 
+for (20pts).
+For Section \S~\ref{SectionBuildVS}, you will receive at least 30pts,
+if your implementation works correctly: i.e., it produces
+the output in the right format and saves
+the report file with the right name.
+The distribution of 20pts will depend on the quality of your implementation
+(i.e., how well your code is documented and written).
+
+For Section \S~\ref{SectionError}, 50pts will be given
+to high-quality, creative reports.
+
 
 \end{enumerate}
 
@@ -125,19 +139,19 @@ of you did for previous frameworks).
 \chapter*{Getting started: Creating Maven project from the archetype}
 For this task, we have prepared another archetype to help you quickly build your project. 
 The tutorial for Homework 1 might help you create a Maven project from an archetype.
-For this Homework, you need to add the following Catalog URL 
-\textbf{\color{red}Edits to reflect new URL}
-
-\url{http://oaqa.github.io/DEIIS-hw4-archetype/repository/archetype-catalog.xml}
+For this Homework, you need to add 
+\href{https://raw.githubusercontent.com/oaqa/DEIIS-hw3-archetype/master/archetype-catalog.xml}{the new Catalog URL.}
 
 
 The archetype for Homework is:
 
-\begin{center}\textbf{hw3-archetype}\end{center}
+\begin{center}\texttt{hw3-archetype}\end{center}
 
 Also remember that the Group Id and Artifact Id for Homework 3 are
 
-\begin{center}\textbf{ edu.cmu.lti.11791.f13.hw3 }\end{center}
+\begin{center}
+\texttt{edu.cmu.lti.11791.f13.hw3}
+\end{center}
 
 and 
 
@@ -159,6 +173,7 @@ This AE is executed programmatically via a Java file (see section~\ref{SectionAe
 
 %\newpage
 \chapter{Building Vector space Retrieval Model using UIMA (50pts)}
+\label{SectionBuildVS}
 
 The purpose of this assignment is to design a simple vector space retrieval system using the UIMA
 framework. 
@@ -213,7 +228,7 @@ hw3-ID
        |     `retrievalsystem
        |        `VectorSpaceRetrieval.xml  /* In particular: 
        |                                      the main AAE descriptor */
-       `- docs
+       `- doc
             `- hw3-ID-report.pdf /* your report */
 
 \end{verbatim}
@@ -250,8 +265,8 @@ while \texttt{rel=0} means that a document is not considered to be relevant.
 
 If a line contains a special marker \texttt{rel=99},
 the line represents a query rather than a document.
-For example, "qid=1 rel=99 John loves Marry" means
-that there is a query "John loves Marry", which has the id one.
+For example, ``qid=1 rel=99 John loves Marry'' means
+that there is a query ``John loves Marry'' which has the id one.
 
 \section{Analysis Engine}
 \label{SectionAe}
@@ -274,8 +289,8 @@ The AAE contains three primitive analysis engines:
 
 The DocumentReader parses lines from the input document file and save the parsed information (query id, relevance assessment, and document text) in a CAS.
 
-The DocumentVectorAnnotator is a stub for the annotator that creates term vectors
-(recall that a term document vector contains the number of occurrences, i.e., the frequency,
+The DocumentVectorAnnotator is a stub for the annotator that creates sparse term vectors
+(recall that a document term vector contains the number of occurrences, i.e., the frequency,
 of each word appearing in a document). 
 You need to finish an implementation (read the comments/code, and check for //TO DO markers).
 
@@ -325,40 +340,45 @@ network drive, or any other machine-independent storage.
 
 
 \section{Type System}\label{SectionType}
-The type system currently has two types: "Document" and "Token". 
+The type system currently has two types: ``Document'' and ``Token'' 
 Feel free to extend this type system if necessary.
 At present, the
 type Document contains the following information: Relevance Value, Query ID, Text String, Token
 List. The Relevance Value, query ID, Text String are extracted from the text collection. 
 
-The Token List
-represent 'bag-of-words' feature vectors and have to be constructed for the retrieval system. (Reminder:
-generate the TypeSystem implementation using the UIMA JCasGen application)
+A list (uima.cas.FSList) of tokens 
+represents ``bag-of-words'' feature vectors and have to be constructed for the retrieval system. (\textbf{Reminder}:
+one can generate type system classes from the type system XML descriptor via the UIMA JCasGen application)
 
 \textbf{Hint:} tokenList feature of Document needs to be populated by your annotators. 
-Token type contains term and its corresponding frequency. 
-You may want to write appropriated code to fill term
-and corresponding frequency during analysis. 
+A Token contains term and its corresponding frequency (in a document). 
+You will need to implement the code that populates these sparse frequency vectors.
 
 \chapter{Error Analysis (50pts)}
+\label{SectionError}
 Analyze and improve your retrieval system's performance by doing error analysis. Write briefly about
 why certain cases failed i.e. why the system could not give the highest rank to the correct document
 using the cosine similarity measure, what alternative strategy you adopted to resolve this problem, and
-why you think your alternative strategy will work.
+why you think your alternative strategy will work. Next you design and implement an alternative
+approach.
 
-Once you test that everything works smoothly as expected, you need to summarize how you designed 
-and implemented the type system for the task in your report. There is no template for the homework
-reports, but we expect you to consider the system design from several architectural aspects (UML, type
+After testing your new approach,
+you need to describe your design, type system and implementation in the report.
+The report can be in a free form (you do not have to follow a pre-specified template).
+Yet, we expect you to consider the system design from several architectural aspects (UML, type
 system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
 tools, machine learning methods, etc.), documenting what you feel is the best report to communicate
-the essence of your design. E.g., novel design patterns are worth drawing a UML diagram for, but if
-you’re using a well-known design pattern (e.g. Template Method) it’s fine to document this with a brief
-textual description
-
+the essence of your design. 
+For example, it is worth drawing a UML diagram
+to represent novel design patterns.
+However, please, do not draw diagrams
+for well-known design pattern (e.g. Template Method).
+Instead, provide a brief textual description.
 
 In summary, your tasks are:
 \begin{enumerate}
-\item Automatically generate the type system implementation using the UIMA JCasGen application;
+\item Write a new type system XML descriptor (if necessary),
+and generate the type system classes using the UIMA JCasGen application;
 \item Correctly extract bag of words feature vector from the input text collection;
 \item Compute the cosine similarity between two sentences in the text collection;
 \item Compute the Mean Reciprocal Rank (metric) for all sentences in the text collection;
@@ -366,14 +386,16 @@ In summary, your tasks are:
 \item Improve the efficiency of the program by doing error analysis of retrieval system.
 \end{enumerate}
 
-We expect you to highlight the features of your design and your system. 
-Finally, don’t forget to put
+Finally, do not forget to put
 your name and Andrew ID at the top of the document, 
 name the file as \textbf{hw3-ID-report.pdf} and put it
-under \textbf{src/main/resources/docs}. 
-Describe your error analysis in detail, and include the relevant
-comparisons. The report is an important part of your submission, so be sure to allocate sufficient time
-to do a thorough job; feel free to consult the TAs if you have questions regarding the report.
+under \textbf{src/main/resources/doc}. 
+
+Remember to describe your error analysis in detail, 
+as well as to include the relevant comparisons. 
+The report is an \textbf{important} part of your submission: 
+allocate sufficient time to do a thorough job. 
+Feel free to consult the TAs if you have questions regarding the report.
 
 \chapter*{Bonus (20pts)}
 
