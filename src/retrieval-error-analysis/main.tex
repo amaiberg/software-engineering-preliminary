@@ -12,7 +12,7 @@
 \usepackage{times}
 \usepackage{setspace}
 %\onehalfspacing
-
+ 
 \usepackage{titlesec}
 \titleformat{\chapter}{\normalfont\Large\bfseries}{Task \thechapter}{1em}{}
 \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
@@ -143,14 +143,14 @@ For this Homework, you need to add
 \href{https://raw.githubusercontent.com/oaqa/DEIIS-hw3-archetype/master/archetype-catalog.xml}{the new Catalog URL.}
 
 
-The archetype for Homework is:
+The archetype for Homework 3 is:
 
 \begin{center}\texttt{hw3-archetype}\end{center}
 
 Also remember that the Group Id and Artifact Id for Homework 3 are
 
 \begin{center}
-\texttt{edu.cmu.lti.11791.f13.hw3}
+\texttt{edu.cmu.lti.11791.f14.hw3}
 \end{center}
 
 and 
@@ -193,19 +193,18 @@ ranks of results for a sample of queries $Q$:
 where $\mbox{rank}_i$ is the rank of the first retrieved relevant document.
 Imagine that your retrieval engine retrieves 10 documents:
 the three most highly-ranked documents are assessed as not relevant,
-but the forth one is considered to be relevant. Then, the reciprocal
+but the fourth one is considered to be relevant. Then, the reciprocal
 rank for this query is equal to $1/4$.
 
-An initial pipeline code and a small text collection is provided to you. 
+An initial pipeline code and a small text collection are provided to you. 
 The code pipeline should work without any compilation errors but it does not produce any relevant results or evaluation measurements.
 To run the pipeline from the command line (terminal window), you can type the following:
 
 \begin{center}\small\textbf{mvn exec:java 
        -Dexec.mainClass=edu.cmu.lti.f14.hw1.test3.VectorSpaceRetrieval}\end{center}
 
-We have already given comments inside the code (with //TO DO) so that you will know what is
-required. 
-You can either fill in those gaps in the existing code, or reorganize the code yourself.
+We have already given comments inside the code (with //TO DO) to indicate what is required. 
+You can either fill in those gaps in the existing code, or reorganize as you see fit.
 The layout of the provided template code is as follows:
 
 \hspace{-3em}
@@ -241,8 +240,8 @@ hw3-ID
 The text collection for this homework is given in documents.txt file in 
 the \textbf{src/main/resource/data} directory of the project. 
 For simplicity we have restricted document length to only one sentence. 
-We emphasize that each document contains exact one sentence:
-There is no need to support multiple sentences in document for this
+We emphasize that each document contains exactly one sentence:
+There is no need to support multiple sentences in the document for this
 homework.
 
 Format of the file is described below:
@@ -292,7 +291,7 @@ The DocumentReader parses lines from the input document file and save the parsed
 The DocumentVectorAnnotator is a stub for the annotator that creates sparse term vectors
 (recall that a document term vector contains the number of occurrences, i.e., the frequency,
 of each word appearing in a document). 
-You need to finish an implementation (read the comments/code, and check for //TO DO markers).
+You need to finish the implementation (read the comments/code, and check for //TO DO markers).
 
 
 The RetrievalEvaluator is a stub for an evaluation component. You need to finish implementation
@@ -326,14 +325,14 @@ We will provide a \textbf{script} to verify the correctness of your output.
 \subsection{How to aggregate data coming from different CASes} 
 To evaluate performance you may need to aggregate information
 supplied with different CASes.
-Because the pipeline process one CAS at a time,
+Because the pipeline processes one CAS at a time,
 this can be problematic unless you persist intermediate results.
 
 UIMA manual discourages us from persisting data \textbf{in the static class members},
 because each CAS might be processed by a separate Java virtual machine.
 However, you can you use a type system.
 
-Persisting to a file, would work for our assignment, because the pipeline executes runs
+Persisting to a file would work for our assignment, because the pipeline executes
 the components on the same machine.
 In a world of distributed processing, however, you may want to store such information in a database,
 network drive, or any other machine-independent storage.
@@ -342,13 +341,12 @@ network drive, or any other machine-independent storage.
 \section{Type System}\label{SectionType}
 The type system currently has two types: ``Document'' and ``Token'' 
 Feel free to extend this type system if necessary.
-At present, the
-type Document contains the following information: Relevance Value, Query ID, Text String, Token
+At present, the type Document contains the following information: Relevance Value, Query ID, Text String, Token
 List. The Relevance Value, query ID, Text String are extracted from the text collection. 
 
 A list (uima.cas.FSList) of tokens 
 represents ``bag-of-words'' feature vectors and have to be constructed for the retrieval system. (\textbf{Reminder}:
-one can generate type system classes from the type system XML descriptor via the UIMA JCasGen application)
+one can generate type system classes from the type system XML descriptor via the UIMA JCasGen feature)
 
 \textbf{Hint:} tokenList feature of Document needs to be populated by your annotators. 
 A Token contains term and its corresponding frequency (in a document). 
@@ -357,9 +355,9 @@ You will need to implement the code that populates these sparse frequency vector
 \chapter{Error Analysis (50pts)}
 \label{SectionError}
 Analyze and improve your retrieval system's performance by doing error analysis. Write briefly about
-why certain cases failed i.e. why the system could not give the highest rank to the correct document
+why certain cases failed (i.e., why the system could not give the highest rank to the correct document
 using the cosine similarity measure, what alternative strategy you adopted to resolve this problem, and
-why you think your alternative strategy will work. Next you design and implement an alternative
+why you think your alternative strategy will work). Next you design and implement an alternative
 approach.
 
 After testing your new approach,
@@ -367,13 +365,11 @@ you need to describe your design, type system and implementation in the report.
 The report can be in a free form (you do not have to follow a pre-specified template).
 Yet, we expect you to consider the system design from several architectural aspects (UML, type
 system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
-tools, machine learning methods, etc.), documenting what you feel is the best report to communicate
+tools, machine learning methods, etc.), documenting what you feel is best to communicate
 the essence of your design. 
-For example, it is worth drawing a UML diagram
-to represent novel design patterns.
+For example, it is worth drawing a UML diagram to represent a novel design pattern.
 However, please, do not draw diagrams
-for well-known design pattern (e.g. Template Method).
-Instead, provide a brief textual description.
+for well-known design pattern (e.g. Template Method), use a brief description instead.
 
 In summary, your tasks are:
 \begin{enumerate}
@@ -413,6 +409,4 @@ methods, a new class, or even a new package.;
 \item If you can think of efficient design patterns for comparing multiple document ranking strategies in a
 single execution of the pipeline, feel free to implement!
 \end{enumerate}
-
-
 \end{document}
