@@ -130,7 +130,7 @@ Your friendly TAs are:
 \item Source files and pdf file of this assignment are publicly available on 
 the  \href{http://github.com/amaiberg/software-engineering-preliminary}{GitHub page}.
 Please feel free to fork the project and modify if necessary.
-Should you notice any error, feel free to fix it and create/send a pull request (as some
+Should you notice any error, you can fix it yourself and create/send a pull request (as some
 of you did for previous frameworks).  
 
 \end{enumerate}
@@ -158,12 +158,16 @@ and
 \begin{center}\textbf{hw3-ID }\end{center}
 with ID being your Andrew Id.
 Similarly, you need to edit the pom.xml file to type in the SCM information of
-your GitHub repository. You can see that different from other assignment, 
-we include a minimal set of descriptors, types, and Java source files.
+your GitHub repository. 
 
-This set of files defines a complete pipeline. Thus, we may not need
+Unlike other assignments, 
+we include a minimal set of descriptors, types, and Java source files.
+This set of files defines a complete pipeline. 
+The code should compile and run, but it does nothing useful, yet.
+Thus, you are not required
 to create additional Java files, descriptors, and or types.
-However, you are most welcome to add additional resources if this is necessary for the assignment.
+However, additional resources (including UIMA types 
+and AE descriptors) and source files can be created if needed.
 
 Another important difference is that there is no collection process engine (CPE) descriptor provided.
 There is only an aggregate analysis engine (AE) descriptor that imports descriptors of several annotators.
@@ -177,31 +181,33 @@ This AE is executed programmatically via a Java file (see section~\ref{SectionAe
 
 The purpose of this assignment is to design a simple vector space retrieval system using the UIMA
 framework. 
-The vector space model is a widely used search engine model that represents query and
-document as vector of terms and uses the similarity between these vectors as a model of relevance for
-document ranking. 
-We will use the cosine similarity measure for this task. 
+In the vector space model,
+both the query and documents are sparse term vectors.
+Given a query vector and a set of short documents, 
+we compute the cosine similarity values between the query vector and document vectors.
+Then, all documents are ranked in the decreasing order of the cosine similarity.
 
-You will be given set of short documents. Your system should compute the Mean Reciprocal Rank
-(MRR) metric for tracking retrieval performance. MRR is useful metric when your system is supposed
-to rank the correct document at first position. The mean reciprocal rank is an average of the reciprocal
-ranks of results for a sample of queries $Q$:
+Your goal is to implement the vector space retrieval system
+and evaluate its performance using the Mean Reciprocal Rank (MRR).  
+The mean reciprocal rank is an average reciprocal rank
+computed over a set of queries $\{Q_i\}$:
 
 \begin{equation}\label{EqMRR}
 \mbox{MRR} = \sum\limits_{i=1}^{|Q|} \frac{1} {\mbox{rank}_i},
 \end{equation}
-where $\mbox{rank}_i$ is the rank of the first retrieved relevant document.
-Imagine that your retrieval engine retrieves 10 documents:
-the three most highly-ranked documents are assessed as not relevant,
-but the fourth one is considered to be relevant. Then, the reciprocal
-rank for this query is equal to $1/4$.
+where $\mbox{rank}_i$ is a position (i.e., rank) of the first relevant document
+in the list of retrieved documents (sorted in the decreasing order of the cosine similarity with respect to a query number $i$).
 
-An initial pipeline code and a small text collection are provided to you. 
+Consider an example, where the three most highly-ranked documents are considered 
+non-relevant, while the fourth one is considered to be relevant. 
+Then, the reciprocal rank for this query is equal to $1/4$.
+
 The code pipeline should work without any compilation errors but it does not produce any relevant results or evaluation measurements.
-To run the pipeline from the command line (terminal window), you can type the following:
+To run the pipeline from the command line (terminal window), you can type the following
+(note that the dash is converted to the underscore and ID is your SCS/Andrew ID):
 
 \begin{center}\small\textbf{mvn exec:java 
-       -Dexec.mainClass=edu.cmu.lti.f14.hw1.test3.VectorSpaceRetrieval}\end{center}
+       -Dexec.mainClass=edu.cmu.lti.f14.hw3.hw3\_ID.VectorSpaceRetrieval}\end{center}
 
 We have already given comments inside the code (with //TO DO) to indicate what is required. 
 You can either fill in those gaps in the existing code, or reorganize as you see fit.
@@ -239,9 +245,9 @@ hw3-ID
 \section{Input}
 The text collection for this homework is given in documents.txt file in 
 the \textbf{src/main/resource/data} directory of the project. 
-For simplicity we have restricted document length to only one sentence. 
-We emphasize that each document contains exactly one sentence:
-There is no need to support multiple sentences in the document for this
+For simplicity we use very small documents each of which
+consists of only one sentence.
+Thus, there is no need to support multiple sentences in the document for this
 homework.
 
 Format of the file is described below:
@@ -286,15 +292,16 @@ The AAE contains three primitive analysis engines:
 \item RetrievalEvaluator
 \end{enumerate}
 
-The DocumentReader parses lines from the input document file and save the parsed information (query id, relevance assessment, and document text) in a CAS.
+The DocumentReader parses lines from the input document file and saves the result of the parse (query id, relevance assessment, and document text) in a CAS.
 
 The DocumentVectorAnnotator is a stub for the annotator that creates sparse term vectors
-(recall that a document term vector contains the number of occurrences, i.e., the frequency,
-of each word appearing in a document). 
-You need to finish the implementation (read the comments/code, and check for //TO DO markers).
+(recall that a document term vector contains the number of occurrences (i.e., a frequency)
+for each word appearing in a document). 
+You need to finish the implementation (read the comments/code and check for //TO DO markers).
 
 
-The RetrievalEvaluator is a stub for an evaluation component. You need to finish implementation
+The RetrievalEvaluator is a stub for an evaluation component. 
+You need to finish the implementation
 (again, read the comments/code and check for //TO DO markers).
 This evaluation component needs to do the following:
 \begin{enumerate}
@@ -302,11 +309,11 @@ This evaluation component needs to do the following:
 document sentence; 
 \item Using provided relevance assessments, compute a reciprocal rank for each query.
 Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
-\item Create a report and save it to the file \textbf{report.txt}. 
+\item Create a report and save it to the file \textbf{report.txt} (just report.txt, please). 
 For each query, your code needs to select a \textbf{relevant} document with the
-\textbf{highest} cosine-similarity score and print the following:
+\textbf{highest} cosine-similarity score and print the following (use one space to separate fields):
 \begin{verbatim}
-cosine=.. rank=... qid=... rel=1 <document sentence>
+cosine=... rank=... qid=... rel=1 <document sentence>
 \end{verbatim}
 In the end of the report, you \textbf{must} print the compute MRR. e.g:
 \begin{verbatim}
@@ -330,22 +337,23 @@ this can be problematic unless you persist intermediate results.
 
 UIMA manual discourages us from persisting data \textbf{in the static class members},
 because each CAS might be processed by a separate Java virtual machine.
-However, you can you use a type system.
+However, you can you use a file system.
 
 Persisting to a file would work for our assignment, because the pipeline executes
 the components on the same machine.
 In a world of distributed processing, however, you may want to store such information in a database,
-network drive, or any other machine-independent storage.
+on a network drive, or employ some other machine-independent storage.
 
 
 \section{Type System}\label{SectionType}
-The type system currently has two types: ``Document'' and ``Token'' 
+The type system currently has two types: ``Document'' and ``Token''.
 Feel free to extend this type system if necessary.
-At present, the type Document contains the following information: Relevance Value, Query ID, Text String, Token
+At present, the type Document contains the following information: Relevance Assessment (called relevanceValue), Query ID, Text String, Token
 List. The Relevance Value, query ID, Text String are extracted from the text collection. 
 
 A list (uima.cas.FSList) of tokens 
-represents ``bag-of-words'' feature vectors and have to be constructed for the retrieval system. (\textbf{Reminder}:
+represents a ``bag-of-words'' feature vector
+that has to be constructed for the retrieval system. (\textbf{Reminder}:
 one can generate type system classes from the type system XML descriptor via the UIMA JCasGen feature)
 
 \textbf{Hint:} tokenList feature of Document needs to be populated by your annotators. 
