@@ -403,7 +403,12 @@ The report is an \textbf{important} part of your submission:
 allocate sufficient time to do a thorough job. 
 Feel free to consult the TAs if you have questions regarding the report.
 
+% This prevents a nasty page break!!!
+\begingroup
+\renewcommand{\cleardoublepage}{}
+\renewcommand{\clearpage}{}
 \chapter*{Bonus (20pts)}
+\endgroup
 
 Try other similarity measures instead of cosine similarity for ranking (i.e. dice coefficient, Jaccard
 coefficient) and include a comparison in your report.
