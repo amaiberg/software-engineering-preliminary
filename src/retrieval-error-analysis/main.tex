@@ -66,7 +66,7 @@ Engineering and Error Analysis with UIMA
 
 \item \textbf{Out: October 11.} 
 
-\item \textbf{Due: October 22 (midnight).} 
+\item \textbf{Due: October 20 (midnight).} 
 
 \end{itemize}
 
@@ -174,7 +174,7 @@ Another important difference is that there is no collection process engine (CPE)
 There is only an aggregate analysis engine (AE) descriptor that imports descriptors of several annotators.
 This AE is executed programmatically via a Java file (see section~\ref{SectionAe} for more details):
 
-\begin{center}\textbf{src/main/java/edu/cmu/lti/f14/hw3/hw3-ID/VectorSpaceRetrieval.java} \end{center}
+\begin{center}\url{src/main/java/edu/cmu/lti/f14/hw3/hw3_ID/VectorSpaceRetrieval.java} \end{center}
 
 %\newpage
 \chapter{Building Vector space Retrieval Model using UIMA (50pts)}
@@ -208,7 +208,7 @@ Then, the reciprocal rank for this query is equal to $1/4$.
 
 The code pipeline should work without any compilation errors but it does not produce any relevant results or evaluation measurements.
 To run the pipeline from the command line (terminal window), you can type the following
-(note that the dash is converted to the underscore and ID is your SCS/Andrew ID):
+(note that ID is your SCS/Andrew ID; the dash was automatically converted to the underscore when the project was created from the archetype):
 
 \begin{center}\small\textbf{mvn exec:java 
        -Dexec.mainClass=\url{edu.cmu.lti.f14.hw3.hw3_ID.VectorSpaceRetrieval}}\end{center}
@@ -227,7 +227,7 @@ hw3-ID
      `- main
       |- java/**/*.java        /* Java code */
      |    `src/main/java/edu/cmu/lti/
-     |       `f14/hw3/hw3-ID/
+     |       `f14/hw3/hw3_ID/
      |                   `VectorSpaceRetrieval.java /* In particular:
      |                                                main Java class */
      |                           
@@ -283,11 +283,11 @@ We provide you with a simplified aggregate analysis engine AAE that runs without
 a collection processing engine descriptor (CPE).
 This AAE is executed programmatically via the following Java file:
 
-\begin{center}\textbf{src/main/java/edu/cmu/lti/f14/hw3/hw3-ID/VectorSpaceRetrieval.java} \end{center}
+\begin{center}\url{src/main/java/edu/cmu/lti/f14/hw3/hw3_ID/VectorSpaceRetrieval.java} \end{center}
 
 The location of this AAE descriptor is:
 
-\begin{center}\textbf{src/main/resources/descriptors/retrievalsystem/VectorSpaceRetrieval.xml} \end{center}
+\begin{center}\url{src/main/resources/descriptors/retrievalsystem/VectorSpaceRetrieval.xml} \end{center}
 
 The AAE contains three primitive analysis engines:
 \begin{enumerate}
