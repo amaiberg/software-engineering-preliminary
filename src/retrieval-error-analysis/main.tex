@@ -66,7 +66,7 @@ Engineering and Error Analysis with UIMA
 
 \item \textbf{Out: October 11.} 
 
-\item \textbf{Due: October 20 (midnight).} 
+\item \textbf{Due: October 22 (midnight).} 
 
 \end{itemize}
 
@@ -141,9 +141,8 @@ of you did for previous frameworks).
 \chapter*{Getting started: Creating Maven project from the archetype}
 For this task, we have prepared another archetype to help you quickly build your project. 
 The tutorial for Homework 1 might help you create a Maven project from an archetype.
-For this Homework, you need to add 
-\href{https://raw.githubusercontent.com/oaqa/DEIIS-hw3-archetype/master/archetype-catalog.xml}{the new Catalog URL.}
-
+For this Homework, you need to add the new Catalog:
+\url{https://raw.githubusercontent.com/oaqa/DEIIS-hw3-archetype/master/archetype-catalog.xml}
 
 The archetype for Homework 3 is:
 
@@ -188,6 +187,9 @@ both the query and documents are sparse term vectors.
 Given a query vector and a set of short documents, 
 we compute the cosine similarity values between the query vector and document vectors.
 Then, all documents are ranked in the decreasing order of the cosine similarity.
+Note that term frequency vectors should be \textbf{length-normalized}, i.e., their
+Euclidean norm is equal to 1. For details, you may read
+sections from Chris Manning's et~al book on \href{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html#sec:secbagofwords}{term vectors (clickable link)} and \href{http://nlp.stanford.edu/IR-book/html/htmledition/the-vector-space-model-for-scoring-1.html}{vector-space models (clickable-link)}.
 
 Your goal is to implement the vector space retrieval system
 and evaluate its performance using the Mean Reciprocal Rank (MRR).  
@@ -369,6 +371,8 @@ why certain cases failed (i.e., why the system could not give the highest rank t
 using the cosine similarity measure, what alternative strategy you adopted to resolve this problem, and
 why you think your alternative strategy will work). Next you design and implement an alternative
 approach.
+
+For example, you can try some variants of \href{http://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html}{TF-IDF weighting (clickable link)}, in particular \href{http://en.wikipedia.org/wiki/Okapi_BM25}{BM25 (again clickable link)}.
 
 After testing your new approach,
 you need to describe your design, type system and implementation in the report.
