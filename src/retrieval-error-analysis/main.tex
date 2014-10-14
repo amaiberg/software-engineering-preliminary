@@ -197,7 +197,7 @@ The mean reciprocal rank is an average reciprocal rank
 computed over a set of queries $\{Q_i\}$:
 
 \begin{equation}\label{EqMRR}
-\mbox{MRR} = \sum\limits_{i=1}^{|Q|} \frac{1} {\mbox{rank}_i},
+\mbox{MRR} = \frac{1}{|Q|}\sum\limits_{i=1}^{|Q|} \frac{1} {\mbox{rank}_i},
 \end{equation}
 where $\mbox{rank}_i$ is a position (i.e., rank) of the first relevant document
 in the list of retrieved documents (sorted in the decreasing order of the cosine similarity with respect to a query number $i$).
@@ -314,23 +314,25 @@ document sentence;
 \item Using provided relevance assessments, compute a reciprocal rank for each query.
 Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
 \item Create a report and save it to the file \textbf{report.txt} (just report.txt, please). 
-For each query, your code needs to select a \textbf{relevant} document with the
+For each query, your code has to select a \textbf{relevant} document with the
 \textbf{highest} cosine-similarity score and print the following:
 \begin{verbatim}
 cosine=...<tab>rank=...<tab>qid=...<tab>rel=1<tab><sentence>
 \end{verbatim}
 In the end of the report, you \textbf{must} print the compute MRR. e.g:
 \begin{verbatim}
-MRR=0.334
+MRR=0.3341
 \end{verbatim}
+\item Round all floating-point numbers to have \textbf{four} significant digits.
+Sort all sentences by the query id.
 Your sample report file may look as follows (these scores are for illustrative purposes only 
 and may not be true, remember that fields are separated by \textbf{tabs}):
 \begin{verbatim}
-cosine=0.5 rank=1 qid=3 rel=1 The best mirror is an old friend
-cosine=0.1 rank=2 qid=4 rel=1 Climate change and energy
-MRR=0.3
+cosine=0.5431 rank=1 qid=1 rel=1 The best mirror is an old friend
+cosine=0.1123 rank=2 qid=2 rel=1 Climate change and energy
+MRR=0.3341
 \end{verbatim}
-We will provide a \textbf{script} to verify the correctness of your output.
+\item We will provide a \textbf{script} to verify the correctness of your output.
 \end{enumerate}
 
 \subsection{How to aggregate data coming from different CASes} 
@@ -339,12 +341,15 @@ supplied with different CASes.
 Because the pipeline processes one CAS at a time,
 this can be problematic unless you persist intermediate results.
 
-UIMA manual discourages us from persisting data \textbf{in the static class members},
+UIMA manual discourages us from persisting data \textbf{in class variables} (use 
+of static variables is discouraged as well),
 because each CAS might be processed by a separate Java virtual machine.
-However, you can you use a file system.
+However, for the purposes of this assignment, one can store data in memory.
+Alternatively, you can you use a file system.
 
-Persisting to a file would work for our assignment, because the pipeline executes
-the components on the same machine.
+Persisting to memory or file would work for our assignment, 
+because the pipeline executes the components on the same machine 
+and all the code runs within a single Java virtual machine.
 In a world of distributed processing, however, you may want to store such information in a database,
 on a network drive, or employ some other machine-independent storage.
 
