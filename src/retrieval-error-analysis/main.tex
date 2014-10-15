@@ -66,7 +66,7 @@ Engineering and Error Analysis with UIMA
 
 \item \textbf{Out: October 11.} 
 
-\item \textbf{Due: October 20 (midnight).} 
+\item \textbf{Due: October 21 (midnight).} 
 
 \end{itemize}
 
@@ -77,15 +77,19 @@ Engineering and Error Analysis with UIMA
 \item \textbf{Submission:} 
 Use the same process as for previous assignments (set up GitHub repo, create a Maven 
 project, write your code, submit to Maven repo), except that the name has changed to:
-hw3-ID
+hw3-ID. Note that you submit only Task 1 code.
+However, your report should describe error analysis and experiments 
+carried out in Task 2.
 
 \item \textbf{Write a design report:}
-We expect you to document how you designed the execution and
-deployment architecture for the sample information system. 
-We will extract your documents from your
-submitted jar files. 
-Remember to include your ID as part of the report file name, and put your name and
-ID inside your document. Please submit in PDF format only.
+We expect you to document the design of the system that improves
+over the system developed in Task 1.
+The report should also include the error analysis and 
+description of experiments carried out in Task~2.
+We will extract the report from the submitted jar file. 
+Remember to include your ID as part of the report file name 
+as well as of the report itself (at the top of document).
+Please submit in PDF format only.
 The report should be put in the folder \textbf{src/main/resources/doc}.
 
 %One very special descriptor is the \verb|CpeDescriptor.xml|, which is the entry
@@ -98,17 +102,24 @@ Please remember to give an appropriate description (Javadoc comments) for each
 piece of code you create and/or modify.
 
 \item \textbf{Grading:}
-This document has two main sections 50pts each and a bonus section 
-for 20pts.
-For Section \S~\ref{SectionBuildVS}, you will receive at least 30pts,
+This document has two 50pts sections.
+For Section \S~\ref{SectionBuildVS}, you will receive at least 20pts,
 if your implementation works correctly: i.e., it produces
 the output in the right format and saves
 the report file with the right name.
-The distribution of 20pts will depend on the quality of your implementation
+If the computed MMR and/or cosine similarity values are slightly incorrect,
+no more than 5pts will be detracted.
+10pts will be detracted if the produced values do make sense, but often are incorrect
+and the MRR is twice is large or small.
+If the output file is not generated and contains complete gibberish, 20pts will be
+detracted.
+The distribution of 30pts will depend on the quality of your implementation
 (i.e., how well your code is documented and written).
 
 For Section \S~\ref{SectionError}, 50pts will be given
 to high-quality, creative reports.
+There will be \textbf{bonus 20pts} for implementation and description
+of interesting similarity functions.
 
 
 \end{enumerate}
@@ -187,11 +198,19 @@ both the query and documents are sparse term vectors.
 Given a query vector and a set of short documents, 
 we compute the cosine similarity values between the query vector and document vectors.
 Then, all documents are ranked in the decreasing order of the cosine similarity.
+
 Note that term frequency vectors should be \textbf{length-normalized}, i.e., their
 Euclidean norm is equal to 1. For details, you may read
 sections from Chris Manning's et~al book on \href{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html#sec:secbagofwords}{term vectors (clickable link)} and \href{http://nlp.stanford.edu/IR-book/html/htmledition/the-vector-space-model-for-scoring-1.html}{vector-space models (clickable-link)}.
 
-Your goal is to implement the vector space retrieval system
+The value of the cosine similarity does depend on the \textbf{tokenization algorithm}.
+For Task 1, you \textbf{must} use a simple white-space tokenization algorithm,
+which does not split on punctuation and considers a sequence of 
+adjacent white-spaces to be a single separator.
+In the archetype, you already have an implementation of such a tokenizer:
+please, use the function \texttt{DocumentVectorAnnotator.tokenize0}.
+
+Your goal is to implement the simplest vector space retrieval system
 and evaluate its performance using the Mean Reciprocal Rank (MRR).  
 The mean reciprocal rank is an average reciprocal rank
 computed over a set of queries $\{Q_i\}$:
@@ -206,6 +225,16 @@ Consider an example, where the three most highly-ranked documents are considered
 non-relevant, while the fourth one is considered to be relevant. 
 Then, the reciprocal rank for this query is equal to $1/4$.
 
+If there are ties, i.e., several documents have the same
+similarity score,
+the ranking of document cannot be defined unambiguously.
+For the purpose of this assignment only, if you have ties,
+you need to rank relevant documents higher than not relevant. 
+For all other documents, ties can be broken arbitrarily.
+In this assignment there is only \textbf{one relevant document} per query.
+Hence, there is no ambiguity in computing the MRR and generating the output report.
+
+
 The code pipeline should work without any compilation errors but it does not produce any relevant results or evaluation measurements.
 To run the pipeline from the command line (terminal window), you can type the following
 (note that ID is your SCS/Andrew ID; the dash was automatically converted to the underscore when the project was created from the archetype):
@@ -213,10 +242,12 @@ To run the pipeline from the command line (terminal window), you can type the fo
 \begin{center}\small\textbf{mvn exec:java 
        -Dexec.mainClass=\url{edu.cmu.lti.f14.hw3.hw3_ID.VectorSpaceRetrieval}}\end{center}
 
-We have already given comments inside the code (with //TO DO) to indicate what is required. 
-You can either fill in those gaps in the existing code, or reorganize as you see fit.
+We have already given comments inside the code (with //TO DO) to indicate what is recommended
+to implement. Feel free to deviate from these recommendations
+ or reorganize the code, if this is necessary.
 The layout of the provided template code is as follows:
 
+\vspace{2em}
 \hspace{-3em}
 \begin{minipage}{0.9\textwidth}
 \footnotesize
@@ -249,18 +280,18 @@ hw3-ID
 \section{Input}
 The text collection for this homework is given in documents.txt file in 
 the \textbf{src/main/resource/data} directory of the project. 
-For simplicity we use very small documents each of which
-consists of only one sentence.
+For simplicity we use small documents each of which consists of only one sentence.
 Thus, there is no need to support multiple sentences in the document for this
 homework.
+Sentences occasionally miss punctuation or have minor spelling/grammar error:
+most of them were left on purpose.
 
-Format of the file is described below:
+A sample file is outline below (fields are tab-separated):
 
 \begin{verbatim}
-qid=1 rel=99 John loves Mary 
-qid=1 rel=0 John and Mary are friends
-qid=1 rel=1 Mary is loved by John
-qid=1 rel=0 Mary likes John
+qid=1 rel=99 In which year did a purchase of Alaska happen?
+qid=2 rel=1 Alaska was purchased from Russia in year 1867.
+qid=2 rel=1 The purchase of Alaska took place in 1867.
 qid=2 rel=99 ...
 qid=2 rel=1 ...
 qid=2 rel=0 ...
@@ -271,11 +302,13 @@ a binary relevance assessment (prefixed by \texttt{rel=}),
 and a document text (which is only one sentence!). 
 For documents assessed as relevant, we have \texttt{rel=1},
 while \texttt{rel=0} means that a document is not considered to be relevant.
+There is only \textbf{one relevant} document per query.
 
 If a line contains a special marker \texttt{rel=99},
 the line represents a query rather than a document.
-For example, ``qid=1 rel=99 John loves Marry'' means
-that there is a query ``John loves Marry'' which has the id one.
+For example, ``In which year did a purchase of Alaska happen?
+'' means that there is a query/question ``In which year did a purchase of Alaska happen?'' 
+that has the id one.
 
 \section{Analysis Engine}
 \label{SectionAe}
@@ -310,7 +343,9 @@ You need to finish the implementation
 This evaluation component needs to do the following:
 \begin{enumerate}
 \item Compute the cosine similarity between the query sentence and each of the subsequent
-document sentence; 
+document sentence. Remember to use the
+simple white-space tokenizer, e.g.,
+provided by the function \texttt{DocumentVectorAnnotator.tokenize0}.
 \item Using provided relevance assessments, compute a reciprocal rank for each query.
 Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
 \item Create a report and save it to the file \textbf{report.txt} (just report.txt, please). 
@@ -328,14 +363,21 @@ Sort all sentences by the query id.
 Your sample report file may look as follows (these scores are for illustrative purposes only 
 and may not be true, remember that fields are separated by \textbf{tabs}):
 \begin{verbatim}
-cosine=0.5431 rank=1 qid=1 rel=1 The best mirror is an old friend
-cosine=0.1123 rank=2 qid=2 rel=1 Climate change and energy
+cosine=0.5431 rank=1 qid=1 rel=1 Alaska was purchased ...
+cosine=0.1123 rank=2 qid=2 rel=1 The purchase of Alaska ...
 MRR=0.75
 \end{verbatim}
-\item We will provide a \textbf{script} to verify the correctness of your output.
+\item To verify correctness of your implementation,
+\href{https://raw.githubusercontent.com/amaiberg/software-engineering-preliminary/master/src/retrieval-error-analysis/sample_report1_5.txt}{we provide an output} (clickable link) produced
+by a reference implementation.
 \end{enumerate}
 
+\begingroup
+\renewcommand{\cleardoublepage}{}
+\renewcommand{\clearpage}{}
 \subsection{How to aggregate data coming from different CASes} 
+\endgroup
+
 To evaluate performance you may need to aggregate information
 supplied with different CASes.
 Because the pipeline processes one CAS at a time,
@@ -346,6 +388,7 @@ of static variables is discouraged as well),
 because each CAS might be processed by a separate Java virtual machine.
 However, for the purposes of this assignment, one can store data in memory.
 Alternatively, you can you use a file system.
+%\newpage
 
 Persisting to memory or file would work for our assignment, 
 because the pipeline executes the components on the same machine 
@@ -353,84 +396,115 @@ and all the code runs within a single Java virtual machine.
 In a world of distributed processing, however, you may want to store such information in a database,
 on a network drive, or employ some other machine-independent storage.
 
+\textbf{Important catch:} Don't try to store references to classes inherited from the
+UIMA class \textbf{Annotation}.
 
+\vspace{2em}
 \section{Type System}\label{SectionType}
 The type system currently has two types: ``Document'' and ``Token''.
 Feel free to extend this type system if necessary.
 At present, the type Document contains the following information: Relevance Assessment (called relevanceValue), Query ID, Text String, Token
 List. The Relevance Value, query ID, Text String are extracted from the text collection. 
 
-A list (uima.cas.FSList) of tokens 
+A list (\texttt{uima.cas.FSList}) of tokens 
 represents a ``bag-of-words'' feature vector
-that has to be constructed for the retrieval system. (\textbf{Reminder}:
-one can generate type system classes from the type system XML descriptor via the UIMA JCasGen feature)
+that has to be constructed for the retrieval system. 
+To manipulate objects of the type \texttt{uima.cas.FSList},
+you can use the provided class \texttt{utils.Utils}.
 
-\textbf{Hint:} tokenList feature of Document needs to be populated by your annotators. 
+\textbf{Hint1}:
+one can generate type system classes from the type system XML descriptor via the UIMA JCasGen feature).
+
+\textbf{Hint2:} tokenList feature of Document needs to be populated by your annotators. 
 A Token contains term and its corresponding frequency (in a document). 
 You will need to implement the code that populates these sparse frequency vectors.
 
-\chapter{Error Analysis (50pts)}
+
+%\begingroup
+%\renewcommand{\cleardoublepage}{}
+%\renewcommand{\clearpage}{}
+\chapter{Error Analysis (50pts + 20pts bonus)}
 \label{SectionError}
-Analyze and improve your retrieval system's performance by doing error analysis. Write briefly about
-why certain cases failed (i.e., why the system could not give the highest rank to the correct document
-using the cosine similarity measure, what alternative strategy you adopted to resolve this problem, and
-why you think your alternative strategy will work). Next you design and implement an alternative
-approach.
+%\endgroup
+The goal of this Task is demonstrate how a choice of tokenizing, stemming, and/or ranking
+algorithm affects performance.
 
-For example, you can try some variants of \href{http://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html}{TF-IDF weighting (clickable link)}, in particular \href{http://en.wikipedia.org/wiki/Okapi_BM25}{BM25 (again clickable link)}.
+In Task 1, you employed a basic-white space tokenization algorithm.
+Carry out an error analysis to identify situations where the
+combination of this tokenization algorithm with the cosine similarity failed.
+\textbf{Classify errors} into classes: provide statistics
+by error types, e.g., in a tabular format.
+For example, you can report that for 10 queries, the most relevant answers
+were not selected due to the vocabulary mismatch. In this example,
+``vocabulary mismatch'' is a type of error.
 
-After testing your new approach,
-you need to describe your design, type system and implementation in the report.
+After carrying out error analysis,
+you are likely to have ideas about improving performance.
+In this task, you need to implement some of these ideas.
+You may choose to employ:
+
+\begin{itemize}
+\item Better tokenization algorithms;
+\item Better stemming algorithm: The simple vector model does not understand 
+that \textbf{die} and \textbf{died} denote the same thing in most contexts.
+You can use the provided wrapper for the Stanford lemmatizer (package \texttt{util.StanfordLemmatizer})
+or any other stemmer/lemmatizer;
+\item Better or different similarity measures: unnormalized TF-IDF,
+the \href{http://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient}{Dice coefficient (clickable link}), the \href{http://en.wikipedia.org/wiki/Jaccard_index}{Jaccard coefficient (clickable link)},
+or even \href{http://en.wikipedia.org/wiki/Okapi_BM25}{BM25 (clickable link)}.
+\end{itemize}
+Again, remember, that you can change the system arbitrarily.
+
+Note that there will be \textbf{bonus 20pts} for implementation and description
+of interesting similarity functions. 
+To get these bonus points, you need to 
+implement these functions, compare them against the cosine similarity and each other,
+\textbf{as well as to describe} your design and experiments in the report.
+If you get an improvement, it is not a bad idea to compute p-values,
+confidence intervals, or apply other methods to evaluate statistical significance (i.e.,
+to answer a question: can these improvements be due to random factors?).
+
+Your work on Task 2 should be described in a report, 
+which is an \textbf{important part} of your submission: 
+allocate sufficient time to do a thorough job. 
+Feel free to consult the TAs if you have questions regarding the report.
+
 The report can be in a free form (you do not have to follow a pre-specified template).
 Yet, we expect you to consider the system design from several architectural aspects (UML, type
 system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
 tools, machine learning methods, etc.), documenting what you feel is best to communicate
 the essence of your design. 
+
 For example, it is worth drawing a UML diagram to represent a novel design pattern.
 However, please, do not draw diagrams
 for well-known design pattern (e.g. Template Method), use a brief description instead.
-
-In summary, your tasks are:
-\begin{enumerate}
-\item Write a new type system XML descriptor (if necessary),
-and generate the type system classes using the UIMA JCasGen application;
-\item Correctly extract bag of words feature vector from the input text collection;
-\item Compute the cosine similarity between two sentences in the text collection;
-\item Compute the Mean Reciprocal Rank (metric) for all sentences in the text collection;
-\item Design a better retrieval system that improves the MRR performance measure;
-\item Improve the efficiency of the program by doing error analysis of retrieval system.
-\end{enumerate}
 
 Finally, do not forget to put
 your name and Andrew ID at the top of the document, 
 name the file as \textbf{hw3-ID-report.pdf} and put it
 under \textbf{src/main/resources/doc}. 
+Do not submit the implementation for Task 2, only the report.
 
-Remember to describe your error analysis in detail, 
-as well as to include the relevant comparisons. 
-The report is an \textbf{important} part of your submission: 
-allocate sufficient time to do a thorough job. 
-Feel free to consult the TAs if you have questions regarding the report.
+%% This prevents a nasty page break!!!
+%\begingroup
+%\renewcommand{\cleardoublepage}{}
+%\renewcommand{\clearpage}{}
+%\chapter*{Bonus (20pts)}
+%\endgroup
 
-% This prevents a nasty page break!!!
-\begingroup
-\renewcommand{\cleardoublepage}{}
-\renewcommand{\clearpage}{}
-\chapter*{Bonus (20pts)}
-\endgroup
-
-Try other similarity measures instead of cosine similarity for ranking (i.e. dice coefficient, Jaccard
-coefficient) and include a comparison in your report.
+%Try other similarity measures instead of cosine similarity for ranking (i.e. dice coefficient, Jaccard
+%coefficient) and include a comparison in your report.
 
 
-\textbf{Hints:} There is no preferred setup for this assignment, so you may write a new annotator to accomplish this
-task, thereby demonstrating your understanding of the UIMA framework and Java programming.
+%\textbf{Hints:} There is no preferred setup for this assignment, so you may write a new annotator to accomplish this
+%task, thereby demonstrating your understanding of the UIMA framework and Java programming.
+%
+%\begin{enumerate}
+%\item You are allowed to modify the provided type system;
+%\item You are allowed to modify the provided classes and annotators. You are also allowed to create new
+%methods, a new class, or even a new package.;
+%\item If you can think of efficient design patterns for comparing multiple document ranking strategies in a
+%single execution of the pipeline, feel free to implement!
+%\end{enumerate}
 
-\begin{enumerate}
-\item You are allowed to modify the provided type system;
-\item You are allowed to modify the provided classes and annotators. You are also allowed to create new
-methods, a new class, or even a new package.;
-\item If you can think of efficient design patterns for comparing multiple document ranking strategies in a
-single execution of the pipeline, feel free to implement!
-\end{enumerate}
 \end{document}
