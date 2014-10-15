@@ -209,7 +209,10 @@ which does not split on punctuation and considers a sequence of
 adjacent white-spaces to be a single separator.
 It also  does not lowercase.
 In the archetype, you already have an implementation of such a tokenizer:
-please, use the function \texttt{DocumentVectorAnnotator.tokenize0}.
+please, use the function:
+\begin{center}
+\textbf{DocumentVectorAnnotator.tokenize0}.
+\end{center}
 
 Your goal is to implement the simplest vector space retrieval system
 and evaluate its performance using the Mean Reciprocal Rank (MRR).  
@@ -346,7 +349,7 @@ This evaluation component needs to do the following:
 \item Compute the cosine similarity between the query sentence and each of the subsequent
 document sentence. Remember to use the
 simple white-space tokenizer, e.g.,
-provided by the function \texttt{DocumentVectorAnnotator.tokenize0}.
+provided by the function \textbf{DocumentVectorAnnotator.tokenize0}.
 \item Using provided relevance assessments, compute a reciprocal rank for each query.
 Then, these reciprocal ranks are averaged to obtain the Mean Reciprocal Rank (see Eq.~\ref{EqMRR} for details).
 \item Create a report and save it to the file \textbf{report.txt} (just report.txt, please). 
@@ -407,11 +410,11 @@ Feel free to extend this type system if necessary.
 At present, the type Document contains the following information: Relevance Assessment (called relevanceValue), Query ID, Text String, Token
 List. The Relevance Value, query ID, Text String are extracted from the text collection. 
 
-A list (\texttt{uima.cas.FSList}) of tokens 
+A list (\textbf{uima.cas.FSList}) of tokens 
 represents a ``bag-of-words'' feature vector
 that has to be constructed for the retrieval system. 
-To manipulate objects of the type \texttt{uima.cas.FSList},
-you can use the provided class \texttt{utils.Utils}.
+To manipulate objects of the type \textbf{uima.cas.FSList},
+you can use the provided class \textbf{utils.Utils}.
 
 \textbf{Hint1}:
 one can generate type system classes from the type system XML descriptor via the UIMA JCasGen feature).
@@ -448,7 +451,7 @@ You may choose to employ:
 \item Better tokenization algorithms;
 \item Better stemming algorithm: The simple vector model does not understand 
 that \textbf{die} and \textbf{died} denote the same thing in most contexts.
-You can use the provided wrapper for the Stanford lemmatizer (package \texttt{util.StanfordLemmatizer})
+You can use the provided wrapper for the Stanford lemmatizer (package \textbf{util.StanfordLemmatizer})
 or any other stemmer/lemmatizer;
 \item Better or different similarity measures: unnormalized TF-IDF,
 the \href{http://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient}{Dice coefficient (clickable link}), the \href{http://en.wikipedia.org/wiki/Jaccard_index}{Jaccard coefficient (clickable link)},
