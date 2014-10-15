@@ -1,4 +1,4 @@
-This is a grading script (for Linux) as well as instructions for running it.
+This is a grading script (for Linux & Mac) as well as instructions for running it.
 ===================================================
 0) Please, put your component version **at the top of your POM file**, before declarations of any other versions, e.g., related to plugins'. Proper XML parsers won't care about the location, but the hacking grading script will fail.
 
