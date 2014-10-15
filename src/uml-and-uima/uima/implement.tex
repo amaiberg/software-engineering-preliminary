@@ -60,6 +60,13 @@ manually create the CPE descriptor all by yourself.
 under \texttt{src/main/resources/}}, so that we could easily find the entry point
 of your pipeline and locate all your component descriptors and thus your
 component implementations.
+To import another descriptor, you should use the following include directive (don't
+confuse it with include/href and import/name!):
+\begin{verbatim}
+<import location="..."  />
+\end{verbatim}
+Note that in the case of import/location
+names of imported descriptors are relative to the folder of the importing descriptor.
 
 \end{enumerate}
 
@@ -73,7 +80,9 @@ parameter for the input file path in the collection reader. It could be
 ``src/main/resources/data/sample.in'' (without quotes) for your own test, but
 \textbf{in your final submission, please put ``hw1.in'' (without quotes) as the
 value for the parameter}, which is the path of the file used to test your
-pipeline.
+pipeline. This file should be read from the file system, not as a CLASSPATH resource.
+In \S~\ref{SectionPathGuide} we discuss all path-related issues
+in details.
 
 \item Ideally, depending on where the input file is located (on a local file
 system, in a jar file, or from an external sources, e.g. network), your
@@ -113,11 +122,14 @@ experiments.
 
 \begin{enumerate}
 
-\item If you want to employ a resource (e.g., a model you trained offline) in
-your annotator, you could consider UIMA's \emph{resource manager} (refer to the
-official tutorial for details about this).
+\item If you want to employ a resource (e.g., a model you trained offline) 
 Be sure to put your resource in \texttt{src/main/resources} so that your
 submission will also bundle those resources along with your code.
+Please check \S~\ref{SectionPathGuide} for more details related
+on file locations.
+
+%in your annotator, you could consider UIMA's \emph{resource manager} (refer to the
+%official tutorial for details about this).
 
 \item \textbf{If you want to incorporate other NLP or machine learning tools,
 please try to avoid non-Java packages. If you want your artifact to depend on
@@ -142,3 +154,69 @@ feature as a weight to vote for a final decision. This approach was also applied
 in IBM's Watson system.
 
 \end{enumerate}
+
+\section{A hopefully ultimate guide to paths, resources, XML descriptors, and pesky leading slashes
+in resource names}
+\label{SectionPathGuide}
+In this section,
+we summarize all the path-related information that is necessary to create a successfully working submission. To test if your jar is, indeed, working, you can use \href{https://github.com/amaiberg/software-engineering-preliminary/blob/master/grading_hw1_2}{the grading script (clickable link)}. 
+It should now work on Linux and Mac.
+
+Note that we have files of three types:
+\begin{itemize}
+\item Regular files from the file system. In this assignment, these are only input/output files.
+\item Your resource files. They are located in the JAR-file. Must be placed into src/main/resources or a subfolder thereof.
+\item XML descriptor files. Must be placed into \url{src/main/resources} or a subfolder thereof.
+When you release your code (or do \texttt{mvn install}) these files are also included into the JAR-file.
+\end{itemize}
+ 
+Note that the grading script takes into account both detected mentions and their offsets, if your annotator produces correct strings, but wrong offsets, this doesn't count as the right answer.
+
+
+\subsection*{INPUT-OUTPUT FILES}
+To simplify things, all submissions should read hw1.in as input and produce hw1-ID.out as output. Please, no directory prefixes: you read a file from the current directory and save another one to the same current directory. ID is your Andrew/SCS id. 
+
+\subsection*{RESOURCE-FILES}
+\subsubsection*{Lingpipe models}
+
+Place a model to src/main/resources or a subfolder thereof. Use the following function to read the model:
+\href{http://alias-i.com/lingpipe/docs/api/com/aliasi/util/AbstractExternalizable.html#readResourceObject%28java.lang.Class,%20java.lang.String%29}{readResourceObject(Class\textless ?\textgreater clazz, String resourcePathName)}
+resorucePathName should start with a slash! 
+ 
+\paragraph{Example1.} Your model file is \url{src/main/resources/model.bin} and the resourcePathName should be \url{/model.bin}. 
+\paragraph{Example2.} Your model file is \url{src/main/resources/some_sub_dir/model.bin} and the resourcePathName should be \url{/some_sub_dir/model.bin}.
+
+\subsubsection*{Custom dictionary}
+Again, place a model to \url{src/main/resources} or a subfolder thereof. 
+Open resource as a stream. We created \href{https://github.com/amaiberg/software-engineering-preliminary/tree/master/read_resource_example}{a working example demonstrating this technique (clickable link)}. 
+Depending on the function that you use, you may or may not need to specify the leading slash! See, the example for details.
+
+\subsubsection*{Some other NER or NLP tool}
+
+If another NER can read a model from the Java InputStream, you are good. 
+See the previous subsection for instructions of opening a stream. 
+If the NER can't read models from the stream, you can't employ such a NER.
+
+\subsection*{UIMA XML DESCRIPTORS}
+Again, place descriptors to 
+\url{src/main/resources} or a subfolder thereof.
+
+The main descriptor CpeDescriptor.xml (note that names are case-sensitive) should be placed directly to src/main/resources. 
+To import another descriptor, you should use the following include directive (don't
+confuse it with include/href and import/name!):
+\begin{verbatim}
+<import location="..."  />
+\end{verbatim}
+Note that in the case of import/location
+names of imported descriptors are relative to the folder of the importing descriptor.
+
+\paragraph{Example} You have a subfolder \url{descriptors} and two XML descriptors:
+\begin{itemize}
+\item \texttt{descriptors/a.xml}
+\item \texttt{descriptors/b.xml}
+\end{itemize}
+
+To import \texttt{b.xml} from \texttt{a.xml} use:
+\begin{verbatim}
+<import location="b.xml" />
+\end{verbatim}
