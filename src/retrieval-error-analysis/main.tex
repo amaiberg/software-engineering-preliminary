@@ -316,7 +316,7 @@ that has the id one.
 
 All lines are sorted by the question id (qid).
 The query sentence with qid=$x$ always precedes
-document sentences with the same qid=$x.
+document sentences with the same qid=$x$.
 
 \section{Analysis Engine}
 \label{SectionAe}
@@ -436,7 +436,17 @@ You will need to implement the code that populates these sparse frequency vector
 \label{SectionError}
 %\endgroup
 The goal of this Task is demonstrate how a choice of tokenizing, stemming, and/or ranking
-algorithm affects performance.
+algorithm affects performance. 
+
+Your work on Task 2 should be described in a report, 
+which is an \textbf{important part} of your submission: 
+allocate sufficient time to do a thorough job. 
+Feel free to consult the TAs if you have questions regarding the report.
+Finally, do not forget to put
+your name and Andrew ID at the top of the document, 
+name the file as \textbf{hw3-ID-report.pdf} and put it
+under \textbf{src/main/resources/doc}. 
+Do not submit the implementation for Task 2, only the report.
 
 In Task 1, you employed a basic-white space tokenization algorithm.
 Carry out an error analysis to identify situations where the
@@ -446,6 +456,14 @@ by error types, e.g., in a tabular format.
 For example, you can report that for 10 queries, the most relevant answers
 were not selected due to the vocabulary mismatch. In this example,
 ``vocabulary mismatch'' is a type of error.
+
+We also expect you to consider the system design from several architectural aspects (UML, type
+system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
+tools, machine learning methods, etc.), documenting what you feel is best to communicate
+the essence of your design. 
+For example, it is worth drawing a UML diagram to represent a novel design pattern.
+However, please, do not draw diagrams
+for well-known design pattern (e.g. Template Method), use a brief description instead.
 
 After carrying out error analysis,
 you are likely to have ideas about improving performance.
@@ -472,27 +490,6 @@ implement these functions, compare them against the cosine similarity and each o
 If you get an improvement, it is not a bad idea to compute p-values,
 confidence intervals, or apply other methods to evaluate statistical significance (i.e.,
 to answer a question: can these improvements be due to random factors?).
-
-Your work on Task 2 should be described in a report, 
-which is an \textbf{important part} of your submission: 
-allocate sufficient time to do a thorough job. 
-Feel free to consult the TAs if you have questions regarding the report.
-
-The report can be in a free form (you do not have to follow a pre-specified template).
-Yet, we expect you to consider the system design from several architectural aspects (UML, type
-system, engineering, design pattern, etc.) and several algorithmic aspects (knowledge sources, NLP
-tools, machine learning methods, etc.), documenting what you feel is best to communicate
-the essence of your design. 
-
-For example, it is worth drawing a UML diagram to represent a novel design pattern.
-However, please, do not draw diagrams
-for well-known design pattern (e.g. Template Method), use a brief description instead.
-
-Finally, do not forget to put
-your name and Andrew ID at the top of the document, 
-name the file as \textbf{hw3-ID-report.pdf} and put it
-under \textbf{src/main/resources/doc}. 
-Do not submit the implementation for Task 2, only the report.
 
 %% This prevents a nasty page break!!!
 %\begingroup
