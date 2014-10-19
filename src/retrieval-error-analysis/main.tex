@@ -199,11 +199,16 @@ Given a query vector and a set of short documents,
 we compute the cosine similarity values between the query vector and document vectors.
 Then, all documents are ranked in the decreasing order of the cosine similarity.
 
-Note that term frequency vectors should be \textbf{length-normalized}, i.e., their
-Euclidean norm is equal to 1. For details, you may read
+The cosine  similarity between two \mbox{$n$-element} vectors $x$ and $y$ is equal to:
+$$
+\frac{ \sum\limits_{i=1}^{n}{x_i \times y_i} }{ \sqrt{\sum\limits_{i=1}^{n}{(x_i)^2}} \times \sqrt{\sum\limits_{i=1}^{n}{(y_i)^2}} }
+$$
+For further details, you may read
 sections from Chris Manning's et~al book on \href{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html#sec:secbagofwords}{term vectors (clickable link)} and \href{http://nlp.stanford.edu/IR-book/html/htmledition/the-vector-space-model-for-scoring-1.html}{vector-space models (clickable-link)}.
 
-The value of the cosine similarity does depend on the \textbf{tokenization algorithm}.
+Different \textbf{tokenization algorithms} may generate different term vectors for the same sentence/document.
+Consequently, 
+obtained cosine similarity values may also depend on a choice of the tokenization algorithm.
 For Task 1, you \textbf{must} use a simple white-space tokenization algorithm,
 which does not split on punctuation and considers a sequence of 
 adjacent white-spaces to be a single separator.
