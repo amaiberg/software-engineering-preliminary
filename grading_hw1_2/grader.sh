@@ -195,6 +195,8 @@ for ((i=1;i<$n;++i))
             echo "$artid $ver SUCCESS $score" >> "$REPORT_FILE"
           fi
           if [ "$success" = "0" ] ; then
+            # Let's keep a copy just in case
+            cp -f "$stud_out_file" "$stud_out_file.bak"
             rm -f "$stud_out_file"
           fi
           cd -
