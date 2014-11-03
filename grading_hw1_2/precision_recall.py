@@ -7,10 +7,17 @@ Measure P and R given ground truth and other data
 
 import argparse
 
+def read_file_right_strip(file_handle):
+  res=[]
+  for line in file_handle.readlines():
+    res.append(line.rstrip())
+  return res
+  
+
 def compare(truth_file, test_file):
   with open(truth_file, 'r') as truth_file_handle, open(test_file, 'r') as test_file_handle:
-		truth_lines = set(truth_file_handle.readlines())
-		test_lines = set(test_file_handle.readlines())
+		truth_lines = set(read_file_right_strip(truth_file_handle))
+		test_lines = set(read_file_right_strip(test_file_handle))
 
   if 0 == len(test_lines):
     precision = 0.0
