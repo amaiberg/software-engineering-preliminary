@@ -1,0 +1,346 @@
+\section{Types and evaluation metrics}
+The following  are the output types described in the official BioASQ evaluation documentation \cite{145}:
+\subsubsection{Concepts}
+\begin{displayquote}
+A list of relevant concepts $c_{i,1},\ c_{i,2},\ c_{i,3},\ \dots$ from the designated terminologies and ontologies. The list should be ordered by decreasing confidence, i.e., $c_{i,1}$ should be the concept that the system considers most relevant to the question $q_i$, $c_{i,2}$ should be the concept that the system considers to be the second most relevant etc. A single concept list will be returned per question and participant, and the list may contain concepts from multiple designated terminologies and ontologies. The returned concept list will actually contain unique concept identifiers (obtained from the terminologies and ontologies), rather than terms (words or phrases).
+\end{displayquote}
+\textbf{Example:} Here the JSON array \verb|concepts| corresponds to designated terminologies and ontologies 
+\small
+\begin{verbatim}
+"body": "What is the role of PrnP in mad cow disease?", 
+      "type": "factoid", 
+      "id": "160", 
+       "concepts": [
+              "http://www.disease-ontology.org/api/metadata/DOID:162", 
+              "http://www.uniprot.org/uniprot/M3K8_RAT"         
+               ] 
+     \end{verbatim}
+\normalsize
+\subsubsection{Documents}
+\begin{displayquote}
+A list of relevant articles (documents) $d_{i,1}, d_{i,2}, d_{i,3}, \dots$. from the designated article repositories. Again, the list should be ordered by decreasing confidence, i.e., $d_{i,1}$ should be the article that the system considers most relevant to the question, $d_{i,2}$ should be the article that the system considers to be the second most relevant etc. A single article list will be returned per question and participant, and the list may contain articles from multiple designated repositories. The returned article list will actually contain unique article identifiers (obtained from the repositories).
+\end{displayquote}
+\textbf{Example:} 
+Here the JSON array \verb|documents| corresponds to the document PMIDs.
+\begin{verbatim}
+"body": "What is the role of PrnP in mad cow disease?", 
+      "type": "factoid", 
+      "id": "160", 
+       "documents": [
+            "http://www.ncbi.nlm.nih.gov/pubmed/23420787", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/23397482", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/23298766",
+             ... 
+            "http://www.ncbi.nlm.nih.gov/pubmed/17451943", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/12146646", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/1366363"
+        ], 
+\end{verbatim}
+\subsubsection{Triples}
+\begin{displayquote}
+A list of relevant RDF triples $t_{i,1} , t_{i,2}, t_{i,3}, \dots$ from the designated ontologies. Again, the list should be ordered by decreasing confidence. A single triple list will be returned per question and participant, and the list may contain any triples from multiple designated ontologies.
+\end{displayquote}
+\textbf{Example:} Here \verb|triples| refers to \verb|o| (object), \verb|p| (predicate), and \verb|s| (subject).
+\begin{verbatim}
+"body": "What is the role of PrnP in mad cow disease?", 
+      "type": "factoid", 
+      "id": "160", 
+      "triples": [
+       {
+           "o": "http://linkedlifedata.com/resource/umls/label/A17680439", 
+           "p": "http://www.w3.org/2008/05/skos-xl#prefLabel", 
+           "s": "http://linkedlifedata.com/resource/umls/id/C2827401"
+       }, 
+       {
+           "o": "fda", 
+           "p": "http://www.w3.org/2004/02/skos/core#altLabel", 
+           "s": "http://linkedlifedata.com/resource/#_4434464B59390011"
+       }, 
+       {
+           "o": "fda", 
+           "p": "http://www.w3.org/2004/02/skos/core#altLabel", 
+           "s": "http://linkedlifedata.com/resource/#_51395844503300D"
+       }, 
+           ...
+     ]
+\end{verbatim}
+
+Note that for each phase you will return a list of $k$ items in order of decreasing confidence (where $k \leq 100$). See the evaluation section below for how these will be evaluated. 
+  
+\subsection{Evaluation}
+Please refer to table \ref{fig:eval} to see the evaluation used for each type.
+\begin{figure}[h!]
+\begin{tabular}{|c|c|c|}
+\hline
+	\textbf{Retrieved items} & \textbf{Unordered retrieval measures} & \textbf{Ordered retrieval measures}\\ \hline
+	concepts & mean percision, recall, F-measure & MAP,\textbf{GMAP}\\ \hline
+	articles & mean percision, recall, F-measure & MAP,\textbf{GMAP}\\ \hline 
+	triples & mean percision, recall, F-measure & MAP,\textbf{GMAP}\\\hline
+\end{tabular}
+\label{fig:eval}
+\caption{Evaluation metrics}
+\end{figure}
+
+Also, please review the definitions of the evaluation metrics:
+
+\begin{itemize}
+\item Precision and Recall:
+\begin{align}
+P &= \dfrac{TP}{TP + FP} \tag{where TP are true positives, and FP are false positives}\\
+R &= \dfrac{TP}{TP + FN} \tag{where TP are true positives, and FN are false negatives}
+\end{align}
+\item F-measure:
+\begin{align}
+F = 2 \cdot \dfrac{P\cdot R}{P + R} \tag{Harmonic mean of Precision and Recall}
+\end{align}
+\item Average Precision (AP):
+\begin{align}
+AP &= \dfrac{\sum^{|L|}_{r=1} P(r) \cdot rel(r)}{L_R} \tag{see below}
+\end{align} 
+Where, for any given query $q_i$ and a golden set of items:
+\begin{itemize}
+\item $|L|$ is the total number of items.
+\item $|L_R|$ is the number of relevant items. 
+\item $P(r)$ is the precision for a list containing the first $r$ items.
+\item $rel(r)$ is an indicator function for the existence of item $r$ in the golden set (i.e., it returns 1 if the $r$th item is relevant, and 0 otherwise).
+\end{itemize}
+\item Mean Average Precision (MAP):
+\begin{align}
+MAP &= \frac{1}{n} \sum^n_{i=1}AP_i  \tag{To get the average precision for list of queries $q_1, q_2, \dots, q_n$.}
+\end{align}
+\item Geometric Mean Average Precision (GMAP):
+\begin{align}
+GMAP &= \sqrt[n]{\prod^n_{i=1}(AP_i + \epsilon)} \tag{with some small $\epsilon$ for cases where $AP_i=0$}
+\end{align}
+GMAP is similar to MAP, only used to further penalize low performing queries.
+\end{itemize}
+\section{Data Sources}
+\label{sec:DataSources}
+As described in \cite{145}, you are provided with the following data sources:
+\subsection{GoPubMed}
+\begin{quotation}
+GoPubMed is a knowledge-based search engine for biomedical texts. The Gene Ontology (GO) and
+Medical Subject Headings (MeSH) serve as “Table of contents” in order to structure the millions of
+articles of the MEDLINE database. The search engine allows its users to find relevant search results
+significantly faster than PubMed.
+\end{quotation}
+\subsection{MEDLINE}
+\begin{quotation}
+MEDLINE (Medical Literature Analysis and Retrieval System Online) is a bibliographic database of life
+sciences and biomedical information. It includes bibliographic information for articles from academic
+journals covering medicine, nursing, pharmacy, dentistry, veterinary medicine, and health care. MED-
+LINE also covers much of the literature in biology and biochemistry, as well as fields such as molecular
+evolution.
+\end{quotation}
+\subsection{PubMed}
+\begin{quotation}
+PubMed is a free database accessing primarily the MEDLINE database of references and abstracts on
+life sciences and biomedical topics. It comprises more than 22 million citations for biomedical literature through MEDLINE, life science journals, and on-line books. Citations may include links to full-text
+content from PubMed Central and publisher web sites. The United States National Library of Medicine
+(NLM) at the National Institutes of Health maintains the database as part of the Entrez information
+retrieval system. PubMed has an publically available web interface for accessing it’s contents.
+\end{quotation}
+\subsubsection{MeSH}
+\begin{quotation}
+MeSH (Medical Subject Headings) is the NLM controlled vocabulary thesaurus used for indexing arti-
+cles for PubMed. It consists of approximately 26.000 terms and new terms are added in a yearly basis.
+The terms are organised hierarchically in 12 trees. MEDLINE and PubMed use Medical Subject Head-
+ings (MeSH) for information retrieval. In addition, many engines (e.g. GoPubMed) are designed to
+access and search the MEDLINE content using MeSH terms.\\
+\end{quotation}
+Note: we also include a Java API client to help you access these services in the archetype \ref{subsec:WebServices}.`
+
+\begin{comment}
+Documents for this task come from a corpus of 162,048 full-text biomedical
+articles. If you want to estimate the size of the corpus, 12.3 GB (uncompressed)
+and 3 GB (standard compressed). Each document is identified by its PMID
+(PubMed\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed}} ID). Postprocessing
+is done to eliminate as much non-article material as we could from the original
+HTML formats Legal spans are defined as any text > 0 bytes in length between an
+HTML paragraph tag, which is any tag that starts with \verb|<p| or \verb|</p|.
+
+Similar to what you will be asked by the BioCreative competition organizer, you
+are required to follow an output format for the retrieved relevant passages. The
+format for TREC Genomics complies with standard TREC output format: a tabular
+format that consists seven fields: topic number, doc ID (PubMedID), rank, score,
+passage start, passage length, run tag.
+
+The evaluation for the relevant passage retrieval is measured with a variant of
+mean average precision (MAP). Three different levels will be applied to the
+final result:
+passage-level, document-level and aspect-level. In addition to the passage-level
+evaluation, document-level captures the coverage of different relevant
+documents, and aspect-level evaluation captures the coverage of different MeSH
+terms\footnote{\url{http://www.ncbi.nlm.nih.gov/mesh}}.
+\end{comment}
+\section{Archetype}
+\subsection{Typesystem}
+For this milestone, you are required to use the typesystem \verb|OAQATypes.xml| included in the archetype. Note however, you are only required to use the types defined in \ref{ref:mappings} and their supertype ancestry. You are of course welcome to extend the typesystem and/or use any other preexisting types. Most importantly. it is imperative that you use the inherited \verb|uri| and \verb|rank| attributes, as we will use them for evaluation.
+\begin{figure}[h!]
+\begin{longtable}{c|P{6cm}}
+\textbf{BioASQ Type} & \textbf{UIMA Type}\\\hline
+Result (supertype) &   \begin{itemize} \item \verb|edu.cmu.lti.oaqa.type.retrieval.SearchResult| \begin{itemize} \item \verb|uri| \item \verb|rank| \end{itemize} \end{itemize} \\\hline
+Concept & \begin{itemize} \item \verb|edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult| \begin{itemize} \item \verb|uri| (inherited) \item \verb|rank| (inherited) \end{itemize}  \item \verb|edu.cmu.lti.oaqa.type.kb.Concept| \end{itemize} \\\hline
+Document & \begin{itemize} \item \verb|edu.cmu.lti.oaqa.type.retrieval.Document| \begin{itemize} \item \verb|uri| (inherited) \item \verb|rank| (inherited) \end{itemize} \end{itemize}  \\\hline
+Triple & \begin{itemize} \item \verb|edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult| \begin{itemize} \item \verb|uri| (inherited) \item \verb|rank| (inherited) \end{itemize}  \item \verb|edu.cmu.lti.oaqa.type.kb.Triple| \begin{itemize} \item \verb|subject| \item \verb|predicate| \item \verb|object|  \end{itemize} \end{itemize} \\
+\end{longtable}
+\label{ref:mappings}
+\caption{Typesystem Mapping}
+\end{figure}
+\subsection{Web Services}
+\label{subsec:WebServices}
+To access the data sources in \ref{sec:DataSources}, we provide \verb|bioasq-gopubmed-client|, a packaged API wrapping the following web services (as described in \cite{101}):
+
+\begin{itemize}
+\item The Medical Subject Headings (MeSH) Hierarchy:a service for acessing the MeSH ontology, with input parameter ``\emph{findEntity}'', and output parameter ``\emph{findings}'', which contains the list of related concepts (a list of ``\emph{concept}'' entries with ``\emph{label}'' entries), given the query submitted with the input parameter. Additional information is provided inside each ``label'' entry in the JSON object, such as ``termId'' and ``uri'' of the concept. In addition, inside each ``concept'' entry, the offsets in which the query keywords matched each returned concept are provided.
+\item Disease Ontology: a service for accessing the Disease Ontology, with the same input and output parameters as aforementioned.
+\item Gene Ontology: a service for accessing the GO ontology, with the same input and output parameters as aforementioned.
+\item Jochem: a service accessing the Jochem ontology, with the same input and output parameters as aforementioned.
+\item Uniprot: accessing the UniProt database, with the same input and output parameters as aforementioned.
+\item Linked Data: a service for accessing the LinkedLifeData platform triples. The input parameter is ``findTriples'', and accepts any keywords as query. The output parameter contains a list of ``\emph{triples}'' entries. Each entry has in turn a ``\emph{subj}'', ``\emph{pred}'', ``\emph{obj}'' and ``\emph{score}'' field, representing the subject, the predicate and the object of the triple, and the matching score given the input query.
+\item Indexed Document Sources (Pubmed):  service for accessing the PubMed indexed documents (titles and abstracts), with the same input parameters as aforementioned, and the output parameter containing ``document'' entries in the return JSON object. Each entry has a ``\emph{pmid}'' element, which is the PubMed id of the indexed citation, a ``\emph{documentAbstract}'' entry, and a ``\emph{title}'' entry. In addition, the \emph{MeSH}annotations are provided when available.
+\begin{comment}
+\item Full Document Sources: a service for accessing the \emph{PMC} full text articles, with the same input parameters and output parameters as aforementioned, with the only difference being that the articles returned contain in addtion the full text.
+\end{comment}
+\end{itemize}
+\begin{figure}
+\begin{tabular}{l|l}
+\textbf{Service} & \textbf{API call}  \\\hline\hline
+MeSH  & \small\verb|findMeshEntitiesPaged| \\ 
+DO  & \small \verb|findMeshDiseaseOntologyPaged|  \\ 
+GO  & \small\verb|findMeshGeneOntologuPaged|   \\ 
+Jochem  &  \small\verb|findJochemEntitiesPaged|  \\ 
+Uniprot  & \small\verb|findUniprotEntitiesPaged|  \\
+Linked Data & \small\verb|findLinkedLifeDataEntitiesPaged| \\
+Pubmed & \small\verb|findPubMedCitations| \\ 
+\end{tabular}
+\caption{Client methods for calling web services}
+\label{fig:client}
+\end{figure}
+See \ref{fig:client} for how to use the client to call each web service. Note that all of these methods have the signature (\verb|String keywords|, \verb|page|, \verb|conceptsPerPage|).
+Please also inspect \verb|GoPubMedServiceExample.java| included in the archetype for a concrete example of how to use this client.
+For more detail on web services, see Appendix A.
+
+\subsection{Data}
+In the archetype you will also find \verb|BioASQ-SampleData1B.json| containing an annotated version of the 29 sample questions shown in M0. We also provide you with a convenience class \verb|JsonCollectionReaderHelper.java| to read from JSON format. 
+
+\begin{comment}
+We will briefly describe how the HelloBioQA framework based on CSE can help
+build your own QA pipeline, and evaluate your components automatically.
+
+The input file ``trecgen06.txt'' has been put into the
+\texttt{src/main/resources/input} directory, while consists of all the
+questions, one per line. Each sentence will be preceded on the same line by a
+sentence identifier, i.e.,
+
+\begin{verbatim}
+160|What is the role of PrnP in mad cow disease?
+\end{verbatim}
+
+The gold-standard relevant passages have also been included in HelloBioQA
+framework (\texttt{src/main/resources/gs/trecgen06.passage}) project, in
+addition, we manually annotated keyterms for the questions. Different from
+homework 1, the character offsets DO consider whitespaces, which is adopted by
+the UIMA framework. The gold-standard keyterms include not only the named
+entities, but also other important key verbs. Although gold-standard keyterm
+does not perfectly fit the requirement of NER evaluation, it will be used to
+test your NER components (\texttt{src/main/resources/gs/trecgen06.keyterm}). We
+won't consider the evaluation result in M1 when grading your homework.
+
+We have implemented everything you need for collection reader, gold standard
+decorator, and evaluators, which means you don't need to put any effort to
+investigate how to read the questions and generate the output format in this
+homework. But we still encourage you to investigate how three different levels
+of MAP evaluation work. At the end of your pipeline execution, you will see the
+evaluation results similar to the following:
+
+\small
+\begin{verbatim}
+ ------------------ EVALUATION REPORT ------------------
+Experiment: ac146544-b116-4cce-897e-77bfa1b4fc18:1
+Evaluator,Configuration,Precision,Recall,F-1,MAP,Binary Recall,Count
+RetrievalMeasuresEvaluator,1|SimpleKeytermExtractor[persistence-provi
+der:inherit: ecd.default-log-persistence-provider]>2|SimpleSolrRetrie
+valStrategist[hit-list-size:10#embedded:true#core:data/guten#persiste
+nce-provider:inherit: ecd.default-log-persistence-provider ]>3|Simple
+PassageExtractor[hit-list-size:10#embedded:true#core:data/guten#keyte
+rmWindowScorer:edu.cmu.lti.oaqa.openqa.hello.passage.KeytermWindowSco
+rerSum#persistence-provider:inherit: ecd.default-log-persistence-prov
+ider],0.5000,0.6667,0.5714,0.6667,1.0000,1
+
+ -------------------------------------------------------
+ ------------------ EVALUATION REPORT ------------------
+Experiment: ac146544-b116-4cce-897e-77bfa1b4fc18:1
+Evaluator,Configuration,Precision,Recall,F-1,MAP,Binary Recall,Count
+RetrievalMeasuresEvaluator,1|SimpleKeytermExtractor[persistence-provi
+der:inherit: ecd.default-log-persistence-provider]>2|SimpleSolrRetrie
+valStrategist[hit-list-size:10#embedded:true#core:data/guten#persiste
+nce-provider:inherit: ecd.default-log-persistence-provider ]>3|Simple
+PassageExtractor[hit-list-size:10#embedded:true#core:data/guten#keyte
+rmWindowScorer:edu.cmu.lti.oaqa.openqa.hello.passage.KeytermWindowSco
+rerSum#persistence-provider:inherit: ecd.default-log-persistence-prov
+ider],0.2000,0.3333,0.2500,0.3056,1.0000,1
+
+ -------------------------------------------------------
+ ------------------ EVALUATION REPORT ------------------
+Experiment: ac146544-b116-4cce-897e-77bfa1b4fc18:1
+Evaluator,Configuration,DocumentMAP,PassageMAP,AspectMAP,Count
+PassageMAPMeasuresEvaluator,1|SimpleKeytermExtractor[persistence-prov
+ider:inherit: ecd.default-log-persistence-provider]>2|SimpleSolrRetri
+evalStrategist[hit-list-size:10#embedded:true#core:data/guten#persist
+ence-provider:inherit: ecd.default-log-persistence-provider ]>3|Simpl
+ePassageExtractor[hit-list-size:10#embedded:true#core:data/guten#keyt
+ermWindowScorer:edu.cmu.lti.oaqa.openqa.hello.passage.KeytermWindowSc
+orerSum#persistence-provider:inherit: ecd.default-log-persistence-pro
+vider],0.3056,0.0202,1.0000,1 
+\end{verbatim}
+\normalsize
+
+Three big tables correspond to the evaluation at different phases, the first
+table is the result for keyterm extraction, and the sencond table for relevant
+document retrieval, and the last table is for the final passage extraction. If
+you have more than traces running (e.g., multiple options for NER), then you
+will see multiple lines for each of the traces. If you are familiar with
+information retrieval, then the evaluation for keyterm extraction and document
+retrieval follows the standard definitions for Precision/Recall/F-1/MAP/etc., if
+you are unfamiliar, we suggest you to search them in Wikipedia or other
+information retrieval textbooks. Believe me, all of them are easy to understand!
+The evaluation for passage extraction follows a variant of MAP definition, you
+can find detailed algorithm from the task's homepage.
+
+% move them to task 2?
+What you need to implement is only the \verb|pipeline| (if you are wondering why
+I am using typewriter font for ``pipeline''. please take a look at the CSE
+Tutorial again). The pipeline will consist of three major phrases, which have
+been defined in BaseQA framework. (If you couldn't remember what they are, I
+again encourage you to go over the CSE Tutorial.) In fact, you can define
+totally different phrases and put them into your QA pipeline\footnote{For
+example, Statistical Source Expansion for Question Answering,
+\url{http://dl.acm.org/citation.cfm?id=2063632}}, but for this task, you are
+recommended to focus on this ``traditional'' pipeline design, so that we can
+easily bundle your components for the big experiment.
+
+Before you think about the architecture and engineering, it's a good time to
+have a discussion among the team members and talk about what you can do to
+improve the performance based on the baseline implementation given by the
+HelloQA project. Put them in your Wiki page, and in the next subtask, you will
+learn how to create the Wiki.
+
+\begin{qa}
+
+\item[Q1] I've looked into the baseline implementations in HelloQA. Can you give
+us some more ideas on how to improve the system?
+
+\item[A1] Actually, since it is a past TREC task, you can easily find the papers
+from participants that describe how they tackled it. Another paper you might be
+interested in is the task overview paper from the organizer. They summarized
+many algorithms, and knowledge sources, when the competition was over:
+\url{http://trec.nist.gov/pubs/trec15/papers/GEO06.OVERVIEW.pdf}.
+
+\item[Q2] Where is the type system for HelloBioQA?
+
+\item[A2] As type system is a task specific, you should look for the one called
+\texttt{OAQATypes.xml} in \texttt{BaseQA}.
+
+\end{qa}
+\end{comment}
