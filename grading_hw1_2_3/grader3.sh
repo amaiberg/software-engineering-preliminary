@@ -22,7 +22,7 @@ realpath_repl() {
 
 usage() {
   echo $1
-  echo "Usage: <GS_FILE> <HW_PREFIX: e.g., hw3> <LIST_FILE: each record has [id] [output_file] [CPE_desc_name]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
+  echo "Usage: <GS_FILE> <HW_PREFIX: e.g., hw3> <LIST_FILE: each record has [id] [output_file] [CPE_desc_name] [MainClassName]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
   exit 1
 }
 
@@ -122,7 +122,8 @@ for ((i=1;i<$n;++i))
       id=`echo $line|awk '{print $1}'`
       stud_out_file=`echo $line|awk '{print $2}'`
       cpe=`echo $line|awk '{print $3}'`
-      echo "Student: $id,  output file: $stud_out_file  CPE file: $cpe"
+      MainClass=`echo $line|awk '{print $4}'`
+      echo "Student: $id,  output file: $stud_out_file  CPE file: $cpe MainClass: $MainClass"
 
       success=1
 
@@ -153,7 +154,8 @@ for ((i=1;i<$n;++i))
           if [ ! -f "$stud_out_file" ] 
           then
             echo "Output file is  missing, let's execute $artid" 
-            MainClass="edu.cmu.lti.f14.$HW_PREFIX.${HW_PREFIX}_$id.VectorSpaceRetrieval"
+            #They often screw up class names, we need to be able to specify them flexibly
+            #MainClass="edu.cmu.lti.f14.$HW_PREFIX.${HW_PREFIX}_$id.VectorSpaceRetrieval"
             echo "mvn clean compile exec:java -Dexec.mainClass=$MainClass  -Dexec.args=\"$cpe\""
             mvn clean compile exec:java -Dexec.mainClass=$MainClass  -Dexec.args="$cpe"
             if [ "$?" != "0" ]
