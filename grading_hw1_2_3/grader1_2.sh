@@ -40,7 +40,7 @@ fi
 # Gold standard file
 GS_FILE=`realpath_repl $2`
 
-if [ "$IN_FILE" == "" ] ; then
+if [ "$GS_FILE" == "" ] ; then
   usage "Missing GS_FILE"
 fi
 
@@ -62,7 +62,7 @@ fi
 # results/failed.txt
 LIST_FILE=$4
 
-if [ "$IN_FILE" == "" ] ; then
+if [ "$LIST_FILE" == "" ] ; then
   usage "Missing LIST_FILE"
 fi
 
