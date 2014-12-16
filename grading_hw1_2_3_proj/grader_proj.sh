@@ -156,36 +156,19 @@ for ((i=1;i<$n;++i))
         else 
           create_run_dir $ver $artid
           cd "$BASE_DIR"
-          #if [ ! -f "$stud_out_file" ] 
-          #then
-            #echo "Output file is  missing, let's execute $artid" 
-            echo "mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args=\"$cpe\""
-            mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args="$cpe"
-            if [ "$?" != "0" ]
-            then
-              str="$artid ERROR running '$pom'"
-              echo $str 
-              echo $str  >> "$REPORT_FILE"
-              success=0
-            fi
-          #fi
 
-          #if [ ! -f "$stud_out_file" ] 
-          #then
-          #  str="$artid ERROR missing output file $stud_out_file"
-          #  echo $str 
-          #  echo $str  >> "$REPORT_FILE"
-          #  success=0
-          #else
-          #  "$SCRIPT_DIR"/precision_recall.py --truth "$GS_FILE" --test "$stud_out_file" 2>&1|tee out
-          #  score=`grep 'F1 Score:' out`
-          #  echo "$artid $ver SUCCESS $score" >> "$REPORT_FILE"
-          #fi
-          #if [ "$success" = "0" ] ; then
-            # Let's keep a copy just in case
-          #  cp -f "$stud_out_file" "$stud_out_file.bak"
-          #  rm -f "$stud_out_file"
-          #fi
+
+
+          echo "mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args=\"$cpe\""
+          mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args="$cpe"
+          if [ "$?" != "0" ]
+          then
+            str="$artid ERROR running '$pom'"
+            echo $str 
+            echo $str  >> "$REPORT_FILE"
+            success=0
+          fi
+
           cd -
         fi
       fi 
