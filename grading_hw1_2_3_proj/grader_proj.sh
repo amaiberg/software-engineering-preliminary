@@ -22,7 +22,7 @@ realpath_repl() {
 
 usage() {
   echo $1
-  echo "Usage: <INPUT_DIR> <LIST_FILE: each record has [team-project-subdir]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
+  echo "Usage: <INPUT_DIR> <LIST_FILE: each record has [team-project-subdir cpe-descriptor-name]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
   exit 1
 }
 
@@ -107,6 +107,14 @@ create_run_dir() {
     echo "Failure creating a link to input dir $INPUT_DIR!"
     exit 1
   fi
+  if [ ! -h "project.properties" ]
+  then
+    ln -s "$SCRIPT_DIR/project.properties" project.properties
+  fi
+  if [ "$?" !=  "0" ] ; then
+    echo "Failure creating a link to $SCRIPT_DIR/project.properties!"
+    exit 1
+  fi
   cd -
 }
 
@@ -119,7 +127,7 @@ for ((i=1;i<$n;++i))
     if [ "$line" !=  "" ] 
     then
       subproj_dir=`echo $line|awk '{print $1}'`
-      cpe="CpeDescriptor.xml"
+      cpe=`echo $line|awk '{print $2}'`
       echo "Project: $subproj_dir, CPE file: $cpe"
 
       success=1
