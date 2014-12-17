@@ -99,10 +99,14 @@ create_run_dir() {
     echo "Failure cd to '$BASE_DIR'"
     exit 1
   fi
-  if [ ! -h "input" ]
+  if [ ! -h "src/main/resources/input" ]
   then
-    ln -s "$INPUT_DIR" input
+    ln -s "$INPUT_DIR" src/main/resources/input
   fi
+  #if [ ! -h "input" ]
+  #then
+    #ln -s "$INPUT_DIR" input
+  #fi
   if [ "$?" !=  "0" ] ; then
     echo "Failure creating a link to input dir $INPUT_DIR!"
     exit 1
