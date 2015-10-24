@@ -22,47 +22,29 @@ realpath_repl() {
 
 usage() {
   echo $1
-  echo "Usage: <IN_FILE> <GS_FILE> <HW_PREFIX: e.g., hw1, or hw2> <LIST_FILE: each record has [id] [input_file] [output_file] [CPE_desc_name]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
+  echo "Usage: <INPUT_DIR> <LIST_FILE: each record has [team-project-subdir cpe-descriptor-name]> <MAVEN_DIR: Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw1/>"
   exit 1
 }
 
-# An input file
-IN_FILE=$1
+# Input dir
+INPUT_DIR=`realpath_repl $1`
 
-if [ "$IN_FILE" == "" ] ; then
-  usage "Missing IN_FILE"
+if [ "$INPUT_DIR" == "" ] ; then
+  usage "Missing INPUT_DIR"
 fi
 
-if [ ! -f "$IN_FILE" ] ; then
-  usage "IN_FILE is not a file"
-fi
-
-# Gold standard file
-GS_FILE=`realpath_repl $2`
-
-if [ "$IN_FILE" == "" ] ; then
-  usage "Missing GS_FILE"
-fi
-
-if [ ! -f "$GS_FILE" ] ; then
-  usage "GS_FILE is not a file"
-fi
-
-# Prefix, e.g., hw1
-HW_PREFIX=$3
-
-if [ "$HW_PREFIX" == "" ] ; then
-  usage "Missing HW_PREFIX"
+if [ ! -d "$INPUT_DIR" ] ; then
+  usage "INPUT_DIR is not a directory"
 fi
 
 # As input this script takes a file, where each line is:
-# <student it> <in file> <CpeDescriptorFile> 
+# <student it> ...
 # Results are saved in the folder results.
 # If we failed to run some student's archive, we add her/his name to the file
 # results/failed.txt
-LIST_FILE=$4
+LIST_FILE=$2
 
-if [ "$IN_FILE" == "" ] ; then
+if [ "$LIST_FILE" == "" ] ; then
   usage "Missing LIST_FILE"
 fi
 
@@ -72,7 +54,7 @@ fi
 
 echo "" >> $LIST_FILE
 
-MAVEN_DIR=$5
+MAVEN_DIR=$3
 
 if [ "$MAVEN_DIR" == "" ] ; then
   usage "Missing MAVEN_DIR"
@@ -112,18 +94,29 @@ create_run_dir() {
     echo "Failure creating pom.xml  file!"
     exit 1
   fi
-  inf=`realpath_repl "$IN_FILE"`
   cd "$BASE_DIR"
   if [ "$?" !=  "0" ] ; then
     echo "Failure cd to '$BASE_DIR'"
     exit 1
   fi
-  if [ ! -h "$stud_in_file" ]
+  if [ ! -h "src/main/resources/input" ]
   then
-    ln -s "$inf" "$stud_in_file"
+    ln -s "$INPUT_DIR" src/main/resources/input
+  fi
+  #if [ ! -h "input" ]
+  #then
+    #ln -s "$INPUT_DIR" input
+  #fi
+  if [ "$?" !=  "0" ] ; then
+    echo "Failure creating a link to input dir $INPUT_DIR!"
+    exit 1
+  fi
+  if [ ! -h "project.properties" ]
+  then
+    ln -s "$SCRIPT_DIR/project.properties" project.properties
   fi
   if [ "$?" !=  "0" ] ; then
-    echo "Failure creating a link to input file!"
+    echo "Failure creating a link to $SCRIPT_DIR/project.properties!"
     exit 1
   fi
   cd -
@@ -137,16 +130,14 @@ for ((i=1;i<$n;++i))
     line=`head -$i "$LIST_FILE"|tail -1`
     if [ "$line" !=  "" ] 
     then
-      id=`echo $line|awk '{print $1}'`
-      stud_in_file=`echo $line|awk '{print $2}'`
-      stud_out_file=`echo $line|awk '{print $3}'`
-      cpe=`echo $line|awk '{print $4}'`
-      echo "Student: $id, input file: $stud_in_file,  output file: $stud_out_file  CPE file: $cpe"
+      subproj_dir=`echo $line|awk '{print $1}'`
+      cpe=`echo $line|awk '{print $2}'`
+      echo "Project: $subproj_dir, CPE file: $cpe"
 
       success=1
 
       # Should print the latest one
-      pom=`ls $MAVEN_DIR/$HW_PREFIX-$id/*/*.pom|$SCRIPT_DIR/sort_pom_ver.py|tail -1` 
+      pom=`ls $MAVEN_DIR/$subproj_dir/*/*.pom|$SCRIPT_DIR/sort_pom_ver.py|tail -1` 
 
       if [ "$pom" = "" ]
       then
@@ -169,36 +160,19 @@ for ((i=1;i<$n;++i))
         else 
           create_run_dir $ver $artid
           cd "$BASE_DIR"
-          if [ ! -f "$stud_out_file" ] 
-          then
-            echo "Output file is  missing, let's execute $artid" 
-            echo "mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args=\"$cpe\""
-            mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args="$cpe"
-            if [ "$?" != "0" ]
-            then
-              str="$artid ERROR running '$pom'"
-              echo $str 
-              echo $str  >> "$REPORT_FILE"
-              success=0
-            fi
-          fi
 
-          if [ ! -f "$stud_out_file" ] 
+
+
+          echo "mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args=\"$cpe\""
+          mvn clean compile exec:java -Dexec.mainClass=RunJarCPE  -Dexec.args="$cpe"
+          if [ "$?" != "0" ]
           then
-            str="$artid ERROR missing output file $stud_out_file"
+            str="$artid ERROR running '$pom'"
             echo $str 
             echo $str  >> "$REPORT_FILE"
             success=0
-          else
-            "$SCRIPT_DIR"/precision_recall.py --truth "$GS_FILE" --test "$stud_out_file" 2>&1|tee out
-            score=`grep 'F1 Score:' out`
-            echo "$artid $ver SUCCESS $score" >> "$REPORT_FILE"
           fi
-          if [ "$success" = "0" ] ; then
-            # Let's keep a copy just in case
-            cp -f "$stud_out_file" "$stud_out_file.bak"
-            rm -f "$stud_out_file"
-          fi
+
           cd -
         fi
       fi 

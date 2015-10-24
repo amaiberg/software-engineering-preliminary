@@ -34,12 +34,17 @@ import sys
 #sys.exit(0)
 
 if __name__ == "__main__":
+  if len(sys.argv) != 4:
+    print "Usage [Maven folder root, e.g.,  ~/.m2/repository/edu/cmu/lti/11791/f14/hw3] [Homework prefix, e.g., hw3] [the list of student andrew IDs]"
+    sys.exit(1)
+
   root = sys.argv[1]
-  student_list = sys.argv[2]
+  hw_prefix = sys.argv[2]
+  student_list = sys.argv[3]
   for student in read_student_list(student_list):
     for part in ['report', 'uml']:
-      path = 'docs/hw1-%s-' + part + '.*'
-      jar_path = get_jar_path(root, 'hw1-%s' % student)
+      path = 'doc*/' + hw_prefix + '-%s-' + part + '.*'
+      jar_path = get_jar_path(root, hw_prefix + '-%s' % student)
       if jar_path is not None:
         artifact = os.path.basename(jar_path)
         result = extract_pdf(jar_path, path % student)
