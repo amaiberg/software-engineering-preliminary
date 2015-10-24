@@ -1,0 +1,56 @@
+
+\section{Learning biomedical question answering task}
+
+Question Answering (QA) is a computer science discipline within the fields of
+information retrieval and natural language processing (NLP) which is concerned
+with building systems that automatically answer questions posed by humans in a
+natural
+language.\footnote{\url{https://en.wikipedia.org/wiki/Question_answering}} The
+system you are going to build will handle biomedical questions (e.g. ``Is Rheumatoid Arthritis more common in men or women?''). As you can see, different from a general question answering, a biomedical QA system requires domain specific knowledge bases, NLP tools, literature collections, etc., in order to produce meaningful answers.
+
+One of the biomedical information retrieval challenges is the BioASQ task\footnote{\url{http://www.bioasq.org/}}. BioASQ provides a platform for testing and experiments of retrieval methods for different tasks. Specifically, you will be focusing on Task 2b of the BioASQ challenge on the retrieval of ``relevant concepts (from designated terminologies and ontologies), relevant articles (in English, from designated article repositories), relevant snippets (from the relevant articles), relevant RDF triples (from designated ontologies), exact answers (e.g., named entities in the case of factoid questions) and 'ideal' answers (paragraph-sized summaries), both in English on retrieval of relevant passages within an article collection from biomedical journals as answers to the questions in biomedical domain\footnote{From BioASQ task description}''.
+
+BioASQ provides 29 annotated sample questions created by domain experts in biology. There are four types of questions: factoid, yes/no, list questions (provide one or more answers), summary questions. All of the questions are listed
+in Table \ref{tab:question}:
+
+\begin{table}[h] \centering
+\caption{29 questions from BioASQ\label{tab:question}}
+\small
+\begin{tabular}{lp{32em}}
+\hline
+Type & Question \\
+\hline
+factoid & Is Rheumatoid Arthritis more common in men or women? \\
+yesno & Are there any DNMT3 proteins present in plants?\\
+list & What is the most prominent sequence consensus for the polyadenylation site?\\ 
+summary & What is the function of the mammalian gene Irg1?\\  
+yesno & Is thrombophilia related to increased risk of miscarriage? \\
+list & Which extra thyroid tissues have thyrotropin (TSH) receptors? \\
+factoid & What is the methyl donor of DNA (cytosine-5)-methyltransferases?\\ 
+summary & Super-SILAC is a method used in quantitative proteomics. What is the super-SILAC mix? (SILAC: Stable Isotopic labelling by aminoacids in cell culture)\\
+list & Tumors of which three organs are classically associated with the multiple endocrine neoplasia type 1 syndrome?\\
+summary & What is the mechanism of action of anticoagulant medication Dabigatran? \\ 
+yesno & Is Mammaprint approved by the United States Food and Drug Administration?\\  
+list & Which acetylcholinesterase inhibitors are used for treatment of myasthenia gravis?\\ 
+factoid & Which medication should be administered when managing patients with suspected acute opioid overdose?\\       
+yesno & Does the Oncotype DX test work with paraffin embedded tissues? \\           
+yesno & Is depression associated with poor prognosis of brain tumor patients?\\ 
+summary & What is known about the reimbursement of Viagra? \\
+yesno & Does HER2 under-expression lead to favorable response to trastuzumab? \\ 
+yesno  & Can Alzheimer's disease related miRNAs be detected in patients' blood? \\          
+factoid & Which antiepileptic drug is most strongly associated with spina bifida? \\         
+factoid & Where in the cell do we find the protein Cep135?\\           
+list & In which isochores are Alu elements enriched? \\
+list & Which forms of cancer is the Tpl2 gene associated with? \\           
+summary & What is the INSURE procedure in premature babies?\\         
+list & Which species may be used for the biotechnological production of itaconic acid? \\
+summary & What is the role of TRH in hypertension? \\
+list & Which histone marks are deposited by Set7?\\ 
+yesno & Are there any desmins present in plants? \\ 
+summary & Is it possible to detect survivin protein expression in normal human adult tissues? \\
+summary & How do histone methyltransferases cause histone modification?\\ 
+\hline
+\end{tabular}
+\end{table}
+
+Concepts, documents, and triples will be wrapped in services described in Milestone 1. Snippet retrieval will be described in Milestone 2. Finally, exact answer generation will be described in Milestone 3.

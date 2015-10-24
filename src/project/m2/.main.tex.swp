@@ -1,0 +1,220 @@
+% 
+% This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+% Unported License. To view a copy of this license, visit
+% http://creativecommons.org/licenses/by-sa/3.0/.
+%
+% author: Zi Yang <ziy@cs.cmu.edu>
+% date: 09/02/2012
+%
+\documentclass[oneside]{memoir}
+\stepcounter{chapter}
+\renewcommand{\chaptername}{Milestone}
+\usepackage{csquotes}
+\usepackage{times} 
+\usepackage{cite}
+\usepackage{lipsum}
+\usepackage{titlesec} 
+\titleformat{\section}{\normalfont\Large\bfseries}{M \thesection}{1em}{}
+
+\usepackage{todonotes}
+\usepackage{url}  
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{../../fig/cse-and-qa/}} 
+\usepackage{multirow}
+\usepackage{pstricks}
+\usepackage{epsfig}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0} 
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightblue}{rgb}{0.95,0.95,1} 
+\definecolor{mauve}{rgb}{0.58,0,0.82} 
+\lstset{ 
+  basicstyle=\ttfamily\small,
+  numbers=left,  
+  numberstyle=\tiny\color{gray},  
+  stepnumber=2,      
+  numbersep=5pt,   
+  backgroundcolor=\color{lightblue},    
+  showspaces=false,    
+  showstringspaces=false,     
+  showtabs=false,   
+  frame=lines,      
+  rulecolor=\color{black},    
+  tabsize=2,   
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false, 
+  title=\lstname,
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen}, 
+  stringstyle=\color{mauve},  
+  escapeinside={\%*}{*)},
+  morekeywords={*,...}, 
+}
+\usepackage{letltxmacro} 
+\makeatletter
+\LetLtxMacro\@@lst@inputlisting\lst@inputlisting
+\renewcommand\lst@inputlisting[2][]{%
+  \try@listingspath{#2}% 
+  \if@tempswa
+    \typeout{Using \@foundlisting}%
+    \@@lst@inputlisting[#1]{\@foundlisting}% 
+  \else
+    \typeout{Missing file #2}\endgroup  
+  \fi} 
+\def\listingspath#1{\def\@listingspath{#1}}    
+\def\try@listingspath#1{% 
+  \@tempswafalse  
+  \expandafter\@tfor\expandafter\next     
+  \expandafter:\expandafter=\@listingspath\do 
+  {\if@tempswa\@break@tfor\fi  
+   \IfFileExists{\next/#1}{\@tempswatrue\xdef\@foundlisting{\next/#1}}{}}%
+} 
+\makeatletter  
+\listingspath{{../../../fig/cse-and-qa/}}
+\listingspath{{../../../lst/cse-and-qa/}}
+\newcolumntype{P}[1]{>{\endgraf\vspace*{-\baselineskip}}p{#1}}
+\usepackage{multirow} 
+  
+\definecolor{shadecolor}{gray}{0.9}
+
+\newenvironment{qa} 
+{\begin{shaded}\begin{itemize}}
+{\end{itemize}\end{shaded}}
+
+\title{{\bfseries 11-791 Design and Engineering of Intelligent Information
+System Fall 2014\\Project}\\
+\vspace{1em}
+\itshape\rmfamily Building a Pipeline for Biomedical Question
+Answering}
+\date{}
+
+\begin{document} 
+
+\begin{titlingpage} 
+\maketitle  
+ 
+\hspace{-0.1\textwidth} 
+\begin{minipage}{1.2\textwidth} 
+\vspace{-5em}
+\textbf{Important dates} 
+\begin{itemize}
+\item \textbf{Hand out: November 13.}\footnote{This version was built on \today}
+\item \textbf{Milestone 2 (M2) : Snippets retrieval.  Turn in: November 20.}
+\begin{itemize}
+\item For this milestone, you only need to send us the URL of your project repository page (i.e.,\url{https://github.com/COURSENUM-ID/project-teamID} where `COURSENUM' is the course designation number 11791/11693, and ID is your assigned team number). We will look into your Issues page and Wiki page, and expect you have created milestones and issues, reported the results of your components, and completed proposal.
+\end{itemize}
+\end{itemize}
+\end{minipage}
+
+\hspace{-0.1\textwidth}
+  
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}      
+  
+ 
+\end{minipage}   
+\hspace{-0.1\textwidth}    
+  
+\hspace{-0.1\textwidth}      
+     
+\begin{comment}
+\todo{update this to match project organization}
+\todo{update archetype file structure}     
+\begin{minipage}{1.2\textwidth}
+\textbf{Submission Structure:}
+ 
+You should always organize your project in the same hierarchy as shown
+below for all your submissions: 
+    
+\small   
+\begin{verbatim} 
+hw2-teamXX
+|- pom.xml
+|- data                           /* git-ignore this folder, since
+`- src
+     `- main
+        |- java/edu/cmu/lti/oaqa/openqa/test/teamXX 
+      |   `- **/*.java             /* your Java codes go into this 
+      |                            * folder as you did before */
+        `- resources 
+           |- input
+           |- gs 
+           `- hellobioqa
+              |- collection        /* descriptors for collection reader,
+              |- keyterm            * example keyterm extractors,
+              |- retrieval          * example retrieval strategists,
+              |- passage            * example passage extractors */
+              |- hellobioqa.yaml   /* the entry point for the example 
+              |                     * pipeline and your pipeline */
+              `- teamXX            /* your descriptors go into here */
+                 `- **/*.yaml
+
+\end{verbatim}   
+\normalsize  
+ 
+Several notes about organizing your Maven project and other additional
+information: 
+ 
+\begin{enumerate}
+
+\item \textbf{Submission:} The same way as you did for Homework 0 and 1 (set up
+GitHub repo, create Maven project, write your code, submit to Maven repo),
+except that the name has changed to project-teamXX (XX is a two-digit number from 01
+to 08).
+
+\item \textbf{Your source files and descriptors:} 
+\texttt{java/edu/cmu/lti/oaqa/openqa/test/teamXX} means you should create
+directories (or packages in terms of Java program structure) iteratively from
+\texttt{java}, all the way to \texttt{teamXX}.
+
+\item \textbf{Comments, Javadocs, and documentations:} They are still important
+if you want us and other users to better understand your code. 
+\end{enumerate}
+\hspace{-0.1\textwidth}
+\end{comment}
+ 
+\hspace{-0.1\textwidth}     
+\begin{minipage}{1.2\textwidth}     
+       
+\textbf{Useful information}    
+\begin{enumerate}         
+
+\item Please visit Piazza regularly to check if a newer version is published. We may have new versions or revised instruction at the begining of 
+each milestone.  
+          
+We expect that most of the general communication between the instructor team and students will take place on Piazza
+\url{https://piazza.com/class/hyvsubeilei6dd}.
+For private questions, e.g., regarding grades, you may contact instructors by e-mail.  
+Your friendly TAs are:  
+Avner Maiberg (\href{mailto:amaiberg@andrew.cmu.edu}{\nolinkurl{amaiberg@andrew.cmu.edu}}), 
+Parag Argawal (\href{mailto:paraga@andrew.cmu.edu}{\nolinkurl{paraga@andrew.cmu.edu}}), 
+Leonid (Leo) Boytsov (\href{mailto:srchvrs@cmu.edu}{\nolinkurl{srchvrs@cmu.edu}}), and 
+Xuezi (Manfred) Zhang (\href{mailto:xueziz@andrew.cmu.edu}{\nolinkurl{xueziz@andrew.cmu.edu}}).
+\item Again, both source files and pdf file of this assignment are
+publicly available on my GitHub          
+            
+\url{http://github.com/amaiberg/software-engineering-preliminary}   
+ 
+Please feel free to fork the project and send a pull request back to me as some
+of you did for Homework 0 for any error. Or you can just report an issue at
+ 
+\url{http://github.com/amaiberg/software-engineering-preliminary/isues} 
+  
+\end{enumerate}   
+ 
+ 
+\end{minipage}   
+\hspace{-0.1\textwidth}  
+  
+\input{bioqa/intro}    
+ 
+\newpage 
+\bibliography{mybib}{}
+\bibliographystyle{plain}
+\end{titlingpage}
+\end{document}

@@ -1,0 +1,258 @@
+% 
+% This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+% Unported License. To view a copy of this license, visit
+% http://creativecommons.org/licenses/by-sa/3.0/.
+%
+% author: Zi Yang <ziy@cs.cmu.edu>
+% date: 09/02/2012
+%
+\documentclass[oneside]{memoir}
+\renewcommand{\chaptername}{Milestone}
+\usepackage{csquotes}
+\usepackage{times} 
+\usepackage{cite}
+\usepackage{lipsum}
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{M \thesection}{1em}{}
+\usepackage{todonotes}
+\usepackage{url}  
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{../../fig/cse-and-qa/}} 
+\usepackage{multirow}
+\usepackage{pstricks}
+\usepackage{epsfig}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0} 
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightblue}{rgb}{0.95,0.95,1} 
+\definecolor{mauve}{rgb}{0.58,0,0.82} 
+\lstset{ 
+  basicstyle=\ttfamily\small,
+  numbers=left,  
+  numberstyle=\tiny\color{gray},  
+  stepnumber=2,      
+  numbersep=5pt,   
+  backgroundcolor=\color{lightblue},    
+  showspaces=false,    
+  showstringspaces=false,     
+  showtabs=false,   
+  frame=lines,      
+  rulecolor=\color{black},    
+  tabsize=2,   
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false, 
+  title=\lstname,
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen}, 
+  stringstyle=\color{mauve},  
+  escapeinside={\%*}{*)},
+  morekeywords={*,...}, 
+}
+\usepackage{letltxmacro} 
+\makeatletter
+\LetLtxMacro\@@lst@inputlisting\lst@inputlisting
+\renewcommand\lst@inputlisting[2][]{%
+  \try@listingspath{#2}% 
+  \if@tempswa
+    \typeout{Using \@foundlisting}%
+    \@@lst@inputlisting[#1]{\@foundlisting}% 
+  \else
+    \typeout{Missing file #2}\endgroup  
+  \fi} 
+\def\listingspath#1{\def\@listingspath{#1}}    
+\def\try@listingspath#1{% 
+  \@tempswafalse  
+  \expandafter\@tfor\expandafter\next     
+  \expandafter:\expandafter=\@listingspath\do 
+  {\if@tempswa\@break@tfor\fi  
+   \IfFileExists{\next/#1}{\@tempswatrue\xdef\@foundlisting{\next/#1}}{}}%
+} 
+\makeatletter  
+\listingspath{{../../../fig/cse-and-qa/}}
+\listingspath{{../../../lst/cse-and-qa/}}
+\newcolumntype{P}[1]{>{\endgraf\vspace*{-\baselineskip}}p{#1}}
+\usepackage{multirow} 
+  
+\definecolor{shadecolor}{gray}{0.9}
+
+\newenvironment{qa} 
+{\begin{shaded}\begin{itemize}}
+{\end{itemize}\end{shaded}}
+
+\title{{\bfseries 11-791 Design and Engineering of Intelligent Information
+System Fall 2014\\Project}\\
+\vspace{1em}
+\itshape\rmfamily Building a Pipeline for Biomedical Question
+Answering}
+
+\date{}
+
+\begin{document} 
+
+\begin{titlingpage} 
+\maketitle  
+ 
+\hspace{-0.1\textwidth} 
+\begin{minipage}{1.2\textwidth} 
+\vspace{-5em}
+\textbf{Important dates} 
+\begin{itemize}
+\item \textbf{Hand out: November 3.}\footnote{This version was built on \today}
+\item \textbf{Milestone 1 (M1) : Concepts, documents, and triples retrieval.  Turn in: November 10 (tentative).}
+\begin{itemize}
+\item For this milestone, you only need to send us the URL of your project repository page (i.e.,\url{https://github.com/COURSENUM-ID/project-teamID} where `COURSENUM' is the course designation number 11791/11693, and ID is your assigned team number). We will look into your Issues page and Wiki page, and expect you have created milestones and issues, reported the results of your components, and completed proposal.
+\end{itemize}
+\end{itemize}
+\end{minipage}
+
+\hspace{-0.1\textwidth}
+  
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}      
+  
+ 
+\end{minipage}   
+\hspace{-0.1\textwidth}    
+  
+\hspace{-0.1\textwidth}      
+     
+\begin{comment}
+\todo{update this to match project organization}
+\todo{update archetype file structure}     
+\begin{minipage}{1.2\textwidth}
+\textbf{Submission Structure:}
+ 
+You should always organize your project in the same hierarchy as shown
+below for all your submissions: 
+    
+\small   
+\begin{verbatim} 
+hw2-teamXX
+|- pom.xml
+|- data                           /* git-ignore this folder, since
+`- src
+     `- main
+        |- java/edu/cmu/lti/oaqa/openqa/test/teamXX 
+      |   `- **/*.java             /* your Java codes go into this 
+      |                            * folder as you did before */
+        `- resources 
+           |- input
+           |- gs 
+           `- hellobioqa
+              |- collection        /* descriptors for collection reader,
+              |- keyterm            * example keyterm extractors,
+              |- retrieval          * example retrieval strategists,
+              |- passage            * example passage extractors */
+              |- hellobioqa.yaml   /* the entry point for the example 
+              |                     * pipeline and your pipeline */
+              `- teamXX            /* your descriptors go into here */
+                 `- **/*.yaml
+
+\end{verbatim}   
+\normalsize  
+ 
+Several notes about organizing your Maven project and other additional
+information: 
+
+\begin{enumerate}
+
+\item \textbf{Submission:} The same way as you did for Homework 0 and 1 (set up
+GitHub repo, create Maven project, write your code, submit to Maven repo),
+except that the name has changed to project-teamXX (XX is a two-digit number from 01
+to 08).
+
+\item \textbf{Your source files and descriptors:} 
+\texttt{java/edu/cmu/lti/oaqa/openqa/test/teamXX} means you should create
+directories (or packages in terms of Java program structure) iteratively from
+\texttt{java}, all the way to \texttt{teamXX}.
+
+\item \textbf{Comments, Javadocs, and documentations:} They are still important
+if you want us and other users to better understand your code. 
+\end{enumerate}
+\hspace{-0.1\textwidth}
+\end{comment}
+ 
+\hspace{-0.1\textwidth}  
+\begin{minipage}{1.2\textwidth}  
+  
+\textbf{Useful information} 
+\begin{enumerate} 
+
+\item Please visit Piazza regularly to check if a newer version is published. We may have new versions or revised instruction at the begining of
+each milestone. 
+  
+We expect that most of the general communication between the instructor team and students will take place on Piazza
+\url{https://piazza.com/class/hyvsubeilei6dd}.
+For private questions, e.g., regarding grades, you may contact instructors by e-mail.
+Your friendly TAs are:
+Avner Maiberg (\href{mailto:amaiberg@andrew.cmu.edu}{\nolinkurl{amaiberg@andrew.cmu.edu}}), 
+Parag Argawal (\href{mailto:paraga@andrew.cmu.edu}{\nolinkurl{paraga@andrew.cmu.edu}}), 
+Leonid (Leo) Boytsov (\href{mailto:srchvrs@cmu.edu}{\nolinkurl{srchvrs@cmu.edu}}), and 
+Xuezi (Manfred) Zhang (\href{mailto:xueziz@andrew.cmu.edu}{\nolinkurl{xueziz@andrew.cmu.edu}}).
+\item Again, both source files and pdf file of this assignment are
+publicly available on my GitHub          
+           
+\url{http://github.com/amaiberg/software-engineering-preliminary}   
+ 
+Please feel free to fork the project and send a pull request back to me as some
+of you did for Homework 0 for any error. Or you can just report an issue at
+ 
+\url{http://github.com/amaiberg/software-engineering-preliminary/isues} 
+  
+\end{enumerate}   
+ 
+ 
+\end{minipage}   
+\hspace{-0.1\textwidth}  
+  
+\input{bioqa/intro}    
+\begin{appendices}   
+\chapter{Web Services} 
+\subsubsection{Document Sources}
+\begin{quotation}
+The primary corpora for text-based QA in the biomedical domain are accessible through PubMed and PubMed Central. PubMed, a service provided by the National Library of Medicine (NLM), under the U.S. National Institutes of Health (NIH), contains over 23 million citations from Medline, a bibliographic database (DB) of biomedical literature, and other biomedical and life science journals dating back to the 1950s. It is accessible through the National Center for Biotechnology Information (NCBI). PubMed Central (PMC) is a digital archive of full-text biomedical and life science articles. The full text of all PubMed Central articles is freely available. As of July 2011, the archive contains approximately 2.2
+million items, including articles, editorials and letters.
+\end{quotation}
+\subsubsection{Linked Data} 
+\begin{quotation}
+The BioASQ tasks 1b and 2b require the usage of biomedical data expressed as triples, e.g., \emph{subject-predicate-object} structured facts, extracted from biomedical resources or bibliography. In this direction,the Linked Life Data project provides the LinkedLifeData platform. LinkedLifeData is a data warehouse that syndicates large volumes of heterogeneous biomedical knowledge in a common data model. The platform uses an extension of the RDF model that is able totrack the provenance of each individual fact in the repository and thus update the information. It contains currently more than 8 billion statements, with almost 2 billion entities involved. The statements areextracted from 26 biomedical resources, such as PubMed, UMLS, DrugBank, Diseasome, and Gene Ontology. The statements are publicly available, and the project provides also a wide list of instance mappings.
+\end{quotation} 
+\subsubsection{Disease Ontology} 
+\begin{quotation}  
+The Disease Ontology (\emph{DO}) contains data associating genes with human diseases, using established disease codes and terminologies. Approximately 8, 000 inherited, developmental and acquired human diseases are included in the resource. The \emph{DO} semantically integrates disease and medical vocabulary through extensive cross-mapping and integration of MeSH, ICD, NCI’s thesaurus, SNOMED CT and OMIM disease-specific terms and identifiers. The \emph{DO} is utilized for disease annotation by major biomedical databases (e.g., Array Express, NIF, IEDB), as a standard representation of human disease in biomedical ontologies (e.g., IDO, Cell line ontology, NIFSTD ontology, Experimental Factor Ontology, Influenza Ontology), and as an ontological cross-mappings resource between DO, MeSH and OMIM (e.g., GeneWiki). DO has been incorporated into open source tools (e.g., Gene Answers, FunDO) to connect gene and disease biomedical data through the lens of human disease.
+\end{quotation} 
+\subsubsection{Gene Ontology}
+\begin{quotation}
+The Gene Ontology (GO) is currently the most successful case of ontology use in bioinformatics and provides a controlled vocabulary to describe functional aspects of gene products. The ontology covers three domains: cellular component, the parts of a cell or its eextracellular environment; molecular function, the elemental activities of a gene product at the molecular level, such as binding or catalysis; and biological process, operations or sets of molecular events with a defined beginning and end, pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms.
+\end{quotation}
+\subsubsection{Jochem}
+\begin{quotation}
+Jochem (Hettne et al. (2009)), the Joint Chemical Dictionary,, is a dictionary for the identification of small molecules and drugs in text, combining information from UMLS, MeSH, ChEBI, DrugBank, KEGG, HMDB, and ChemIDplus. The resources were chosen on the basis of free availability. They are downloadable terminology databases containing small molecules from human studies. Given the variety and the population of the different resources merged in Jochem, it is currently one of the largest biomedical resources for drugs and chemicals.
+\end{quotation}
+\subsubsection{The Medical Subject Headings Hierarchy}
+\begin{quotation}
+Medical Subject Headings (MeSH) is a hierarchy of terms maintained by the United States National Library of Medicine (NLM) and its purpose is to provide headings (terms) which can be used to index scientific publications in the life sciences, e.g., journal articles, books, and articles in conference proceedings. The indexed publications may be then searched through popular search engines, such as PubMed or GoPubMed, using the MeSH headings to filter semantically the results. This retrieval methodology seems to be in some cases beneficial, especially when precision of the retrieved results is important (Doms and Schroeder (2005)).
+
+MeSH includes three types of data: (i) descriptors, also known as subject headings, (ii) qualifiers, and, (iii) supplementary concept records. Descriptors are the main terms that are used to index scientific publications. The descriptors are organized into 16 trees, and as of 2013 they are $26,8531$. They include a short description or definition of the term, and they frequently have synonyms, known as entry terms. Qualifiers, also known as subheadings, may be used additionally to narrow down the topic of each of the descriptors. In total there are approximately 80 qualifiers in MeSH. Supplementary concept records, approximately $214,000$ in the most recent MeSH release, describe mainly chemical substances and are linked to respective descriptors in order to enlarge the thesaurus with information for specific substances. MeSH is the main resource used by PubMed to index the biomedical scientific bibliography in Medline
+\end{quotation} 
+\subsection{Uniprot}
+\begin{quotation}
+The Universal Protein Resource (UniProt) provides the scientific community with a comprehensive,
+high-quality and freely accessible resource of protein sequence and functional information. Its protein
+knowledge base consists of two sections: Swiss-Prot, which is manually annotated and reviewed, and
+contains approximately 500 thousand sequences, and TrEMBL, which is automatically annotated and is
+not reviewed, and contains approximately 23 million sequences. The primary mission of the Universal
+Protein Resource (UniProt) is to support biological research by maintaining a stable, comprehensive,
+fully classified, richly and accurately annotated protein sequence knowledge base, with extensive cross-references and querying interfaces freely accessible to the scientific community. In particular, the Swiss Prot component of UniProt, it is a high-quality, manually annotated, non-redundant protein sequence database which combines information extracted from scientific literature and biocurator-evaluated computational analysis. The aim of Swiss-Prot is to provide all known relevant information about a particular protein. Annotation is regularly reviewed to keep up with current scientific findings. 
+\end{quotation}
+\end{appendices}
+\newpage 
+\bibliography{mybib}{}
+\bibliographystyle{plain}
+\end{titlingpage}
+\end{document}

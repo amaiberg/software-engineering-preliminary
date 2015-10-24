@@ -1,0 +1,177 @@
+\section{Types and evaluation metrics}
+The following  are the output types described in the official BioASQ evaluation documentation\footnote{Please note that synonyms of correct answers for factoid and list questions are also acceptable. You should do a synonym expansion of the golden set provided to get a true evaluation of your system} \cite{145}:
+\subsubsection{Yes/no Answers}
+\begin{displayquote}
+For each yes/no question, the `exact' answer of each participating system will have to be either `yes'
+or `no'. The response will be compared against the golden `exact' answer (again `yes' or `no') that
+the \emph{BioASQ} team of biomedical experts will have associated with the question.
+\end{displayquote}
+\textbf{Example:} Here the JSON key/value pair  \verb|exact_answer| corresponds to a yes/no answer.  
+\small
+\begin{verbatim}
+        "body": "Are there any DNMT3 proteins present in plants?", 
+        "concepts": [
+            "http://www.uniprot.org/uniprot/CMT1_ARATH", 
+            "http://www.uniprot.org/uniprot/CMT2_ARATH", 
+            "http://www.uniprot.org/uniprot/CMT3_ARATH"
+        ], 
+        "documents": [
+            "http://www.ncbi.nlm.nih.gov/pubmed/21150311", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/21060858", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/10781108", 
+        ], 
+        ...
+        "exact_answer": "Yes.", 
+        "type": "yesno"
+\end{verbatim}
+\normalsize
+\subsubsection{Factoid Answers}
+\begin{displayquote}
+For each factoid question, each participating system will have to return a list of up to 5 entity names,
+ordered by decreasing confidence. The \emph{BioASQ} team of biomedical experts will have associated with
+each factoid question a single golden entity name, as well as possible synonyms of that name.
+\end{displayquote}
+\textbf{Example:} Here the JSON key/value pair \verb|exact_answer| corresponds to a factoid answer.  
+\small
+\begin{verbatim}
+        "body": "Is Rheumatoid Arthritis more common in men or women?", 
+        "concepts": [
+            "http://www.disease-ontology.org/api/metadata/DOID:7148", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D001171", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D012217", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D013167", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D015535"
+        ], 
+        "documents": [
+            "http://www.ncbi.nlm.nih.gov/pubmed/23217568", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/22853635", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/1563036"
+        ], 
+        ...
+        "exact_answer": [
+            "Women"
+        ], 
+        "id": "5118dd1305c10fae75000001",  
+        "type": "factoid"
+\end{verbatim}
+\normalsize
+\subsubsection{List Answers}
+\begin{displayquote}
+For each list question, each participating system will have to return a list of entity names, jointly taken to constitute a single answer (e.g., the most common symptoms of a disease); for practical purposes,
+the maximum allowed size of each returned list may be limited (e.g., up to 100 names, each one up to 100 characters).
+\end{displayquote}
+\textbf{Example:} Here the JSON key/value pair \verb|exact_answer| corresponds to list answers.  
+\small
+\begin{verbatim}
+        "body": "What is the most prominent sequence consensus for the polyadenylation site?", 
+        "concepts": [
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D026723", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D011061", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D039221", 
+            "http://www.nlm.nih.gov/cgi/mesh/2012/MB_cgi?field=uid&exact=Find+Exact+Term&term=D039104", 
+        ], 
+        "documents": [
+            "http://www.ncbi.nlm.nih.gov/pubmed/1915889", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/1993703", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/6194440", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/7901430", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/1712333", 
+            "http://www.ncbi.nlm.nih.gov/pubmed/2513486"
+        ], 
+        "exact_answer": [
+            [
+                "AATAAA"
+            ], 
+            [
+                "AAUAAA"
+            ]
+        ], 
+        ...
+        "type": "list"
+\end{verbatim}
+\normalsize
+\subsection{Evaluation}
+Please refer to table \ref{fig:eval} to see the evaluation used for each type.
+\begin{figure}[h!]
+\begin{tabular}{|c|c|c|}
+\hline
+	\textbf{Question type} & \textbf{Participant response} & \textbf{Evaluation measures}\\ \hline
+	yes/no  & `yes' or `no' & accuracy\\ \hline
+	factoid & up to 5 entity names & strict and lenient accuracy, \textbf{MRR}\\ \hline
+	list & a list of entity names & \textbf{mean} percision, recall, \textbf{F-measure}\\ \hline
+\end{tabular}
+\label{fig:eval}
+\caption{Evaluation metrics}
+\end{figure}
+
+Also, please review the definitions of the evaluation metrics. 
+
+\begin{itemize}
+\item Accuracy:
+\begin{align}
+Acc = \dfrac{c}{n} \tag{where $c$ is the number of correct answers and $n$ is the number of questions}
+\end{align}
+\item Strict and Lenient Accuracy:
+\begin{align*}
+SAcc &= \dfrac{c_1}{n} \\ 
+LAcc &= \dfrac{c_5}{n}
+\end{align*}
+
+Where,
+\begin{itemize}
+\item  $c_1$ is the number of factoid questions that have been answered correctly when only the first element of each list is considered. 
+\item $c_5$ is the number of factoid questions that have been answered correctly when all the elements of the list are considered (i.e., the list contains at least one synonym of the golden entity name).
+\end{itemize}
+
+\item MRR:
+\begin{align*}
+MRR = \dfrac{1}{n}\sum_{i=1}^n\dfrac{1}{r(i)}
+\end{align*}
+Where $r(i)$ is the topmost position of the element containing the golden entity name (or its synonyms). If no element is found, then $r(i)=+\infty$, or $MRR=0$.
+
+
+\item Precision and Recall:
+\begin{align}
+P &= \dfrac{TP}{TP + FP} \tag{where TP are true positives, and FP are false positives}\\
+R &= \dfrac{TP}{TP + FN} \tag{where TP are true positives, and FN are false negatives}
+\end{align}
+
+\item F-measure:
+\begin{align}
+F = 2 \cdot \dfrac{P\cdot R}{P + R} \tag{Harmonic mean of Precision and Recall}
+\end{align}
+
+\item Mean Average Precision (MAP):
+\begin{align}
+MAP &= \frac{1}{n} \sum^n_{i=1}P_i  \tag{To get the average precision for list of queries $q_1, q_2, \dots, q_n$.}
+\end{align}
+\item Mean Average Precision (MAR):
+\begin{align}
+MAR &= \frac{1}{n} \sum^n_{i=1}R_i  \tag{To get the average recall for list of queries $q_1, q_2, \dots, q_n$.}
+\end{align}
+\item Mean Average Precision (MAF):
+\begin{align}
+MAF &= \frac{1}{n} \sum^n_{i=1}F_i  \tag{To get the average F-measure for list of queries $q_1, q_2, \dots, q_n$.}
+\end{align}
+\end{itemize}
+\section{Archetype}
+\subsection{Typesystem}
+For this milestone, you are required to use the typesystem \verb|OAQATypes.xml| included in the archetype. Note however, you are only required to use the types defined in \ref{ref:mappings} and their supertype ancestry. You are of course welcome to extend the typesystem and/or use any other preexisting types. Most importantly. it is imperative that you use the \verb|text| and \verb|rank| attributes, as we will use them for evaluation. 
+
+For concepts, documents, triples, and snippets you must use type mappings described in M1 and M2. Also, you must use the full URI in the \verb|uri| type.
+
+Note, for yes/no answers we ignore the rank, and simply look for the yes/no answer in \verb|text|. For factoid you will rank up to 5 answers, and for list you will rank up to 100. 
+\begin{figure}[h!]
+\begin{longtable}{c|P{6cm}}
+\textbf{BioASQ Type} & \textbf{UIMA Type}\\\hline
+Answer &  \begin{itemize} \item \verb|edu.cmu.lti.oaqa.type.answer.Answer| \begin{itemize} \item \verb|text|  \item \verb|rank| \end{itemize}  \end{itemize} \\\hline
+\end{longtable}
+\label{ref:mappings}
+\caption{Typesystem Mapping}
+\end{figure}
+\subsection{Web Services}
+You will use the same services as you did for M2 and M1.
+\subsection{Data}
+In the archetype you will also find \verb|BioASQ-SampleData1B.json| containing an annotated version of the 29 sample questions shown in M0. We also provide you with a convenience class \verb|JsonCollectionReaderHelper.java| to read from JSON format. 
+
+

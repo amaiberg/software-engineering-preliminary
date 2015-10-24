@@ -1,0 +1,84 @@
+\section{Creating Maven project from the archetype}
+For this homework, we create another archetype called \texttt{DEIIS-project-archetype} to help you quickly get your development started. We briefly show you the process you've gone through for your Homework 1.
+
+\begin{enumerate}
+
+\item Open your Eclipse's \textbf{Preferences} window, and navigate to
+\textbf{Maven} $\rightarrow$ \textbf{Archetypes}, and click \textbf{Add Remote
+Catalog\ldots}.
+
+\item Type the following URL into the \textbf{Catalog File} field.
+\url{https://raw.githubusercontent.com/oaqa/DEIIS-project-archetype/master/archetype-catalog.xml}
+\normalsize
+
+Optionally, you can add a \textbf{Description} for this catalog, for example
+``BioQA Catalog''. Then click \textbf{OK} on the \textbf{Remote Archetype
+Catalog} window and another \textbf{OK} on the \textbf{Preferences} window.
+\item Add the following to your \verb|settings.xml| from Listing \ref{settings}.
+
+\lstinputlisting[language=XML,linewidth=1.1\textwidth,caption=Configuring settings.xml,label=settings]{settings.xml}
+
+\item Now you can follow almost follow the same steps to import to Eclipse as you did
+for Homework 1. Since we have created the archetype for you, remember to
+unselect \textbf{Create a simple project (skip archetype selection)}. Then click
+\textbf{Next}.
+ 
+\item Here you can select ``BioQA Catalog'' (or other names you specified
+in the previous step) or ``All Catalogs'' in the drop-down menu for
+\textbf{Catalog}. Then, type in ``project-archetype'' (without quotes) in the \textbf{Filter}
+field, and in order to get the latest snapshot archetypes, you need to check \textbf{Include snapshot archetypes} as well. Select the archetype listed below, and click next to continue.
+
+\item In the next window, you are asked to specify the \textbf{Group Id} and
+\textbf{Artifact Id}. Similar to Homework 0 and 1, the Group Id is
+
+\begin{center}
+\textbf{edu.cmu.lti.11791.f14.project}
+\end{center}
+
+and Artifact Id is
+
+\begin{center}
+\textbf{project-teamXX}
+\end{center}
+
+with XX being your team number. Remember to specify \texttt{Package} as
+
+\begin{center}
+\textbf{edu.cmu.lti.11791.f14.project}
+\end{center}
+
+Then click \textbf{Finish}.
+
+
+\item You need to edit the \texttt{pom.xml} file to type in the SCM information
+of your GitHub repository for project as you did in Homework 0.
+
+\item Same as before, you probably need to right-click the project name, and
+click \textbf{Maven} $\rightarrow$ \textbf{Update Project} to download the
+dependencies.
+
+\end{enumerate}
+
+You can see that we have included:
+
+\begin{itemize}
+
+\item the \texttt{pom.xml}. To see the dependencies you can click the \textbf{Dependencies} tab after you double-click the pom file. There you will see that in addition to the core UIMA components, the project depends only on the \texttt{bioasq-gopubmed-client} project. This client will simplify calling all the ontology services defined for this milestone.
+
+If you want to take a look at what is inside \texttt{bioasq-gopubmed-client} project and
+other indirect dependencies, you can unfold the \texttt{Maven Dependencies}
+folder under your project name in the Package Explorer View.
+\end{itemize}
+
+Before you commit and push all the initial code changes to GitHub repository, we
+suggest you to first test if you can successfully run the pipeline.
+\begin{comment}
+
+\begin{enumerate}
+item Right-click this file in the Package Explorer View, and then click
+\textbf{Run As} $\rightarrow$ \textbf{hellobioqa}. Wait until all 28 questions
+are processed, and the evaluation results are printed to the console, and you
+find no exceptions are thrown.
+\item Now, other team members are able to clone the repository to their workspaces and start working on particular task. When you are asked to \textbf{Select a wizard to use for importing projects}, don't forget to select \textbf{Import existing projects} as long as your team leader commited .project and .classth to the repository.
+\end{enumerate}
+\end{comment}

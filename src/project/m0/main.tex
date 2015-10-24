@@ -1,0 +1,303 @@
+% 
+% This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+% Unported License. To view a copy of this license, visit
+% http://creativecommons.org/licenses/by-sa/3.0/.
+%
+% author: Zi Yang <ziy@cs.cmu.edu>
+% date: 09/02/2012
+%
+\documentclass[oneside]{memoir}
+\renewcommand{\chaptername}{Task}
+
+\usepackage{times}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{Task \thesection}{1em}{}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+\graphicspath{{../../fig/cse-and-qa/}}
+
+\usepackage{pstricks}
+\usepackage{epsfig}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightblue}{rgb}{0.95,0.95,1}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=2,    
+  numbersep=5pt,
+  backgroundcolor=\color{lightblue},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=lines,
+  rulecolor=\color{black},
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  title=\lstname,
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  escapeinside={\%*}{*)},
+  morekeywords={*,...},
+}
+\usepackage{letltxmacro}
+\makeatletter
+\LetLtxMacro\@@lst@inputlisting\lst@inputlisting
+\renewcommand\lst@inputlisting[2][]{%
+  \try@listingspath{#2}%
+  \if@tempswa
+    \typeout{Using \@foundlisting}%
+    \@@lst@inputlisting[#1]{\@foundlisting}%
+  \else
+    \typeout{Missing file #2}\endgroup
+  \fi}
+\def\listingspath#1{\def\@listingspath{#1}}
+\listingspath{}
+\def\try@listingspath#1{%
+  \@tempswafalse
+  \expandafter\@tfor\expandafter\next
+  \expandafter:\expandafter=\@listingspath\do
+  {\if@tempswa\@break@tfor\fi
+   \IfFileExists{\next/#1}{\@tempswatrue\xdef\@foundlisting{\next/#1}}{}}%
+}
+\makeatletter
+\listingspath{{../../lst/cse-and-qa/}}
+
+\usepackage{multirow}
+
+\definecolor{shadecolor}{gray}{0.9}
+
+\newenvironment{qa}
+{\begin{shaded}\begin{itemize}}
+{\end{itemize}\end{shaded}}
+
+\title{{\bfseries 11-791 Design and Engineering of Intelligent Information
+System Fall 2014\\Project}\\
+\vspace{1em}
+\itshape\rmfamily Building a Pipeline for Biomedical Question
+Answering}
+
+\date{}
+
+\begin{document}
+
+\begin{titlingpage}
+\maketitle
+
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}
+\vspace{-5em}
+\textbf{Important dates}
+\begin{itemize}
+
+\item \textbf{Hand out: October 24.}\footnote{This version was built on \today}
+
+
+\item \textbf{Milestone 0 (M0): Project Wiki and proposal draft. Turn in: October 27.}
+\begin{itemize}
+\item You are required to fill out the project proposal for your assigned team on a newly created GitHub repository. Please send us the URL of your project repository page (i.e.,\url{https://github.com/COURSENUM-ID/project-teamID} where `COURSENUM' is the course designation number 11791/11693, and ID is your assigned team number). We expect to find a filled out draft of the proposal template on your project Wiki. Please note that this is only a draft of your proposal, the deadline is just to get your project wiki and your teams together. You will continue working on this proposal until Milestone 1. Please see the proposal outline at the end of this document.
+\end{itemize}
+\item \textbf{Milestone 1 (M1) : Concepts, documents, and triples retrieval.  Turn in: November 10.}
+
+\begin{itemize}
+
+\item As in previous homeworks, you are required to submit all the sources for your components via a Maven release, and you DON'T need to submit any other documents. 
+
+\item In addition, please send us the URL of your project repository page (i.e.,\url{https://github.com/COURSENUM-ID/project-teamID} where `COURSENUM' is the course designation number 11791/11693, and ID is your assigned team number). We will look into your Issues page and Wiki page, and expect you have created milestones and issues, reported the results of your components, and completed proposal.
+
+\end{itemize}
+
+\item \textbf{Milestone 2 (M2): Snippets retrieval. Turn in: November 19.}
+
+\begin{itemize}
+
+\item You are required to submit all the sources for your components via a Maven release, and you DON'T need to submit any other documents. 
+
+\item We will again look into your Issues page and Wiki page, and expect you
+properly solved your previous created milestones and issues, and probably
+created new milestones and issues, and reported the evaluation results of your
+M2 on your own, your team meeting minutes and probably your revised project
+goals.
+
+\end{itemize}
+
+\end{itemize}
+
+\end{minipage}
+\hspace{-0.1\textwidth}
+
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}
+
+\begin{itemize}
+
+\item \textbf{Milestone 3 (M3): Exact answer generation. Turn in: December 1.}
+
+\begin{itemize} 
+
+\item You are required to submit all the sources for your components via a Maven release.
+
+\item We expect you properly solved all the issues and accomplish all
+milestones, and reported the evaluation results of your final system, your team
+meeting minutes and a final summary.
+
+\item Name your presentation slides as
+\texttt{project-teamID.ppt}\footnote{Or other formats, e.g., pptx, odp, pdf, etc.}
+and put it in the \texttt{src/main/resources/docs}.
+
+\end{itemize}
+
+\end{itemize}
+
+\end{minipage}
+\hspace{-0.1\textwidth} 
+
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}
+
+
+\begin{comment}
+You should always organize your project in the same hierarchy as shown
+below for all your submissions:
+
+\small
+\begin{verbatim}
+hw2-teamXX
+|- pom.xml
+|- launches
+|  `- hellobioqa.launch
+|- data                           /* git-ignore this folder, since
+|  `- oaqa-eval.db3                * it will become huge */
+`- src
+     `- main
+        |- java/edu/cmu/lti/oaqa/openqa/test/teamXX
+      |   `- **/*.java             /* your Java codes go into this 
+      |                            * folder as you did before */
+        `- resources
+           |- input
+           |- gs
+           `- hellobioqa
+              |- collection        /* descriptors for collection reader,
+              |- keyterm            * example keyterm extractors,
+              |- retrieval          * example retrieval strategists,
+              |- passage            * example passage extractors */
+              |- hellobioqa.yaml   /* the entry point for the example 
+              |                     * pipeline and your pipeline */
+              `- teamXX            /* your descriptors go into here */
+                 `- **/*.yaml
+
+\end{verbatim}
+\begin{comment}
+\normalsize
+
+\begin{comment}
+Several notes about organizing your Maven project and other additional
+information:
+
+\begin{enumerate}
+
+\item \textbf{Submission:} The same way as you did for Homework 0 and 1 (set up
+GitHub repo, create Maven project, write your code, submit to Maven repo),
+except that the name has changed to hw2-teamXX (XX is a two-digit number from 01
+to 18).
+
+\item \textbf{Your source files and descriptors:}
+\texttt{java/edu/cmu/lti/oaqa/openqa/test/teamXX} means you should create
+directories (or packages in terms of Java program structure) iteratively from
+\texttt{java}, all the way to \texttt{teamXX}.
+
+\verb|**/*.java| and \verb|**/*.yaml| tell you that you don't need to flatten
+your folder hierarchy, instead we encourage you to place your Java codes in the
+right package, and similarly, you can create subfolders for different types of
+descriptors, e.g., \verb|src/main/resources/hellobioqa/teamXX/keyterm| for all
+the descriptors related to keyterm extraction task.
+
+Actually, once you specify the main yaml descriptor of pipeline to the
+\texttt{ECDDriver}, you can have your own entry point to the system. However, if
+you want to use \texttt{launches/hellobioqa.launch} file to run the pipeline,
+you should consider \texttt{src/main/resources/hellobioqa/hellobioqa.yaml} as
+your main yaml. When we evaluate your codes, we will run a different main yaml
+to bundle all your components, all the components declared in your
+\texttt{hellobioqa.yaml} will be used.
+\item \textbf{Comments, Javadocs, and documentations:} They are still important
+if you want us and other users to better understand your code. (Remember: we
+will become your customer when we run the big experiment.)
+
+\end{enumerate}
+\end{comment}
+\end{minipage}
+\hspace{-0.1\textwidth}
+
+\hspace{-0.1\textwidth}
+\begin{minipage}{1.2\textwidth}
+ 
+\textbf{Useful information}
+\begin{enumerate}
+
+\item Please visit Piazza regularly to check if a newer version is published. We may have new versions or revised instruction at the begining of
+each milestone.
+
+We expect that most of the general communication between the instructor team and students will take place on Piazza
+\url{https://piazza.com/class/hyvsubeilei6dd}.
+For private questions, e.g., regarding grades, you may contact instructors by e-mail.
+Your friendly TAs are:
+Avner Maiberg (\href{mailto:amaiberg@andrew.cmu.edu}{\nolinkurl{amaiberg@andrew.cmu.edu}}), 
+Parag Argawal (\href{mailto:paraga@andrew.cmu.edu}{\nolinkurl{paraga@andrew.cmu.edu}}), 
+Leonid (Leo) Boytsov (\href{mailto:srchvrs@cmu.edu}{\nolinkurl{srchvrs@cmu.edu}}), and 
+Xuezi (Manfred) Zhang (\href{mailto:xueziz@andrew.cmu.edu}{\nolinkurl{xueziz@andrew.cmu.edu}}).
+\item Again, both source files and pdf file of this assignment are
+publicly available on my GitHub
+     
+\url{http://github.com/amaiberg/software-engineering-preliminary}
+
+Please feel free to fork the project and send a pull request back to me as some
+of you did for Homework 0 for any error. Or you can just report an issue at
+
+\url{http://github.com/amaiberg/software-engineering-preliminary/issues}
+
+\end{enumerate}
+
+\end{minipage}
+\hspace{-0.1\textwidth}
+
+\end{titlingpage}
+
+\input{bioqa/intro}
+
+\newpage
+\section*{Proposal Outline}
+\begin{enumerate}
+\item What questions will you focus on for your final system (exact answer generation part)?
+\begin{itemize}
+\item Yes/No questions
+\item Factoid questions
+\item List questions
+\item Summary questions
+\end{itemize}
+
+\item What technologies/ 3rd party tools do you plan to use?
+
+\item Brief overview of the main components of the system.
+        What is the ‘Intelligent’ component in your system?
+
+\item Critical aspects of the system/ Possible pitfalls in your system.
+
+\item Evaluation/Error analysis of your system: a brief statement explaining how you will evaluate your
+method(s).
+
+\item Team members and their andrew ids.
+\end{enumerate}
+
+\end{document}
